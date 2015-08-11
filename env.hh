@@ -53,7 +53,7 @@ class Env {
 public:
   typedef enum { NETFLIX, MOVIELENS, MENDELEY, ECHONEST, NYT } Dataset;
   typedef enum { CREATE_TRAIN_TEST_SETS, TRAINING } Mode;
-  Env(uint32_t N, uint32_t M, uint32_t K, string fname, 
+  Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname,
       bool nmi, string ground_truth_fname, uint32_t rfreq,
       bool strid, string label, bool alogl, double rseed,
       uint32_t max_iterations, bool load, string loc, 
@@ -75,6 +75,8 @@ public:
   uint32_t n;  // users
   uint32_t m;  // movies
   uint32_t k;  // factors
+  uint32_t uc;  // Number of user characteristics
+  uint32_t ic;  // Number of item characteristics
   uint32_t t;
   uint32_t mini_batch_size;
 
@@ -232,6 +234,8 @@ Env::Env(uint32_t N, uint32_t M, uint32_t K, string fname,
     n(N),
     m(M),
     k(K),
+    uc(UC),
+    ic(IC),
     t(2),
     mini_batch_size(1000),
     a(av), b(bv), c(cv), d(dv),

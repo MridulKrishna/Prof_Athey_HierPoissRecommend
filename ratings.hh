@@ -23,6 +23,8 @@ public:
     _users2rating(env.n),
     _users(env.n),
     _movies(env.m),
+    _userChar(env.n,env.uc,true),
+    _itemChar(env.m,env.ic,true),
     _env(env),
     _curr_user_seq(0), 
     _curr_movie_seq(0),
@@ -31,6 +33,7 @@ public:
   ~Ratings() { }
 
   int read(string s);
+  int readObserved(string s);
   uint32_t input_rating_class(uint32_t v) const;
   bool test_hit(uint32_t v) const;
   int write_marginal_distributions();
@@ -85,6 +88,9 @@ private:
   SparseMatrix _users;
   SparseMatrix _movies;
   vector<Rating> _ratings;
+  
+  Matrix _userChar;    // User characteristics
+  Matrix _itemChar;    // Item characteristics
 
   Env &_env;
   IDMap _user2seq;

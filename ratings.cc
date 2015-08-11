@@ -42,6 +42,45 @@ Ratings::read(string s)
   return 0;
 }
 
+// Reads dataset with observed user and item characteristics
+int
+Ratings::readObserved(string s)
+{
+  fprintf(stdout, "+ reading ratings dataset from %s\n", s.c_str());
+  fflush(stdout);
+  
+  if (_env.mode == Env::CREATE_TRAIN_TEST_SETS) {
+    if (_env.dataset == Env::NETFLIX) {
+      for (uint32_t i = 0; i < _env.m; ++i) {
+        if (read_netflix_movie(s,i+1) < 0) {
+          lerr("error adding movie %d\n", i);
+          return -1;
+        }
+      }
+    } else if (_env.dataset == Env::MOVIELENS)
+      read_movielens(s);
+    else  if (_env.dataset == Env::MENDELEY)
+      read_mendeley(s);
+    else if (_env.dataset == Env::ECHONEST)
+      read_echonest(s);
+    else if (_env.dataset == Env::NYT)
+      read_nyt(s);
+  } else {
+    // Runs this likne to read the file
+    read_generic_train(s);
+    write_marginal_distributions();
+  }
+  
+  char st[1024];
+  sprintf(st, "read %d users, %d movies, %d ratings",
+          _curr_user_seq, _curr_movie_seq, _nratings);
+  _env.n = _curr_user_seq;
+  _env.m = _curr_movie_seq;
+  Env::plog("statistics", string(st));
+  
+  return 0;
+}
+
 // Reads a generic train data file
 void
 Ratings::read_generic_train(string dir)
