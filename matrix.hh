@@ -94,6 +94,8 @@ public:
 
   void sort();
   void sort_by_value();
+    
+//  void print();
 
   D1Array &operator*=(T);          // V * x
   D1Array &operator+=(const D1Array<T> &); // V + A
@@ -871,6 +873,11 @@ public:
   void swap(D2Array<T> &u);
 
   string s() const;
+    
+  void print();
+    
+  T &get(uint32_t p, uint32_t q);
+  T get(uint32_t p, uint32_t q) const;
 
 private:
   uint32_t _m;
@@ -1474,33 +1481,44 @@ D2Array<T>::s() const
   return sa.str();
 }
 
-template<> inline string 
+template<> inline string
 D2Array<KV>::s() const
 {
-  ostringstream sa;
-  uint32_t m = (_m > ROW_LIMIT) ? ROW_LIMIT : _m;
-  uint32_t n = (_n > COL_LIMIT) ? COL_LIMIT : _n;
-  sa << "\n[ ";
-  for (uint32_t i = 0; i < m; ++i) {
-    for (uint32_t j = 0; j < n; ++j) {
-      double v = _data[i][j].first;
-      double u = _data[i][j].second;
-      if (u < 1e-08 && u > .0)
-	u = .0;
-
-      if (i > 0 && j == 0)
-	sa << "  " << v << ":" << u << " ";
-      else
-	sa << v << ":" << u << " ";
+    ostringstream sa;
+    uint32_t m = (_m > ROW_LIMIT) ? ROW_LIMIT : _m;
+    uint32_t n = (_n > COL_LIMIT) ? COL_LIMIT : _n;
+    sa << "\n[ ";
+    for (uint32_t i = 0; i < m; ++i) {
+        for (uint32_t j = 0; j < n; ++j) {
+            double v = _data[i][j].first;
+            double u = _data[i][j].second;
+            if (u < 1e-08 && u > .0)
+                u = .0;
+            
+            if (i > 0 && j == 0)
+                sa << "  " << v << ":" << u << " ";
+            else
+                sa << v << ":" << u << " ";
+        }
+        if (_n > n)
+            sa << "..\n";
+        sa << "\n";
     }
-    if (_n > n)
-      sa << "..\n";
-    sa << "\n";
-  }
-  if (m > _m)
-    sa << "...\n";
-  sa << "]";
-  return sa.str();
+    if (m > _m)
+        sa << "...\n";
+    sa << "]";
+    return sa.str();
+}
+
+template<class T> inline void D2Array<T>::print() {
+//    cout << "aqui" << endl;
+    for ( int i = 0; i< _m; i++) {
+        for ( int j = 0; j< _n;j++) {
+            T v =_data[i][j];
+            cout << v << " ";
+        }
+        cout << endl;
+    }
 }
 
 template<class T> inline double
@@ -1570,6 +1588,22 @@ D2Array<T>::abs_mean() const
   return s / (_m * _n);
 }
 
+
+template<class T> inline T
+D2Array<T>::get(uint32_t p, uint32_t q) const
+{
+    assert (p < _n);
+    assert (q < _m);
+    return _data[p][q];
+}
+
+template<class T> inline T &
+D2Array<T>::get(uint32_t p, uint32_t q)
+{
+    assert (p < _m);
+    assert (q < _n);
+    return _data[p][q];
+}
 
 template <class T>
 class D3Array {

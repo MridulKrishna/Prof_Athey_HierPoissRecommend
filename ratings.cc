@@ -2,6 +2,12 @@
 #include "log.hh"
 #include <wchar.h>
 #include <iostream>
+#include <boost/algorithm/string.hpp>
+#include <fstream>
+#include <set>
+
+using namespace std;
+using namespace boost;
 
 // Reads dataset
 int
@@ -27,7 +33,7 @@ Ratings::read(string s)
         else if (_env.dataset == Env::NYT)
             read_nyt(s);
     } else {
-        // Runs this likne to read the file
+        // Runs this line to read the file
         read_generic_train(s);
         write_marginal_distributions();
     }
@@ -43,33 +49,92 @@ Ratings::read(string s)
 }
 
 // Reads dataset with observed user and item characteristics
-int
-Ratings::readObserved(string s)
+void
+Ratings::readObserved(string dir)
 {
-  fprintf(stdout, "+ reading observed characteristics from %s\n", s.c_str());
-  fflush(stdout);
-  
-  char buf[1024];
-  sprintf(buf, "%s/train.tsv", dir.c_str());
-  
-  //cout << "buf" << endl;
-  //cout << buf << endl;
-  
-  FILE *f = fopen(buf, "r");
-  if (!f) {
-    fprintf(stderr, "error: cannot open file %s:%s", buf, strerror(errno));
-    fclose(f);
-    exit(-1);
+  // Message if there are actually some observed characteristics
+  if (_env.uc > 0 || _env.ic > 0) {
+    fprintf(stdout, "+ reading observed characteristics from %s\n", dir.c_str());
+    fflush(stdout);
   }
   
-  if (_env.dataset == Env::NYT) {
-    read_nyt_titles(dir);
-    read_nyt_train(f, NULL);
-  } else
-    // Sends the FILE object pointer to read_generic
-    read_generic(f, NULL);
-  fclose(f);
-  Env::plog("training ratings", _nratings);
+  // Read user characteristics if the number is nonzero
+  if (_env.uc > 0) {
+    char buf[1024];
+    sprintf(buf, "%s/obsUser.tsv", dir.c_str());
+
+    ifstream infile(buf);
+    string line;
+    int nLines = 0;
+    set<uint32_t> users;
+    
+    // Loops over the lines of the file and saves the variables
+    while ( getline(infile,line)) {
+      nLines++;
+      assert(nLines <= _env.n);
+      vector<string> strs;
+      split(strs,line,is_any_of("\t"));
+      assert(size(strs)==_env.uc+1);
+      
+      // Gets the code of the user in that line
+      int uCode = stoi(strs.at(0));
+      // Checks that the user is in the list of users
+      assert(_user2seq.find(uCode) != _user2seq.end());
+      // Checks that this is the first line for that user
+      assert(users.insert(uCode).second);
+      uint32_t pos = _user2seq[uCode];
+      
+//      cout << uCode << " " << pos << endl;
+      
+      Array row(_env.uc,true);
+
+      // Loops over the variables in the line and saves each one in the matrix of observed characteristics
+      for ( int i = 0; i<_env.uc; i++) {
+        _userChar.get(pos,i) = stod(strs.at(i+1));
+      }
+    }
+    assert(nLines==_env.n);
+//    _userChar.print();
+  }
+  
+  // Read item characteristics if the number is nonzero
+  if (_env.ic > 0) {
+    char buf[1024];
+    sprintf(buf, "%s/obsItem.tsv", dir.c_str());
+    
+    ifstream infile(buf);
+    string line;
+    int nLines = 0;
+    set<uint32_t> items;
+    
+    // Loops over the lines of the file and saves the variables
+    while ( getline(infile,line)) {
+      nLines++;
+      assert(nLines <= _env.m);
+      vector<string> strs;
+      split(strs,line,is_any_of("\t"));
+      assert(size(strs)==_env.ic+1);
+      
+      // Gets the code of the item in that line
+      int iCode = stoi(strs.at(0));
+      // Checks that the user is in the list of users
+      assert(_movie2seq.find(iCode) != _movie2seq.end());
+      // Checks that this is the first line for that user
+      assert(items.insert(iCode).second);
+      uint32_t pos = _movie2seq[iCode];
+      
+//      cout << iCode << " " << pos << endl;
+      
+      Array row(_env.ic,true);
+      
+      // Loops over the variables in the line and saves each one in the matrix of observed characteristics
+      for ( int i = 0; i<_env.ic; i++) {
+        _itemChar.get(pos,i) = stod(strs.at(i+1));
+      }
+    }
+    assert(nLines==_env.m);
+//    _itemChar.print();
+  }
 }
 
 // Reads a generic train data file
@@ -84,7 +149,9 @@ Ratings::read_generic_train(string dir)
   
   FILE *f = fopen(buf, "r");
   if (!f) {
-    fprintf(stderr, "error: cannot open file %s:%s", buf, strerror(errno));
+//    cout << "aqui" << endl;
+        cout << buf << endl;
+    fprintf(stderr, "error: cannot open file %s: %s", buf, strerror(errno));
     fclose(f);
     exit(-1);
   }

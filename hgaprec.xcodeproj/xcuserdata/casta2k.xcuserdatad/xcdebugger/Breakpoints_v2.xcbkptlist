@@ -56,11 +56,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "460623807.053469"
+            timestampString = "461032812.276063"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
+            startingLineNumber = "157"
+            endingLineNumber = "157"
             landmarkName = "Ratings::read_generic_train(string dir)"
             landmarkType = "5">
          </BreakpointContent>
@@ -72,11 +72,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "460623807.053469"
+            timestampString = "461032812.276063"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "96"
-            endingLineNumber = "96"
+            startingLineNumber = "161"
+            endingLineNumber = "161"
             landmarkName = "Ratings::read_generic_train(string dir)"
             landmarkType = "5">
          </BreakpointContent>
@@ -200,13 +200,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "main.cc"
-            timestampString = "460621515.109396"
+            timestampString = "461032901.809538"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "365"
-            endingLineNumber = "365"
-            landmarkName = "main(int argc, char **argv)"
-            landmarkType = "7">
+            startingLineNumber = "599"
+            endingLineNumber = "599">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -638,6 +636,22 @@
             startingLineNumber = "1896"
             endingLineNumber = "1896"
             landmarkName = "HGAPRec::compute_precision(bool save_ranking_file)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ratings.cc"
+            timestampString = "461032573.410341"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "Ratings::readObserved(string dir)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

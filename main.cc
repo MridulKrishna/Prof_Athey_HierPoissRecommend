@@ -30,8 +30,242 @@ term_handler(int sig)
   }
 }
 
+int main(int argc, char **argv) {
+  signal(SIGTERM, term_handler);
+  if (argc <= 1) {
+    printf("gaprec -dir <netflix-dataset-dir> -n <users>" \
+           "-m <movies> -k <dims> -label <out-dir-tag>\n");
+    exit(0);
+  }
+  
+  string fname;
+  uint32_t n = 0, m = 0;
+  uint32_t k = 0;
+  string ground_truth_fname;
+  uint32_t rfreq = 10;
+  string label;
+  bool logl = false;
+  uint32_t max_iterations = 1000;
+  bool nmi = false;
+  bool strid = false;
+  double rand_seed = 0;
+  
+  bool test = false;
+  bool batch = true;
+  bool online = false;
+  bool gen_heldout = false;
+  
+  bool model_load = false;
+  string model_location = "";
+  
+  bool hol_load = false;
+  string hol_location = "";
+  bool vb = true;
+  
+  bool pred_accuracy = false;
+  bool gt_accuracy = false;
+  bool p = false;
+  double a = 0.3, b = 0.3, c = 0.3, d = 0.3;
+  Env::Dataset dataset = Env::MENDELEY;
+  bool binary_data = false;
+  bool bias = false;
+  bool hier = false;
+  bool explore = false;
+  bool gen_ranking_for_users = false;
+  bool rmse = false;
+  bool nmf = false;
+  bool nmfload = false;
+  bool vwload = false;
+  bool lda = false;
+  bool vwlda = false;
+  bool msr = false;
+  bool write_training = false;
+  uint32_t rating_threshold = 1;
+  bool chi = false;
+  bool wals = false;
+  double wals_l = 0.1;
+  uint32_t wals_C = 10;
+  
+  bool als = false;
+  bool chinmf = false;
+  bool climf = false;
+  
+  bool mle_item = false;
+  bool mle_user = false;
+  bool canny = false;
+  bool ctr = false;
+  
+  uint32_t i = 0;
+  
+  // Parse parameters
+  while (i <= argc - 1) {
+    if (strcmp(argv[i], "-dir") == 0) {
+      fname = string(argv[++i]);
+      fprintf(stdout, "+ dir = %s\n", fname.c_str());
+    } else if (strcmp(argv[i], "-n") == 0) {
+      n = atoi(argv[++i]);
+      fprintf(stdout, "+ n = %d\n", n);
+    } else if (strcmp(argv[i], "-p") == 0) {
+      p = true;
+    } else if (strcmp(argv[i], "-m") == 0) {
+      m = atoi(argv[++i]);
+      fprintf(stdout, "+ m = %d\n", m);
+    } else if (strcmp(argv[i], "-k") == 0) {
+      k = atoi(argv[++i]);
+      fprintf(stdout, "+ k = %d\n", k);
+    } else if (strcmp(argv[i], "-nmi") == 0) {
+      ground_truth_fname = string(argv[++i]);
+      fprintf(stdout, "+ ground truth fname = %s\n",
+              ground_truth_fname.c_str());
+      nmi = true;
+    } else if (strcmp(argv[i], "-rfreq") == 0) {
+      rfreq = atoi(argv[++i]);
+      fprintf(stdout, "+ rfreq = %d\n", rfreq);
+    } else if (strcmp(argv[i], "-strid") == 0) {
+      strid = true;
+      fprintf(stdout, "+ strid mode\n");
+    } else if (strcmp(argv[i], "-label") == 0) {
+      label = string(argv[++i]);
+    } else if (strcmp(argv[i], "-logl") == 0) {
+      logl = true;
+      fprintf(stdout, "+ logl mode\n");
+    } else if (strcmp(argv[i], "-max-iterations") == 0) {
+      max_iterations = atoi(argv[++i]);
+      fprintf(stdout, "+ max iterations %d\n", max_iterations);
+    } else if (strcmp(argv[i], "-seed") == 0) {
+      rand_seed = atof(argv[++i]);
+      fprintf(stdout, "+ random seed set to %.5f\n", rand_seed);
+    } else if (strcmp(argv[i], "-load") == 0) {
+      model_load = true;
+      model_location = string(argv[++i]);
+      fprintf(stdout, "+ loading theta from %s\n", model_location.c_str());
+    } else if (strcmp(argv[i], "-test") == 0) {
+      test = true;
+      fprintf(stdout, "+ test mode\n");
+    } else if (strcmp(argv[i], "-batch") == 0) {
+      batch = true;
+      fprintf(stdout, "+ batch inference\n");
+    } else if (strcmp(argv[i], "-online") == 0) {
+      batch = false;
+      fprintf(stdout, "+ online inference\n");
+    } else if (strcmp(argv[i], "-gen-heldout") == 0) {
+      gen_heldout = true;
+      fprintf(stdout, "+ generate held-out files from dataset\n");
+    } else if (strcmp(argv[i], "-pred-accuracy") == 0) {
+      pred_accuracy = true;
+      fprintf(stdout, "+ compute predictive accuracy\n");
+    } else if (strcmp(argv[i], "-gt-accuracy") == 0) {
+      gt_accuracy = true;
+      fprintf(stdout, "+ compute  accuracy to ground truth\n");
+    } else if (strcmp(argv[i], "-netflix") == 0) {
+      dataset = Env::NETFLIX;
+    } else if (strcmp(argv[i], "-mendeley") == 0) {
+      dataset = Env::MENDELEY;
+    } else if (strcmp(argv[i], "-movielens") == 0) {
+      dataset = Env::MOVIELENS;
+    } else if (strcmp(argv[i], "-echonest") == 0) {
+      dataset = Env::ECHONEST;
+    } else if (strcmp(argv[i], "-nyt") == 0) {
+      dataset = Env::NYT;
+    } else if (strcmp(argv[i], "-a") == 0) {
+      a = atof(argv[++i]);
+    } else if (strcmp(argv[i], "-b") == 0) {
+      b = atof(argv[++i]);
+    } else if (strcmp(argv[i], "-c") == 0) {
+      c = atof(argv[++i]);
+    } else if (strcmp(argv[i], "-d") == 0) {
+      d = atof(argv[++i]);
+    } else if (strcmp(argv[i], "-binary-data") == 0) {
+      binary_data = true;
+    } else if (strcmp(argv[i], "-bias") == 0) {
+      bias = true;
+    } else if (strcmp(argv[i], "-hier") == 0) {
+      hier = true;
+    } else if (strcmp(argv[i], "-mle-user") == 0) {
+      mle_user = true;
+    } else if (strcmp(argv[i], "-mle-item") == 0) {
+      mle_item = true;
+    } else if (strcmp(argv[i], "-canny") == 0) {
+      canny = true;
+    } else if (strcmp(argv[i], "-gen-ranking") == 0) {
+      gen_ranking_for_users = true;
+    } else if (strcmp(argv[i], "-rmse") == 0) {
+      rmse = true;
+    } else if (strcmp(argv[i], "-novb") == 0) {
+      vb = false;
+    } else if (strcmp(argv[i], "-msr") == 0) {
+      msr = true;
+    } else if (strcmp(argv[i], "-nmf") == 0) {
+      nmf = true;
+    } else if (strcmp(argv[i], "-nmfload") == 0) {
+      nmfload = true;
+    } else if (strcmp(argv[i], "-vwload") == 0) {
+      vwload = true;
+    } else if (strcmp(argv[i], "-lda") == 0) {
+      lda = true;
+    } else if (strcmp(argv[i], "-vwlda") == 0) {
+      vwlda = true;
+    } else if (strcmp(argv[i], "-write-training") == 0) {
+      write_training = true;
+    } else if (strcmp(argv[i], "-chi") == 0) {
+      chi = true;
+    } else if (strcmp(argv[i], "-chinmf") == 0) {
+      chinmf = true;
+    } else if (strcmp(argv[i], "-als") == 0) {
+      als = true;
+    } else if (strcmp(argv[i], "-wals") == 0) {
+      wals = true;
+    } else if (strcmp(argv[i], "-wals_l") == 0) {
+      wals_l = atof(argv[++i]);
+    } else if (strcmp(argv[i], "-wals_C") == 0) {
+      wals_C = atoi(argv[++i]);
+    } else if (strcmp(argv[i], "-climf") == 0) {
+      climf = true;
+    } else if (strcmp(argv[i], "-ctr") == 0) {
+      ctr = true;
+    } else if (strcmp(argv[i], "-rating-threshold") == 0) {
+      rating_threshold = atoi(argv[++i]);
+    } else if (i > 0) {
+      fprintf(stdout,  "error: unknown option %s\n", argv[i]);
+      assert(0);
+    }
+    ++i;
+  };
+  
+  n = 4;
+  m = 8;
+  int uc = 0;
+  int ic = 0;
+  
+  // Initializes the environment: variables to run the code
+  Env env(n, m, k, uc, ic, fname, nmi, ground_truth_fname, rfreq,
+          strid, label, logl, rand_seed, max_iterations,
+          model_load, model_location,
+          gen_heldout, a, b, c, d, dataset,
+          batch, binary_data, bias, hier,
+          explore, vb, nmf, nmfload, lda, vwlda,
+          write_training, rating_threshold,
+          chi, wals, wals_l, wals_C,
+          als, chinmf, climf,
+          mle_item, mle_user, canny, ctr);
+  env_global = &env;
+  
+  // Reads the input files
+  Ratings ratings(env);
+  if (ratings.read(fname.c_str()) < 0) {
+    fprintf(stderr, "error reading dataset from dir %s; quitting\n",
+            fname.c_str());
+    return -1;
+  }
+  ratings.readObserved(fname.c_str());
+  
+  HGAPRec hgaprec(env, ratings);
+  
+  hgaprec.vb_hier();
+}
+/*
 int
-main(int argc, char **argv)
+mainOri(int argc, char **argv)
 {
   signal(SIGTERM, term_handler);
   if (argc <= 1) {
@@ -380,4 +614,4 @@ main(int argc, char **argv)
     fflush(stdout);
     exit(0);
   }
-}
+}*/

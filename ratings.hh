@@ -33,7 +33,7 @@ public:
   ~Ratings() { }
 
   int read(string s);
-  int readObserved(string s);
+  void readObserved(string s);
   uint32_t input_rating_class(uint32_t v) const;
   bool test_hit(uint32_t v) const;
   int write_marginal_distributions();

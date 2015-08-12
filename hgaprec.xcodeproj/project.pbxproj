@@ -237,7 +237,11 @@
 		79CE5D521B70678600744AA7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/include;
+				HEADER_SEARCH_PATHS = "";
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					/opt/local/include,
+					/usr/local/include,
+				);
 				LIBRARY_SEARCH_PATHS = (
 					/opt/local/lib,
 					/usr/local/lib,
@@ -258,7 +262,11 @@
 		79CE5D531B70678600744AA7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/include;
+				HEADER_SEARCH_PATHS = "";
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					/opt/local/include,
+					/usr/local/include,
+				);
 				LIBRARY_SEARCH_PATHS = (
 					/opt/local/lib,
 					/usr/local/lib,

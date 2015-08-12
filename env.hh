@@ -216,7 +216,7 @@ Env::file_str(string fname)
 }
 
 inline
-Env::Env(uint32_t N, uint32_t M, uint32_t K, string fname, 
+Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname,
 	 bool nmival, string gfname, uint32_t rfreq,
 	 bool sid, string lbl, bool alogl, double rseed,
 	 uint32_t maxitr, bool load, 

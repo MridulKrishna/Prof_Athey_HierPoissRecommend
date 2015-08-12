@@ -81,7 +81,7 @@ HGAPRec::HGAPRec(Env &env, Ratings &ratings)
 
   // Loads the other two files
   if (!_env.write_training) {
-    cout << "aqui" << endl;
+//    cout << "aqui" << endl;
     load_validation_and_test_sets();
   }
 
