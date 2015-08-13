@@ -72,6 +72,9 @@ public:
   int read_netflix_movie(string dir, uint32_t movie);
   int read_netflix_metadata(string dir);
   int read_movielens_metadata(string dir);
+
+  Matrix _userChar;    // User characteristics
+  Matrix _itemChar;    // Item characteristics
   
 private:
   void read_generic_train(string dir);
@@ -88,9 +91,6 @@ private:
   SparseMatrix _users;
   SparseMatrix _movies;
   vector<Rating> _ratings;
-  
-  Matrix _userChar;    // User characteristics
-  Matrix _itemChar;    // Item characteristics
 
   Env &_env;
   IDMap _user2seq;

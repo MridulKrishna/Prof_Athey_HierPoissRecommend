@@ -90,7 +90,8 @@ Ratings::readObserved(string dir)
 
       // Loops over the variables in the line and saves each one in the matrix of observed characteristics
       for ( int i = 0; i<_env.uc; i++) {
-        _userChar.get(pos,i) = stod(strs.at(i+1));
+//        _userChar.get(pos,i) = stod(strs.at(i+1));
+        _userChar.set(pos,i,stod(strs.at(i+1)));
       }
     }
     assert(nLines==_env.n);

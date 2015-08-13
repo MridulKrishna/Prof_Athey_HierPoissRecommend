@@ -30,6 +30,46 @@ term_handler(int sig)
   }
 }
 
+int mainArray(int argc, char **argv) {
+  Array arr(5);
+  arr.get(0) = 3;
+  arr.get(1) = 2;
+  arr.get(2) = 4;
+  arr.get(3) = 5;
+  arr.get(4) = 8;
+  
+  arr.print();
+  
+  Array arr2(1);
+  
+  arr2.copy_from(arr.subarray(2,2));
+  
+  arr2.print();
+  
+  Matrix mat(2,3);
+  
+  mat.get(0,0) = 1;
+  mat.get(0,1) = 2;
+  mat.get(0,2) = 3;
+  mat.get(1,0) = 4;
+  mat.get(1,1) = 5;
+  mat.get(1,2) = 6;
+  
+  mat.print();
+  
+  Array cs(3);
+  mat.colsum(cs);
+  cs.print();
+  
+  Array rs(2);
+  mat.rowsum(rs);
+  rs.print();
+  
+  
+  return 0;
+  
+}
+
 int main(int argc, char **argv) {
   signal(SIGTERM, term_handler);
   if (argc <= 1) {
@@ -234,8 +274,8 @@ int main(int argc, char **argv) {
   
   n = 4;
   m = 8;
-  int uc = 0;
-  int ic = 0;
+  int uc = 3;
+  int ic = 4;
   
   // Initializes the environment: variables to run the code
   Env env(n, m, k, uc, ic, fname, nmi, ground_truth_fname, rfreq,
@@ -259,9 +299,13 @@ int main(int argc, char **argv) {
   }
   ratings.readObserved(fname.c_str());
   
+  cout << "Constructing hgaprec" << endl;
   HGAPRec hgaprec(env, ratings);
   
+  cout << "Running vb_hier()" << endl;
   hgaprec.vb_hier();
+  
+  return 0; 
 }
 /*
 int

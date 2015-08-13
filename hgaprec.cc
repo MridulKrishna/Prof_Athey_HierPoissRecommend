@@ -4,12 +4,13 @@
 #include "./nmflib/include/common.h"
 #include "./nmflib/include/nmfdriver.h"
 #include <iostream>
+#include <math.h>
 #endif
 
 // The constructor saves the environment, ratings, and parameters. It also runs the constructors for the random variables.
 HGAPRec::HGAPRec(Env &env, Ratings &ratings)
   : _env(env), _ratings(ratings),
-    _n(env.n), _m(env.m), _k(env.k),
+_n(env.n), _m(env.m), _uc(env.uc),_ic(env.ic),_k(env.k),
     _iter(0),
     _start_time(time(0)),
     _theta("theta", 0.3, 0.3, _n,_k,&_r),
@@ -18,6 +19,8 @@ HGAPRec::HGAPRec(Env &env, Ratings &ratings)
     _betabias("betabias", 0.3, 0.3, _m, 1, &_r),
     _htheta("htheta", 0.3, 0.3, _n, _k, &_r),
     _hbeta("hbeta", 0.3, 0.3, _m, _k, &_r),
+    _hsigma("hsigma", 0.3, 0.3, _n, _ic, &_r),
+    _hrho("hrho", 0.3, 0.3, _m, _uc, &_r),
     _thetarate("thetarate", 0.3, 0.3, _n, &_r),
     _betarate("betarate", 0.3, 0.3, _m, &_r),
     _theta_mle(_n, _k),
@@ -168,80 +171,122 @@ HGAPRec::load_validation_and_test_sets()
 void
 HGAPRec::initialize()
 {
-  //cout << "initialize()" << endl;
-  if (!_env.hier) {
-    _beta.initialize();
-    _theta.initialize();
-
-    _beta.initialize_exp();
-    _theta.initialize_exp();
-
-    //_theta.initialize2(_m);
-    //_theta.compute_expectations();
-    //_beta.initialize2(_n);
-    //_beta.compute_expectations();
-
-  } else {
+//  //cout << "initialize()" << endl;
+//  if (!_env.hier) {
+//    _beta.initialize();
+//    _theta.initialize();
+//
+//    _beta.initialize_exp();
+//    _theta.initialize_exp();
+//
+//    //_theta.initialize2(_m);
+//    //_theta.compute_expectations();
+//    //_beta.initialize2(_n);
+//    //_beta.compute_expectations();
+//
+//  } else {
     //_thetarate.set_to_prior_curr();
     //_thetarate.set_to_prior();
 
-    // Initializes the xi and eta parameters
-    _thetarate.initialize2(_k);
-    _thetarate.compute_expectations();
-
-    _betarate.initialize2(_k);
-    _betarate.compute_expectations();
-    
-    //_betarate.set_to_prior_curr();
-    //_betarate.set_to_prior();
-    //_hbeta.initialize2(_n);
-    //_hbeta.compute_expectations();
-    
-    // Initializes the beta and theta vectors
-    _hbeta.initialize();
-    _hbeta.initialize_exp();
-
-    //_hbeta.initialize_exp(_betarate.expected_v()[0]);
-    //_htheta.initialize2(_m);
-    //_htheta.compute_expectations();
-    
-    _htheta.initialize();
-    _htheta.initialize_exp();
+  // Initializes the xi and eta parameters
+  _thetarate.initialize2(_k);
+  _thetarate.compute_expectations();
+  
+  _betarate.initialize2(_k);
+  _betarate.compute_expectations();
+  
+  //_betarate.set_to_prior_curr();
+  //_betarate.set_to_prior();
+  //_hbeta.initialize2(_n);
+  //_hbeta.compute_expectations();
+  
+  // Initializes the beta and theta vectors
+  _hbeta.initialize();
+  _hbeta.initialize_exp();
+  
+  //_hbeta.initialize_exp(_betarate.expected_v()[0]);
+  //_htheta.initialize2(_m);
+  //_htheta.compute_expectations();
+  
+  _htheta.initialize();
+  _htheta.initialize_exp();
+  
+  _hsigma.initialize();
+  _hsigma.initialize_exp();
+  
+  _hrho.initialize();
+  _hrho.initialize_exp();
 
     //_htheta.initialize_exp(_thetarate.expected_v()[0]);
-  }
+//  }
   
-  if (_env.bias) {
-    _thetabias.initialize2(_m);
-    _thetabias.compute_expectations();
-    
-    _betabias.initialize2(_n);
-    _betabias.compute_expectations();
-  }
+//  if (_env.bias) {
+//    _thetabias.initialize2(_m);
+//    _thetabias.compute_expectations();
+//    
+//    _betabias.initialize2(_n);
+//    _betabias.compute_expectations();
+//  }
 }
 
 // Calculates the vector of probabilites for the multinomial distribution and saves it in argument phi
 void
-HGAPRec::get_phi(GPBase<Matrix> &a, uint32_t ai, 
-		 GPBase<Matrix> &b, uint32_t bi, 
-		 Array &phi)
+HGAPRec::get_phi(GPBase<Matrix> &theta, uint32_t ai, GPBase<Matrix> &beta, uint32_t bi, Array &phi)
 {
   // Checks that the sizes of beta, theta, and phi agree
-  assert (phi.size() == a.k() &&
-	  phi.size() == b.k());
+  assert (phi.size() == theta.k() &&
+          phi.size() == beta.k());
   // Checks that the position does not exceed the array dimensions
-  assert (ai < a.n() && bi < b.n());
+  assert (ai < theta.n() && bi < beta.n());
   
   // Gets the expected log of theta and beta
-  const double  **eloga = a.expected_logv().const_data();
-  const double  **elogb = b.expected_logv().const_data();
+  const double  **elogtheta = theta.expected_logv().const_data();
+  const double  **elogbeta = beta.expected_logv().const_data();
   
   // Makes phi a zero vector
   phi.zero();
   
   // Adds each one of the elements of phi
   for (uint32_t k = 0; k < _k; ++k)
-    phi[k] = eloga[ai][k] + elogb[bi][k];
+    phi[k] = elogtheta[ai][k] + elogbeta[bi][k];
+  
+  // Normalizes phi so it adds up to one
+  phi.lognormalize();
+}
+
+// Calculates the vector of probabilites for the multinomial distribution and saves it in argument phi
+void
+HGAPRec::get_phi(GPBase<Matrix> &theta, uint32_t u, GPBase<Matrix> &beta, uint32_t i, GPBase<Matrix> &sigma, GPBase<Matrix> &rho, uint32_t ic, uint32_t uc, Array &phi)
+{
+  // Checks that the sizes of beta, theta, and phi agree
+  assert (phi.size() == theta.k()+sigma.k()+rho.k() &&
+	  phi.size() == beta.k()+sigma.k()+rho.k());
+  // Checks that the position does not exceed the array dimensions
+  assert (u < theta.n() && i < beta.n());
+  
+  // Gets the expected log of theta, beta, sigma, and rho
+  const double  **elogtheta = theta.expected_logv().const_data();
+  const double  **elogbeta = beta.expected_logv().const_data();
+  const double  **elogsigma = sigma.expected_logv().const_data();
+  const double  **elogrho = rho.expected_logv().const_data();
+  
+  const Matrix* userChar = &_ratings._userChar;
+  const Matrix* itemChar = &_ratings._itemChar;
+  
+  // Makes phi a zero vector
+  phi.zero();
+  
+  // Adds each one of the elements of phi
+  for (uint32_t k = 0; k < _k; ++k) {
+    phi[k] = elogtheta[u][k] + elogbeta[i][k];
+  }
+  for (uint32_t l = 0; l < _ic; ++l) {
+    phi[_k+l] = elogsigma[u][l] + log(itemChar->get(i,l));
+  }
+  for (uint32_t m = 0; m < _uc; ++m) {
+    phi[_k+_ic+m] =  log(userChar->get(u,m)) + elogrho[i][m];
+//    cout << _k+_ic+m << " " << log(userChar->get(u,m)) << " " << elogrho[i][m] << endl;
+  }
   
   // Normalizes phi so it adds up to one
   phi.lognormalize();
@@ -944,416 +989,6 @@ HGAPRec::nmf()
 }
 #endif
 
-void
-HGAPRec::vb()
-{
-  lerr("running vb()");
-  //cout << "running vb()" << endl;
-  
-  // Initial values of the paremters
-  initialize();
-  // approx_log_likelihood();
-
-  // Initializes the array of multinomial parameters
-  // Array is a one dimensional array of doubles of dimension k
-  Array phi(_k);
-  
-  // Optimization loop
-  while (1) {
-    for (uint32_t n = 0; n < _n; ++n) {
-      
-      // Pointer with the 
-      const vector<uint32_t> *movies = _ratings.get_movies(n);
-      for (uint32_t j = 0; j < movies->size(); ++j) {
-        uint32_t m = (*movies)[j];
-        yval_t y = _ratings.r(n,m);
-        
-        get_phi(_theta, n, _beta, m, phi);
-        if (y > 1)
-          phi.scale(y);
-        
-        _theta.update_shape_next(n, phi);
-        _beta.update_shape_next(m, phi);
-      }
-    }
-    
-    Array betasum(_k);
-    _beta.sum_rows(betasum);
-    _theta.update_rate_next(betasum);
-
-    _theta.swap();
-    _theta.compute_expectations();
-    
-    Array thetasum(_k);
-    _theta.sum_rows(thetasum);
-    _beta.update_rate_next(thetasum);
-    
-    _beta.swap();
-    _beta.compute_expectations();
-
-    printf("\r iteration %d", _iter);
-    fflush(stdout);
-    if (_iter % _env.reportfreq == 0) {
-      // approx_log_likelihood();
-      compute_likelihood(true);
-      compute_likelihood(false);
-      //compute_rmse();
-      save_model();
-      compute_precision(false);
-      compute_itemrank(false);
-      //gen_ranking_for_users(false);
-      if (_env.logl)
-	logl();
-    }
-
-    if (_env.save_state_now) {
-      lerr("Saving state at iteration %d duration %d secs", _iter, duration());
-      do_on_stop();
-    }
-
-    _iter++;
-  }
-}
-
-void
-HGAPRec::vb_mle_user()
-{
-  initialize();
-
-  double **td = _theta_mle.data();
-  double **old_td = _old_theta_mle.data();
-
-  for (uint32_t n = 0; n < _n; ++n) 
-    for (uint32_t k = 0; k < _k; ++k)
-      old_td[n][k] = (double)1.0/(double)_k;
-
-  Array phi(_k);
-  while (1) {
-    for (uint32_t n = 0; n < _n; ++n) {
-      for (uint32_t k = 0; k < _k; ++k)
-	td[n][k] = 0;
-      
-      const vector<uint32_t> *movies = _ratings.get_movies(n);
-      for (uint32_t j = 0; j < movies->size(); ++j) {
-	uint32_t m = (*movies)[j];
-	yval_t y = _ratings.r(n,m);
-	
-	get_phi(_old_theta_mle, n, _beta, m, phi);
-	if (y > 1)
-	  phi.scale(y);
-	
-	for (uint32_t k = 0; k < _k; ++k)
-	  td[n][k] += phi[k];
-	
-	_beta.update_shape_next(m, phi);
-      }
-    }
-
-    Array betasum(_k);
-    _beta.sum_rows(betasum);
-    
-    double sum = .0;
-    for (uint32_t n = 0; n < _n; ++n) 
-      for (uint32_t k = 0; k < _k; ++k)  {
-	td[n][k] /= betasum[k];
-	old_td[n][k] = td[n][k];
-      }
-
-    Array thetasum(_k);
-    for (uint32_t n = 0; n < _n; ++n) 
-      for (uint32_t k = 0; k < _k; ++k)
-	thetasum[k] += td[n][k];
-
-    _beta.update_rate_next(thetasum);
-    _beta.swap();
-    _beta.compute_expectations();
-
-    printf("\r iteration %d", _iter);
-    fflush(stdout);
-    if (_iter % _env.reportfreq == 0) {
-      // approx_log_likelihood();
-      compute_likelihood(true);
-      compute_likelihood(false);
-      //compute_rmse();
-      //save_model();
-      compute_precision(false);
-      //gen_ranking_for_users(false);
-      if (_env.logl)
-	logl();
-    }
-
-    if (_env.save_state_now) {
-      lerr("Saving state at iteration %d duration %d secs", _iter, duration());
-      do_on_stop();
-    }
-
-    _iter++;
-  }
-}
-
-
-void
-HGAPRec::vb_mle_item()
-{
-  initialize();
-
-  double **bd = _beta_mle.data();
-  double **old_bd = _old_beta_mle.data();
-
-  for (uint32_t m = 0; m < _m; ++m) 
-    for (uint32_t k = 0; k < _k; ++k)
-      old_bd[m][k] = (double)1.0/(double)_k;
-
-  Array phi(_k);
-  while (1) {
-    for (uint32_t m = 0; m < _m; ++m) 
-      for (uint32_t k = 0; k < _k; ++k)
-	bd[m][k] = 0;
-
-    for (uint32_t n = 0; n < _n; ++n) {
-      const vector<uint32_t> *movies = _ratings.get_movies(n);
-      for (uint32_t j = 0; j < movies->size(); ++j) {
-	uint32_t m = (*movies)[j];
-	yval_t y = _ratings.r(n,m);
-	
-	get_phi(_theta, n, _old_beta_mle, m, phi);
-	if (y > 1)
-	  phi.scale(y);
-	
-	for (uint32_t k = 0; k < _k; ++k)
-	  bd[m][k] += phi[k];
-
-	_theta.update_shape_next(n, phi);
-      }
-    }
-
-    Array thetasum(_k);
-    _theta.sum_rows(thetasum);
-
-    double sum = .0;
-    for (uint32_t m = 0; m < _m; ++m) 
-      for (uint32_t k = 0; k < _k; ++k)  {
-	bd[m][k] /= thetasum[k];
-	old_bd[m][k] = bd[m][k];
-      }
-
-    Array betasum(_k);
-    for (uint32_t m = 0; m < _m; ++m) 
-      for (uint32_t k = 0; k < _k; ++k)
-	betasum[k] += bd[m][k];
-
-    _theta.update_rate_next(betasum);
-    _theta.swap();
-    _theta.compute_expectations();
-
-    printf("\r iteration %d", _iter);
-    fflush(stdout);
-    if (_iter % _env.reportfreq == 0) {
-      compute_likelihood(true);
-      compute_likelihood(false);
-      compute_precision(false);
-      if (_env.logl)
-	logl();
-    }
-
-    if (_env.save_state_now) {
-      lerr("Saving state at iteration %d duration %d secs", _iter, duration());
-      do_on_stop();
-    }
-
-    _iter++;
-  }
-}
-
-void
-HGAPRec::vb_canny()
-{
-  initialize();
-
-  double **bd = _beta_mle.data();
-  double **old_bd = _old_beta_mle.data();
-
-  for (uint32_t m = 0; m < _m; ++m) 
-    for (uint32_t k = 0; k < _k; ++k)
-      old_bd[m][k] = (double)1.0/(double)_m;
-
-  Array phi(_k);
-  while (1) {
-    for (uint32_t m = 0; m < _m; ++m) 
-      for (uint32_t k = 0; k < _k; ++k)
-	bd[m][k] = 0;
-
-    for (uint32_t n = 0; n < _n; ++n) {
-      const vector<uint32_t> *movies = _ratings.get_movies(n);
-      for (uint32_t j = 0; j < movies->size(); ++j) {
-	uint32_t m = (*movies)[j];
-	yval_t y = _ratings.r(n,m);
-	
-	get_phi(_theta, n, _old_beta_mle, m, phi);
-	if (y > 1)
-	  phi.scale(y);
-	
-	for (uint32_t k = 0; k < _k; ++k)
-	  bd[m][k] += phi[k];
-
-	_theta.update_shape_next(n, phi);
-      }
-    }
-
-    Array thetasum(_k);
-    _theta.sum_rows(thetasum);
-
-    double sum = .0;
-    for (uint32_t m = 0; m < _m; ++m) 
-      for (uint32_t k = 0; k < _k; ++k)  {
-	if (bd[m][k] < 1e-10)
-	  bd[m][k] = 1e-10;
-	bd[m][k] = bd[m][k] / thetasum[k];
-	old_bd[m][k] = bd[m][k];
-      }
-
-    for (uint32_t k = 0; k < _k; ++k) {
-      double s = .0;
-      for (uint32_t m = 0; m < _m; ++m) 
-	s += old_bd[m][k];
-      for (uint32_t m = 0; m < _m; ++m) {
-	old_bd[m][k] /= s;
-	bd[m][k] = old_bd[m][k];
-      }
-    }
-
-    Array betasum(_k);
-    for (uint32_t m = 0; m < _m; ++m) 
-      for (uint32_t k = 0; k < _k; ++k)
-	betasum[k] += bd[m][k];
-
-    _theta.update_rate_next(betasum);
-    _theta.swap();
-    _theta.compute_expectations();
-
-    printf("\r iteration %d", _iter);
-    fflush(stdout);
-    if (_iter % _env.reportfreq == 0) {
-      compute_likelihood(true);
-      compute_likelihood(false);
-      compute_precision(false);
-      compute_itemrank(false);
-      if (_env.logl)
-	logl();
-    }
-    
-    if (_env.save_state_now) {
-      lerr("Saving state at iteration %d duration %d secs", _iter, duration());
-      do_on_stop();
-    }
-
-    _iter++;
-  }
-}
-
-
-void
-HGAPRec::vb_bias()
-{
-  lerr("running vb_bias()");
-  initialize();
-
-  Array phi(_k+2);
-  while (1) {
-    for (uint32_t n = 0; n < _n; ++n) {
-      
-      const vector<uint32_t> *movies = _ratings.get_movies(n);
-      for (uint32_t j = 0; j < movies->size(); ++j) {
-	uint32_t m = (*movies)[j];
-	yval_t y = _ratings.r(n,m);
-
-	const double **tbias = _thetabias.expected_logv().const_data();
-	const double **bbias = _betabias.expected_logv().const_data();
-
-	get_phi(_theta, n, _beta, m, tbias[n][0], bbias[m][0], phi);
-	
-	if (y > 1)
-	  phi.scale(y);
-
-	_theta.update_shape_next(n, phi);
-	_beta.update_shape_next(m, phi);
-	
-	_thetabias.update_shape_next3(n, 0, phi[_k]);
-	_betabias.update_shape_next3(m, 0, phi[_k+1]);
-      }
-    }
-    
-    if (_env.vb) {
-      Array betasum(_k);
-      _beta.sum_rows(betasum);
-      _theta.update_rate_next(betasum);
-      
-      _theta.swap();
-      _theta.compute_expectations();
-      
-      Array thetasum(_k);
-      _theta.sum_rows(thetasum);
-      _beta.update_rate_next(thetasum);
-      
-      _beta.swap();
-      _beta.compute_expectations();
-      
-      _thetabias.update_rate_next_all(0, _m);
-      _thetabias.swap();
-      _thetabias.compute_expectations();
-      
-      _betabias.update_rate_next_all(0, _n);
-      _betabias.swap();
-      _betabias.compute_expectations();
-
-      debug("thetabias: %s", _thetabias.expected_v().s().c_str());
-      debug("betabias: %s", _betabias.expected_v().s().c_str());
-
-    } else {
-
-      Array betasum(_k);
-      _beta.sum_rows(betasum);
-      _theta.update_rate_next(betasum);
-      Array thetasum(_k);
-      _theta.sum_rows(thetasum);
-      _beta.update_rate_next(thetasum);
-
-      _thetabias.update_rate_next_all(0, _m);
-      _betabias.update_rate_next_all(0, _n);
-      
-      _theta.swap();
-      _beta.swap();
-      _thetabias.swap();
-      _betabias.swap();
-
-      _theta.compute_expectations();
-      _beta.compute_expectations();
-      _thetabias.compute_expectations();
-      _betabias.compute_expectations();
-    }
-
-    printf("\r iteration %d", _iter);
-    fflush(stdout);    
-    if (_iter % _env.reportfreq == 0) {
-      compute_likelihood(true);
-      compute_likelihood(false);
-      //compute_rmse();
-      save_model();
-      compute_precision(false);
-      //gen_ranking_for_users(false);
-      if (_env.logl)
-	logl();
-    }
-
-    if (_env.save_state_now) {
-      lerr("Saving state at iteration %d duration %d secs", _iter, duration());
-      do_on_stop();
-    }
-
-    _iter++;
-  }
-}
-
 // Main method for the hierarchical model (the one in the paper)
 void
 HGAPRec::vb_hier()
@@ -1361,16 +996,22 @@ HGAPRec::vb_hier()
   // Initial values of the parameters, according to the posterior plus a random shock
   initialize();
   
+  cout << "Initialized" << endl;
 //  cout << _env.reportfreq << endl;
   
   //lerr("htheta = %s", _htheta.rate_next().s().c_str());
+
+  ///////////
+// Original code
+//  // What is bias?
+//  uint32_t x;
+//  if (_env.bias)
+//    x = _k+2;
+//  else
+//    x = _k;
+  ///////////
   
-  // What is bias?
-  uint32_t x;
-  if (_env.bias)
-    x = _k+2;
-  else
-    x = _k;
+  uint32_t x = _k+_uc+_ic;
   
   // Constructs the array for the parameters of the multinomial distribution
   Array phi(x);
@@ -1382,12 +1023,14 @@ HGAPRec::vb_hier()
     }
     // Loop over users
     for (uint32_t n = 0; n < _n; ++n) {
+//      cout << "Loop over users " << n << endl;
       
       // Gets the matrix of items for each user and stores it in movies
       const vector<uint32_t> *movies = _ratings.get_movies(n);
       
       // Loop over each user's items
       for (uint32_t j = 0; movies && j < movies->size(); ++j) {
+//        cout << "Loop over items " << j <<endl;
         // Gets the code of the movie
         uint32_t m = (*movies)[j];
         
@@ -1403,7 +1046,7 @@ HGAPRec::vb_hier()
         
         // Get the movie rating
         yval_t y = _ratings.r(n,m);
-        
+
 //        //////// JCC: Tests
 //        uint32_t y2 = _ratings.r(n,m);
 //        cout << _ratings.r(n,m) << endl;
@@ -1417,29 +1060,58 @@ HGAPRec::vb_hier()
           
           get_phi(_htheta, n, _hbeta, m, tbias[n][0], bbias[m][0], phi);
         } else
-          // Finds phi from the current parameters of hbeta and htheta
-          get_phi(_htheta, n, _hbeta, m, phi);
-        
+          // Finds phi from the current parameters of hbeta, htheta, hsigma, and hrho (the equation in step 1 of the algorithm in the paper)
+
+          get_phi(_htheta, n, _hbeta, m, _hsigma, _hrho, _ic, _uc, phi);
+     
 //        cout << phi.sum(0) << endl;
+//        phi.print();
         
-        if (y > 1)
-          // Makes phi sum up to y
+        // Makes phi sum up to y to get y_{ui} phi_{uik}
+        if (y > 1) {
           phi.scale(y);
-//        cout << phi.sum(0) << endl;
+        }
         
-        // Updates the next shape parameter of theta and beta (gamma and kappa) by adding y_{ui}\phi_{uik} to the nth row of gamma and the mth row of kappa
-        _htheta.update_shape_next1(n, phi);
-        _hbeta.update_shape_next1(m, phi);
+//        cout << phi.sum(0) << endl;
+//        phi.print();
+        
+        // Defines the subarrays of phi for latent variables, user observables, and item observables
+        Array phik(_k);
+        Array phil(_ic);
+        Array phim(_uc);
+        
+        phik.copy_from(phi.subarray(0,_k-1));
+        phil.copy_from(phi.subarray(_k,_k+_ic-1));
+        phim.copy_from(phi.subarray(_k+_ic,_k+_ic+_uc-1));
+        
+        // Updates the next shape parameter of theta and beta (gamma and kappa) by adding y_{ui} phi_{uik} to the nth row of gamma and the mth row of kappa (the first equation in steps 2 and 3 of the algorithm in the paper)
+        _htheta.update_shape_next1(n, phik);
+        _hbeta.update_shape_next1(m, phik);
+        _hsigma.update_shape_next1(n, phil);
+        _hrho.update_shape_next1(m, phim);
+        
+        
+//        cout << "aqui" << endl;
+//        phil = NULL;
+//        phim = NULL;
+//        phik = NULL;
+//        cout << "aca" << endl;
         
         if (_env.bias) {
           _thetabias.update_shape_next3(n, 0, phi[_k]);
           _betabias.update_shape_next3(m, 0, phi[_k+1]);
+          
         }
+//        phi.print();
       }
     } // End of loop over users/movies
     
     debug("htheta = %s", _htheta.expected_v().s().c_str());
     debug("hbeta = %s", _hbeta.expected_v().s().c_str());
+    
+    //----------------------------------
+    // Updates for user parameters
+    //----------------------------------
     Array betarowsum(_k);
     // Saves the sums over items of expected values for each factor ( the second part of \gamma^{rte}_{uk})
     _hbeta.sum_rows(betarowsum);
@@ -1450,13 +1122,31 @@ HGAPRec::vb_hier()
     debug("adding %s to theta rate", _thetarate.expected_v().s().c_str());
     debug("betarowsum %s", betarowsum.s().c_str());
     
-    // Adds the previous sum to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
+    // Adds the previous sum (betarowsum) to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
     _htheta.update_rate_next(betarowsum);
     // Swaps the current and the next values for the parameters
     _htheta.swap();
     
     // Computes expectations and log expectations based on the new parameters
     _htheta.compute_expectations();
+    
+    // Computes the sums of user characteristics (second term for \mu_{ul}^{rte}
+    Array itemSum(_ic);
+    _ratings._itemChar.colsum(itemSum);
+    
+    // Sets the prior rate based on expectations with current parameters, i.e.,\frac{\kappa^{shp}}{\kappa^{rte}}
+    _hsigma.set_prior_rate(_thetarate.expected_v(),
+                           _thetarate.expected_logv());
+    
+    // Adds the previous sum (itemSum) to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
+    _hsigma.update_rate_next(itemSum);
+    // Swaps the current and the next values for the parameters
+    _hsigma.swap();
+    
+    
+    //----------------------------------
+    // Updates for item parameters
+    //----------------------------------
     
     Array thetarowsum(_k);
     // Saves the sums of expected values over users for each factor (the second part of \lambda^{rte}_{ik})
@@ -1474,6 +1164,19 @@ HGAPRec::vb_hier()
     // Computes expectations and log expectations based on the new parameters
     _hbeta.compute_expectations();
     
+    // Computes the sums of user characteristics (second term for \mu_{ul}^{rte}
+    Array userSum(_uc);
+    _ratings._userChar.colsum(userSum);
+    
+    // Sets the prior rate based on expectations with current parameters, i.e.,\frac{\tau^{shp}}{\tau^{rte}}
+    _hrho.set_prior_rate(_betarate.expected_v(),
+                           _betarate.expected_logv());
+    
+    // Adds the previous sum to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
+    _hrho.update_rate_next(userSum);
+    // Swaps the current and the next values for the parameters
+    _hrho.swap();
+    
     if (_env.bias) {
       _thetabias.update_rate_next_all(0, _m);
       _thetabias.swap();
@@ -1484,13 +1187,18 @@ HGAPRec::vb_hier()
       _betabias.compute_expectations();
     }
     
+    // Computes the rate parameters for the popularity and activity parameters
     Array thetacolsum(_n);
-    // Computes the second part of \kappa^{rte}_{uk})
+    Array sigmacolsum(_n);
+    // Computes the second term of \kappa^{rte}_{uk})
     _htheta.sum_cols(thetacolsum);
-    // Adds Ka to the shape parameter of theta
-    _thetarate.update_shape_next(_k * _thetarate.sprior());
-    // Adds the second part to the rate parameter of theta
+    // Computes the third term of \kappa^{rte}_{uk})
+    _hsigma.sum_cols(sigmacolsum);
+    // Adds (K+L)a to the shape parameter of xi
+    _thetarate.update_shape_next((_k+_ic) * _thetarate.sprior());
+    // Adds the new terms to the rate parameter of xi
     _thetarate.update_rate_next(thetacolsum);
+    _thetarate.update_rate_next(sigmacolsum);
     debug("thetacolsum = %s", thetacolsum.s().c_str());
     
     // Swaps the current and the next values for the parameters
@@ -1499,11 +1207,14 @@ HGAPRec::vb_hier()
     _thetarate.compute_expectations();
     
     Array betacolsum(_m);
-    // Computes the second part of \tau^{rte}_{uk})
+    Array rhocolsum(_m);
+    // Computes the second term of \tau^{rte}_{uk})
     _hbeta.sum_cols(betacolsum);
-    // Adds Kc to the shape parameter of theta
-    _betarate.update_shape_next(_k * _betarate.sprior());
-    // Adds the second part to the rate parameter of beta
+    // Computes the third term of \tau^{rte}_{uk})
+    _hrho.sum_cols(rhocolsum);
+    // Adds (K+M)c to the shape parameter of eta
+    _betarate.update_shape_next((_k+_uc) * _betarate.sprior());
+    // Adds the new terms to the rate parameter of eta
     _betarate.update_rate_next(betacolsum);
     debug("betacolsum = %s", betacolsum.s().c_str());
     
@@ -1534,6 +1245,10 @@ HGAPRec::vb_hier()
       do_on_stop();
     }
     _iter++;
+
+    if ( _iter == 1) {
+      _betarate.rate_curr().print();
+    }
   }
 }
 
@@ -1654,17 +1369,27 @@ HGAPRec::rating_likelihood(uint32_t p, uint32_t q, yval_t y) const
   return y * log(s) - s - log_factorial(y);
 }
 
+// Computes the log likelihood for the rating of user p for item q
 double
 HGAPRec::rating_likelihood_hier(uint32_t p, uint32_t q, yval_t y) const
 {
-  // Gets the current expected values of theta and beta
+  // Gets the current expected values of theta, beta, sigma, and rho
   const double **etheta = _htheta.expected_v().const_data();
   const double **ebeta = _hbeta.expected_v().const_data();
+  const double **esigma = _hsigma.expected_v().const_data();
+  const double **erho = _hrho.expected_v().const_data();
+  double **itemChar = _ratings._itemChar.data();
+  double **userChar = _ratings._userChar.data();
   
-  // Finds the dot product \theta_u\beta_i
+  // Finds the sum of dot products \theta_u\beta_i+\sigma_u\x_i+\w_u\rho_i
   double s = .0;
   for (uint32_t k = 0; k < _k; ++k)
     s += etheta[p][k] * ebeta[q][k];
+  for (uint32_t l = 0; l < _ic; ++l)
+    s += esigma[p][l] * itemChar[q][l];
+  for (uint32_t m = 0; m < _uc; ++m)
+    s += userChar[p][m] * erho[q][m];
+  
   
   if (_env.bias) {
     const double **ethetabias = _thetabias.expected_v().const_data();
@@ -2540,4 +2265,417 @@ HGAPRec::test()
     lerr("%s, %s\n", _ratings.movie_name(m).c_str(), _ratings.movie_type(m).c_str());
   }
 }
+
+
+// Methods that are not used in the paper
+/*
+void
+HGAPRec::vb()
+{
+  lerr("running vb()");
+  //cout << "running vb()" << endl;
   
+  // Initial values of the paremters
+  initialize();
+  // approx_log_likelihood();
+  
+  // Initializes the array of multinomial parameters
+  // Array is a one dimensional array of doubles of dimension k
+  Array phi(_k);
+  
+  // Optimization loop
+  while (1) {
+    for (uint32_t n = 0; n < _n; ++n) {
+      
+      // Pointer with the
+      const vector<uint32_t> *movies = _ratings.get_movies(n);
+      for (uint32_t j = 0; j < movies->size(); ++j) {
+        uint32_t m = (*movies)[j];
+        yval_t y = _ratings.r(n,m);
+        
+        get_phi(_theta, n, _beta, m, phi);
+        if (y > 1)
+          phi.scale(y);
+        
+        _theta.update_shape_next(n, phi);
+        _beta.update_shape_next(m, phi);
+      }
+    }
+    
+    Array betasum(_k);
+    _beta.sum_rows(betasum);
+    _theta.update_rate_next(betasum);
+    
+    _theta.swap();
+    _theta.compute_expectations();
+    
+    Array thetasum(_k);
+    _theta.sum_rows(thetasum);
+    _beta.update_rate_next(thetasum);
+    
+    _beta.swap();
+    _beta.compute_expectations();
+    
+    printf("\r iteration %d", _iter);
+    fflush(stdout);
+    if (_iter % _env.reportfreq == 0) {
+      // approx_log_likelihood();
+      compute_likelihood(true);
+      compute_likelihood(false);
+      //compute_rmse();
+      save_model();
+      compute_precision(false);
+      compute_itemrank(false);
+      //gen_ranking_for_users(false);
+      if (_env.logl)
+        logl();
+    }
+    
+    if (_env.save_state_now) {
+      lerr("Saving state at iteration %d duration %d secs", _iter, duration());
+      do_on_stop();
+    }
+    
+    _iter++;
+  }
+}
+
+void
+HGAPRec::vb_mle_user()
+{
+  initialize();
+  
+  double **td = _theta_mle.data();
+  double **old_td = _old_theta_mle.data();
+  
+  for (uint32_t n = 0; n < _n; ++n)
+    for (uint32_t k = 0; k < _k; ++k)
+      old_td[n][k] = (double)1.0/(double)_k;
+  
+  Array phi(_k);
+  while (1) {
+    for (uint32_t n = 0; n < _n; ++n) {
+      for (uint32_t k = 0; k < _k; ++k)
+        td[n][k] = 0;
+      
+      const vector<uint32_t> *movies = _ratings.get_movies(n);
+      for (uint32_t j = 0; j < movies->size(); ++j) {
+        uint32_t m = (*movies)[j];
+        yval_t y = _ratings.r(n,m);
+        
+        get_phi(_old_theta_mle, n, _beta, m, phi);
+        if (y > 1)
+          phi.scale(y);
+        
+        for (uint32_t k = 0; k < _k; ++k)
+          td[n][k] += phi[k];
+        
+        _beta.update_shape_next(m, phi);
+      }
+    }
+    
+    Array betasum(_k);
+    _beta.sum_rows(betasum);
+    
+    double sum = .0;
+    for (uint32_t n = 0; n < _n; ++n)
+      for (uint32_t k = 0; k < _k; ++k)  {
+        td[n][k] /= betasum[k];
+        old_td[n][k] = td[n][k];
+      }
+    
+    Array thetasum(_k);
+    for (uint32_t n = 0; n < _n; ++n)
+      for (uint32_t k = 0; k < _k; ++k)
+        thetasum[k] += td[n][k];
+    
+    _beta.update_rate_next(thetasum);
+    _beta.swap();
+    _beta.compute_expectations();
+    
+    printf("\r iteration %d", _iter);
+    fflush(stdout);
+    if (_iter % _env.reportfreq == 0) {
+      // approx_log_likelihood();
+      compute_likelihood(true);
+      compute_likelihood(false);
+      //compute_rmse();
+      //save_model();
+      compute_precision(false);
+      //gen_ranking_for_users(false);
+      if (_env.logl)
+        logl();
+    }
+    
+    if (_env.save_state_now) {
+      lerr("Saving state at iteration %d duration %d secs", _iter, duration());
+      do_on_stop();
+    }
+    
+    _iter++;
+  }
+}
+
+
+void
+HGAPRec::vb_mle_item()
+{
+  initialize();
+  
+  double **bd = _beta_mle.data();
+  double **old_bd = _old_beta_mle.data();
+  
+  for (uint32_t m = 0; m < _m; ++m)
+    for (uint32_t k = 0; k < _k; ++k)
+      old_bd[m][k] = (double)1.0/(double)_k;
+  
+  Array phi(_k);
+  while (1) {
+    for (uint32_t m = 0; m < _m; ++m)
+      for (uint32_t k = 0; k < _k; ++k)
+        bd[m][k] = 0;
+    
+    for (uint32_t n = 0; n < _n; ++n) {
+      const vector<uint32_t> *movies = _ratings.get_movies(n);
+      for (uint32_t j = 0; j < movies->size(); ++j) {
+        uint32_t m = (*movies)[j];
+        yval_t y = _ratings.r(n,m);
+        
+        get_phi(_theta, n, _old_beta_mle, m, phi);
+        if (y > 1)
+          phi.scale(y);
+        
+        for (uint32_t k = 0; k < _k; ++k)
+          bd[m][k] += phi[k];
+        
+        _theta.update_shape_next(n, phi);
+      }
+    }
+    
+    Array thetasum(_k);
+    _theta.sum_rows(thetasum);
+    
+    double sum = .0;
+    for (uint32_t m = 0; m < _m; ++m)
+      for (uint32_t k = 0; k < _k; ++k)  {
+        bd[m][k] /= thetasum[k];
+        old_bd[m][k] = bd[m][k];
+      }
+    
+    Array betasum(_k);
+    for (uint32_t m = 0; m < _m; ++m)
+      for (uint32_t k = 0; k < _k; ++k)
+        betasum[k] += bd[m][k];
+    
+    _theta.update_rate_next(betasum);
+    _theta.swap();
+    _theta.compute_expectations();
+    
+    printf("\r iteration %d", _iter);
+    fflush(stdout);
+    if (_iter % _env.reportfreq == 0) {
+      compute_likelihood(true);
+      compute_likelihood(false);
+      compute_precision(false);
+      if (_env.logl)
+        logl();
+    }
+    
+    if (_env.save_state_now) {
+      lerr("Saving state at iteration %d duration %d secs", _iter, duration());
+      do_on_stop();
+    }
+    
+    _iter++;
+  }
+}
+
+void
+HGAPRec::vb_canny()
+{
+  initialize();
+  
+  double **bd = _beta_mle.data();
+  double **old_bd = _old_beta_mle.data();
+  
+  for (uint32_t m = 0; m < _m; ++m)
+    for (uint32_t k = 0; k < _k; ++k)
+      old_bd[m][k] = (double)1.0/(double)_m;
+  
+  Array phi(_k);
+  while (1) {
+    for (uint32_t m = 0; m < _m; ++m)
+      for (uint32_t k = 0; k < _k; ++k)
+        bd[m][k] = 0;
+    
+    for (uint32_t n = 0; n < _n; ++n) {
+      const vector<uint32_t> *movies = _ratings.get_movies(n);
+      for (uint32_t j = 0; j < movies->size(); ++j) {
+        uint32_t m = (*movies)[j];
+        yval_t y = _ratings.r(n,m);
+        
+        get_phi(_theta, n, _old_beta_mle, m, phi);
+        if (y > 1)
+          phi.scale(y);
+        
+        for (uint32_t k = 0; k < _k; ++k)
+          bd[m][k] += phi[k];
+        
+        _theta.update_shape_next(n, phi);
+      }
+    }
+    
+    Array thetasum(_k);
+    _theta.sum_rows(thetasum);
+    
+    double sum = .0;
+    for (uint32_t m = 0; m < _m; ++m)
+      for (uint32_t k = 0; k < _k; ++k)  {
+        if (bd[m][k] < 1e-10)
+          bd[m][k] = 1e-10;
+        bd[m][k] = bd[m][k] / thetasum[k];
+        old_bd[m][k] = bd[m][k];
+      }
+    
+    for (uint32_t k = 0; k < _k; ++k) {
+      double s = .0;
+      for (uint32_t m = 0; m < _m; ++m)
+        s += old_bd[m][k];
+      for (uint32_t m = 0; m < _m; ++m) {
+        old_bd[m][k] /= s;
+        bd[m][k] = old_bd[m][k];
+      }
+    }
+    
+    Array betasum(_k);
+    for (uint32_t m = 0; m < _m; ++m)
+      for (uint32_t k = 0; k < _k; ++k)
+        betasum[k] += bd[m][k];
+    
+    _theta.update_rate_next(betasum);
+    _theta.swap();
+    _theta.compute_expectations();
+    
+    printf("\r iteration %d", _iter);
+    fflush(stdout);
+    if (_iter % _env.reportfreq == 0) {
+      compute_likelihood(true);
+      compute_likelihood(false);
+      compute_precision(false);
+      compute_itemrank(false);
+      if (_env.logl)
+        logl();
+    }
+    
+    if (_env.save_state_now) {
+      lerr("Saving state at iteration %d duration %d secs", _iter, duration());
+      do_on_stop();
+    }
+    
+    _iter++;
+  }
+}
+
+
+void
+HGAPRec::vb_bias()
+{
+  lerr("running vb_bias()");
+  initialize();
+  
+  Array phi(_k+2);
+  while (1) {
+    for (uint32_t n = 0; n < _n; ++n) {
+      
+      const vector<uint32_t> *movies = _ratings.get_movies(n);
+      for (uint32_t j = 0; j < movies->size(); ++j) {
+        uint32_t m = (*movies)[j];
+        yval_t y = _ratings.r(n,m);
+        
+        const double **tbias = _thetabias.expected_logv().const_data();
+        const double **bbias = _betabias.expected_logv().const_data();
+        
+        get_phi(_theta, n, _beta, m, tbias[n][0], bbias[m][0], phi);
+        
+        if (y > 1)
+          phi.scale(y);
+        
+        _theta.update_shape_next(n, phi);
+        _beta.update_shape_next(m, phi);
+        
+        _thetabias.update_shape_next3(n, 0, phi[_k]);
+        _betabias.update_shape_next3(m, 0, phi[_k+1]);
+      }
+    }
+    
+    if (_env.vb) {
+      Array betasum(_k);
+      _beta.sum_rows(betasum);
+      _theta.update_rate_next(betasum);
+      
+      _theta.swap();
+      _theta.compute_expectations();
+      
+      Array thetasum(_k);
+      _theta.sum_rows(thetasum);
+      _beta.update_rate_next(thetasum);
+      
+      _beta.swap();
+      _beta.compute_expectations();
+      
+      _thetabias.update_rate_next_all(0, _m);
+      _thetabias.swap();
+      _thetabias.compute_expectations();
+      
+      _betabias.update_rate_next_all(0, _n);
+      _betabias.swap();
+      _betabias.compute_expectations();
+      
+      debug("thetabias: %s", _thetabias.expected_v().s().c_str());
+      debug("betabias: %s", _betabias.expected_v().s().c_str());
+      
+    } else {
+      
+      Array betasum(_k);
+      _beta.sum_rows(betasum);
+      _theta.update_rate_next(betasum);
+      Array thetasum(_k);
+      _theta.sum_rows(thetasum);
+      _beta.update_rate_next(thetasum);
+      
+      _thetabias.update_rate_next_all(0, _m);
+      _betabias.update_rate_next_all(0, _n);
+      
+      _theta.swap();
+      _beta.swap();
+      _thetabias.swap();
+      _betabias.swap();
+      
+      _theta.compute_expectations();
+      _beta.compute_expectations();
+      _thetabias.compute_expectations();
+      _betabias.compute_expectations();
+    }
+    
+    printf("\r iteration %d", _iter);
+    fflush(stdout);    
+    if (_iter % _env.reportfreq == 0) {
+      compute_likelihood(true);
+      compute_likelihood(false);
+      //compute_rmse();
+      save_model();
+      compute_precision(false);
+      //gen_ranking_for_users(false);
+      if (_env.logl)
+        logl();
+    }
+    
+    if (_env.save_state_now) {
+      lerr("Saving state at iteration %d duration %d secs", _iter, duration());
+      do_on_stop();
+    }
+    
+    _iter++;
+  }
+}
+*/
