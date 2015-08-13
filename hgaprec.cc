@@ -189,10 +189,10 @@ HGAPRec::initialize()
     //_thetarate.set_to_prior();
 
   // Initializes the xi and eta parameters
-  _thetarate.initialize2(_k);
+  _thetarate.initialize2((_k+_ic)*0.3);
   _thetarate.compute_expectations();
   
-  _betarate.initialize2(_k);
+  _betarate.initialize2((_k+_uc)*0.3);
   _betarate.compute_expectations();
   
   //_betarate.set_to_prior_curr();
@@ -279,12 +279,15 @@ HGAPRec::get_phi(GPBase<Matrix> &theta, uint32_t u, GPBase<Matrix> &beta, uint32
   // Adds each one of the elements of phi
   for (uint32_t k = 0; k < _k; ++k) {
     phi[k] = elogtheta[u][k] + elogbeta[i][k];
+//    cout << "phik " << phi[k] << endl;
   }
   for (uint32_t l = 0; l < _ic; ++l) {
     phi[_k+l] = elogsigma[u][l] + log(itemChar->get(i,l));
+//    cout << "phil " << phi[_k+l] << endl;
   }
   for (uint32_t m = 0; m < _uc; ++m) {
     phi[_k+_ic+m] =  log(userChar->get(u,m)) + elogrho[i][m];
+//    cout << "phim " << phi[_k+_ic+m] << endl;
 //    cout << _k+_ic+m << " " << log(userChar->get(u,m)) << " " << elogrho[i][m] << endl;
   }
   
@@ -994,7 +997,20 @@ void
 HGAPRec::vb_hier()
 {
   // Initial values of the parameters, according to the posterior plus a random shock
+
   initialize();
+//  _betarate.shape_curr().print();
+//  _betarate.rate_curr().print();
+//  _thetarate.shape_curr().print();
+//  _thetarate.rate_curr().print();
+//  _hbeta.shape_curr().print();
+//  _hbeta.rate_curr().print();
+//  _htheta.shape_curr().print();
+//  _htheta.rate_curr().print();
+//  _hsigma.shape_curr().print();
+//  _hsigma.rate_curr().print();
+//  _hrho.shape_curr().print();
+//  _hrho.rate_curr().print();
   
   cout << "Initialized" << endl;
 //  cout << _env.reportfreq << endl;
@@ -1071,6 +1087,10 @@ HGAPRec::vb_hier()
         if (y > 1) {
           phi.scale(y);
         }
+
+//        if (_iter == 0 && n == 0 && j == 1)
+//        cout << n << " " << j << endl;
+//          phi.print();
         
 //        cout << phi.sum(0) << endl;
 //        phi.print();
@@ -1089,13 +1109,6 @@ HGAPRec::vb_hier()
         _hbeta.update_shape_next1(m, phik);
         _hsigma.update_shape_next1(n, phil);
         _hrho.update_shape_next1(m, phim);
-        
-        
-//        cout << "aqui" << endl;
-//        phil = NULL;
-//        phim = NULL;
-//        phik = NULL;
-//        cout << "aca" << endl;
         
         if (_env.bias) {
           _thetabias.update_shape_next3(n, 0, phi[_k]);
@@ -1143,6 +1156,13 @@ HGAPRec::vb_hier()
     // Swaps the current and the next values for the parameters
     _hsigma.swap();
     
+    // Computes expectations and log expectations based on the new parameters
+    _hsigma.compute_expectations();
+    
+//    _htheta.shape_curr().print();
+//    _htheta.rate_curr().print();
+//    _hsigma.shape_curr().print();
+//    _hsigma.rate_curr().print();
     
     //----------------------------------
     // Updates for item parameters
@@ -1177,6 +1197,14 @@ HGAPRec::vb_hier()
     // Swaps the current and the next values for the parameters
     _hrho.swap();
     
+    // Computes expectations and log expectations based on the new parameters
+    _hrho.compute_expectations();
+    
+//        _hbeta.shape_curr().print();
+//        _hbeta.rate_curr().print();
+//        _hrho.shape_curr().print();
+//        _hrho.rate_curr().print();
+    
     if (_env.bias) {
       _thetabias.update_rate_next_all(0, _m);
       _thetabias.swap();
@@ -1187,13 +1215,19 @@ HGAPRec::vb_hier()
       _betabias.compute_expectations();
     }
     
-    // Computes the rate parameters for the popularity and activity parameters
+    //-------------------------------------
+    // Update the rate parameters for the popularity and activity parameters
+    //-------------------------------------
+
     Array thetacolsum(_n);
     Array sigmacolsum(_n);
     // Computes the second term of \kappa^{rte}_{uk})
     _htheta.sum_cols(thetacolsum);
     // Computes the third term of \kappa^{rte}_{uk})
     _hsigma.sum_cols(sigmacolsum);
+    
+    sigmacolsum.print();
+    
     // Adds (K+L)a to the shape parameter of xi
     _thetarate.update_shape_next((_k+_ic) * _thetarate.sprior());
     // Adds the new terms to the rate parameter of xi
@@ -1206,6 +1240,8 @@ HGAPRec::vb_hier()
     // Computes the expectations with the (new) current values
     _thetarate.compute_expectations();
     
+    _thetarate.rate_curr().print();
+    
     Array betacolsum(_m);
     Array rhocolsum(_m);
     // Computes the second term of \tau^{rte}_{uk})
@@ -1216,6 +1252,7 @@ HGAPRec::vb_hier()
     _betarate.update_shape_next((_k+_uc) * _betarate.sprior());
     // Adds the new terms to the rate parameter of eta
     _betarate.update_rate_next(betacolsum);
+    _betarate.update_rate_next(rhocolsum);
     debug("betacolsum = %s", betacolsum.s().c_str());
     
     // Swaps the current and the next values for the parameters
@@ -1223,7 +1260,11 @@ HGAPRec::vb_hier()
     // Computes the expectations with the (new) current values
     _betarate.compute_expectations();
     
-    printf("\r iteration %d", _iter);
+    _betarate.rate_curr().print();
+    
+//    printf("\r iteration %d", _iter);
+    
+    // TODO: Check that likelihood is correctly caculated
     fflush(stdout);
     if (_iter % _env.reportfreq == 0) {
       compute_likelihood(true);
@@ -1247,6 +1288,7 @@ HGAPRec::vb_hier()
     _iter++;
 
     if ( _iter == 1) {
+      _betarate.shape_curr().print();
       _betarate.rate_curr().print();
     }
   }
