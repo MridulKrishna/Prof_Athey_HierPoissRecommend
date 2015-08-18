@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include "matrix.hh"
 #include "env.hh"
-#include <string.h>
+//#include <string.h>
 
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_randist.h>

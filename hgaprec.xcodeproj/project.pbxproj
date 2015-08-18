@@ -10,8 +10,8 @@
 		79C74CAA1B73087D0082D884 /* ratings.cc in Sources */ = {isa = PBXBuildFile; fileRef = 79CE5D771B706D4B00744AA7 /* ratings.cc */; };
 		79CE5D7B1B706D4B00744AA7 /* main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 79CE5D6D1B706D4B00744AA7 /* main.cc */; };
 		79CE5D7D1B706D4B00744AA7 /* hgaprec.cc in Sources */ = {isa = PBXBuildFile; fileRef = 79CE5D721B706D4B00744AA7 /* hgaprec.cc */; };
-		79CE5D7E1B706D4B00744AA7 /* log.cc in Sources */ = {isa = PBXBuildFile; fileRef = 79CE5D741B706D4B00744AA7 /* log.cc */; };
 		79CE5D811B706D4B00744AA7 /* scratch.cc in Sources */ = {isa = PBXBuildFile; fileRef = 79CE5D7A1B706D4B00744AA7 /* scratch.cc */; };
+		79FF7F521B82F74E0022899F /* log.cc in Sources */ = {isa = PBXBuildFile; fileRef = 79FF7F511B82F74E0022899F /* log.cc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -35,12 +35,12 @@
 		79CE5D711B706D4B00744AA7 /* gpbase.hh */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.h; path = gpbase.hh; sourceTree = SOURCE_ROOT; tabWidth = 2; };
 		79CE5D721B706D4B00744AA7 /* hgaprec.cc */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; path = hgaprec.cc; sourceTree = SOURCE_ROOT; tabWidth = 2; usesTabs = 0; };
 		79CE5D731B706D4B00744AA7 /* hgaprec.hh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = hgaprec.hh; sourceTree = SOURCE_ROOT; };
-		79CE5D741B706D4B00744AA7 /* log.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = log.cc; sourceTree = SOURCE_ROOT; };
-		79CE5D751B706D4B00744AA7 /* log.hh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = log.hh; sourceTree = SOURCE_ROOT; };
 		79CE5D761B706D4B00744AA7 /* matrix.hh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = matrix.hh; sourceTree = SOURCE_ROOT; };
 		79CE5D771B706D4B00744AA7 /* ratings.cc */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; path = ratings.cc; sourceTree = SOURCE_ROOT; tabWidth = 2; };
 		79CE5D781B706D4B00744AA7 /* ratings.hh */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.h; path = ratings.hh; sourceTree = SOURCE_ROOT; tabWidth = 2; };
 		79CE5D7A1B706D4B00744AA7 /* scratch.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scratch.cc; sourceTree = SOURCE_ROOT; };
+		79FF7F501B82F74E0022899F /* log.hh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = log.hh; sourceTree = SOURCE_ROOT; };
+		79FF7F511B82F74E0022899F /* log.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = log.cc; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +73,8 @@
 		79CE5D4C1B70678500744AA7 /* hgaprec */ = {
 			isa = PBXGroup;
 			children = (
+				79FF7F501B82F74E0022899F /* log.hh */,
+				79FF7F511B82F74E0022899F /* log.cc */,
 				79CE5D6B1B706D4B00744AA7 /* cruft */,
 				79CE5D6C1B706D4B00744AA7 /* nmflib */,
 				79CE5D6D1B706D4B00744AA7 /* main.cc */,
@@ -80,8 +82,6 @@
 				79CE5D711B706D4B00744AA7 /* gpbase.hh */,
 				79CE5D721B706D4B00744AA7 /* hgaprec.cc */,
 				79CE5D731B706D4B00744AA7 /* hgaprec.hh */,
-				79CE5D741B706D4B00744AA7 /* log.cc */,
-				79CE5D751B706D4B00744AA7 /* log.hh */,
 				79CE5D761B706D4B00744AA7 /* matrix.hh */,
 				79CE5D771B706D4B00744AA7 /* ratings.cc */,
 				79CE5D781B706D4B00744AA7 /* ratings.hh */,
@@ -146,7 +146,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79CE5D7E1B706D4B00744AA7 /* log.cc in Sources */,
+				79FF7F521B82F74E0022899F /* log.cc in Sources */,
 				79CE5D7D1B706D4B00744AA7 /* hgaprec.cc in Sources */,
 				79CE5D7B1B706D4B00744AA7 /* main.cc in Sources */,
 				79CE5D811B706D4B00744AA7 /* scratch.cc in Sources */,

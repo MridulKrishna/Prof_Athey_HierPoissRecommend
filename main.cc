@@ -1,6 +1,7 @@
 #include "env.hh"
 #include "hgaprec.hh"
 #include "ratings.hh"
+#include "log.hh"
 
 #include <stdlib.h>
 #include <string>
@@ -81,6 +82,7 @@ int main(int argc, char **argv) {
   string fname;
   uint32_t n = 0, m = 0;
   uint32_t k = 0;
+  uint32_t uc = 0, ic = 0;
   string ground_truth_fname;
   uint32_t rfreq = 10;
   string label;
@@ -153,6 +155,12 @@ int main(int argc, char **argv) {
     } else if (strcmp(argv[i], "-k") == 0) {
       k = atoi(argv[++i]);
       fprintf(stdout, "+ k = %d\n", k);
+    } else if (strcmp(argv[i], "-uc") == 0) {
+      uc = atoi(argv[++i]);
+      fprintf(stdout, "+ uc = %d\n", uc);
+    } else if (strcmp(argv[i], "-ic") == 0) {
+      ic = atoi(argv[++i]);
+      fprintf(stdout, "+ ic = %d\n", ic);
     } else if (strcmp(argv[i], "-nmi") == 0) {
       ground_truth_fname = string(argv[++i]);
       fprintf(stdout, "+ ground truth fname = %s\n",
@@ -271,11 +279,6 @@ int main(int argc, char **argv) {
     }
     ++i;
   };
-  
-  n = 4;
-  m = 8;
-  int uc = 3;
-  int ic = 4;
   
   // Initializes the environment: variables to run the code
   Env env(n, m, k, uc, ic, fname, nmi, ground_truth_fname, rfreq,

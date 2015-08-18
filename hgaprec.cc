@@ -1,4 +1,5 @@
 #include "hgaprec.hh"
+#include "env.hh"
 
 #ifdef HAVE_NMFLIB
 #include "./nmflib/include/common.h"
@@ -1226,7 +1227,7 @@ HGAPRec::vb_hier()
     // Computes the third term of \kappa^{rte}_{uk})
     _hsigma.sum_cols(sigmacolsum);
     
-    sigmacolsum.print();
+//    sigmacolsum.print();
     
     // Adds (K+L)a to the shape parameter of xi
     _thetarate.update_shape_next((_k+_ic) * _thetarate.sprior());
@@ -1240,7 +1241,7 @@ HGAPRec::vb_hier()
     // Computes the expectations with the (new) current values
     _thetarate.compute_expectations();
     
-    _thetarate.rate_curr().print();
+//    _thetarate.rate_curr().print();
     
     Array betacolsum(_m);
     Array rhocolsum(_m);
@@ -1260,11 +1261,10 @@ HGAPRec::vb_hier()
     // Computes the expectations with the (new) current values
     _betarate.compute_expectations();
     
-    _betarate.rate_curr().print();
+//    _betarate.rate_curr().print();
     
-//    printf("\r iteration %d", _iter);
+    printf("\r iteration %d", _iter);
     
-    // TODO: Check that likelihood is correctly caculated
     fflush(stdout);
     if (_iter % _env.reportfreq == 0) {
       compute_likelihood(true);
@@ -1288,8 +1288,8 @@ HGAPRec::vb_hier()
     _iter++;
 
     if ( _iter == 1) {
-      _betarate.shape_curr().print();
-      _betarate.rate_curr().print();
+//      _betarate.shape_curr().print();
+//      _betarate.rate_curr().print();
     }
   }
 }
@@ -1654,7 +1654,7 @@ HGAPRec::compute_precision(bool save_ranking_file)
     for (uint32_t m = 0; m < _m; ++m) {
       Rating r(n,m);
       
-      // Saves zero predicted and observed rating if the observed rating is nonzero or if it is in the validation set, then moves on to the next movie
+      // Saves zero predicted and observed rating if the observed rating is in the training or validation set, then moves on to the next movie
       if (_ratings.r(n,m) > 0 || is_validation(r)) { // skip training and validation
         mlist[m].first = m;
         mlist[m].second = .0;

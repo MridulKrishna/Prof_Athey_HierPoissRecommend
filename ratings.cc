@@ -2,6 +2,7 @@
 #include "log.hh"
 #include <wchar.h>
 #include <iostream>
+#include <string>
 #include <boost/algorithm/string.hpp>
 #include <fstream>
 #include <set>
