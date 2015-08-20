@@ -8,6 +8,9 @@
 #include <sstream>
 #include <signal.h>
 #include <iostream>
+#include <chrono>
+
+using namespace std::chrono;
 
 string Env::prefix = "";
 Logger::Level Env::level = Logger::DEBG;
@@ -69,6 +72,15 @@ int mainArray(int argc, char **argv) {
   
   return 0;
   
+}
+
+high_resolution_clock::time_point now() {
+  return high_resolution_clock::now();
+}
+
+void timing(high_resolution_clock::time_point tIni, high_resolution_clock::time_point tFin) {
+  duration<double> time_span = duration_cast<duration<double> >(tFin - tIni);
+  cout << time_span.count() << endl;
 }
 
 int main(int argc, char **argv) {
@@ -305,8 +317,16 @@ int main(int argc, char **argv) {
   cout << "Constructing hgaprec" << endl;
   HGAPRec hgaprec(env, ratings);
   
+  typedef high_resolution_clock::time_point moment;
+  
+  moment t1 = now();
+  
   cout << "Running vb_hier()" << endl;
   hgaprec.vb_hier();
+  cout << "\n" << endl;
+  moment t2 = now();
+  
+  timing(t1,t2);
   
   return 0; 
 }
