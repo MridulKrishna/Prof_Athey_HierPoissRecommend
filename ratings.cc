@@ -42,11 +42,63 @@ Ratings::read(string s)
   char st[1024];
   sprintf(st, "read %d users, %d movies, %d ratings", 
 	  _curr_user_seq, _curr_movie_seq, _nratings);
-  _env.n = _curr_user_seq;
-  _env.m = _curr_movie_seq;
+  _env.nTrain = _curr_user_seq;
+  _env.mTrain = _curr_movie_seq;
   Env::plog("statistics", string(st));
 
   return 0;
+}
+
+// Reads datasets with validation and test sets
+void
+Ratings::readValidationAndTest(string dir)
+{
+  
+  char buf[4096];
+  sprintf(buf, "%s/validation.tsv", _env.datfname.c_str());
+  FILE *validf = fopen(buf, "r");
+  assert(validf);
+  if (_env.dataset == Env::NYT)
+    read_nyt_train(validf, &_validation_map);
+  else
+    // Saves the ratings from the validation file in validation_map
+    read_generic(validf, &_validation_map);
+  fclose(validf);
+  
+  // Loop with iterator on the elements saved in _validation_map
+  // Builds a histogram with the number of users per movie in _validation_users_of_movie
+  for (CountMap::const_iterator i = _validation_map.begin();
+       i != _validation_map.end(); ++i) {
+    const Rating &r = i->first;
+    const Rating r2 = r;
+    _validation_users_of_movie[r.second]++;
+  }
+  
+  sprintf(buf, "%s/test.tsv", _env.datfname.c_str());
+  FILE *testf = fopen(buf, "r");
+  assert(testf);
+  if (_env.dataset == Env::NYT)
+    read_nyt_train(testf, &_test_map);
+  else
+    // Saves the ratings from the validation file in test_map
+    read_generic(testf, &_test_map);
+  fclose(testf);
+  
+  // XXX: keeps one heldout test item for each user
+  // assumes leave-one-out
+  // JCC: Loop with iterator on the elements saved in _validation_map
+  // Builds a histogram with the number of users per movie in _validation_users_of_movie
+  for (CountMap::const_iterator i = _test_map.begin();
+       i != _test_map.end(); ++i) {
+    const Rating &r = i->first;
+    _leave_one_out[r.first] = r.second;
+    debug("adding %d -> %d to leave one out", r.first, r.second);
+  }
+  
+  printf("+ loaded validation and test sets from %s\n", _env.datfname.c_str());
+  fflush(stdout);
+  Env::plog("test ratings", _test_map.size());
+  Env::plog("validation ratings", _validation_map.size());
 }
 
 // Reads dataset with observed user and item characteristics
@@ -80,6 +132,7 @@ Ratings::readObserved(string dir)
       // Gets the code of the user in that line
       int uCode = stoi(strs.at(0));
       // Checks that the user is in the list of users
+//      cout << uCode << endl;
       assert(_user2seq.find(uCode) != _user2seq.end());
       // Checks that this is the first line for that user
       assert(users.insert(uCode).second);
@@ -118,7 +171,7 @@ Ratings::readObserved(string dir)
       assert(size(strs)==_env.ic+1);
       
       // Gets the code of the item in that line
-      int iCode = stoi(strs.at(0));
+      uint32_t iCode = stol(strs.at(0));
       // Checks that the user is in the list of users
       assert(_movie2seq.find(iCode) != _movie2seq.end());
       // Checks that this is the first line for that user
@@ -189,8 +242,16 @@ Ratings::read_generic(FILE *f, CountMap *cmap)
       exit(-1);
     }
     
+    if ( uid == 2169292)
+      cout << uid << endl;
+    
     IDMap::iterator it = _user2seq.find(uid);
     IDMap::iterator mt = _movie2seq.find(mid);
+    
+//    cout << "_curr_user_seq" << endl;
+//    cout << _curr_user_seq << endl;
+//    cout << "_env.n" << endl;
+//    cout << _env.n << endl;
     
     // If all users and movies have been added, leave the loop
     // _curr_user_seq is the number of users added so far. Same for movies.
@@ -202,11 +263,15 @@ Ratings::read_generic(FILE *f, CountMap *cmap)
     if (input_rating_class(rating) == 0)
       continue;
     
-    if (it == _user2seq.end())
+    if (it == _user2seq.end()) {
+//      cout << "Adding user" << endl;
       assert(add_user(uid));
+    }
     
-    if (mt == _movie2seq.end())
+    if (mt == _movie2seq.end()) {
+//            cout << "Adding movie" << endl;
       assert(add_movie(mid));
+    }
     
     // Finds the indices for the user and the item
     uint32_t m = _movie2seq[mid];
@@ -952,4 +1017,14 @@ Ratings::movies_by_user_s() const
   }
   sa << "]";
   return sa.str();
+}
+
+FreqMap
+Ratings::validation_users_of_movie() {
+  return _validation_users_of_movie;
+}
+
+IDMap
+Ratings::leave_one_out() {
+  return _leave_one_out;
 }

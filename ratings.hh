@@ -34,6 +34,7 @@ public:
 
   int read(string s);
   void readObserved(string s);
+  void readValidationAndTest(string s);
   uint32_t input_rating_class(uint32_t v) const;
   bool test_hit(uint32_t v) const;
   int write_marginal_distributions();
@@ -73,8 +74,14 @@ public:
   int read_netflix_metadata(string dir);
   int read_movielens_metadata(string dir);
 
+  FreqMap validation_users_of_movie();
+  IDMap leave_one_out();
+  
   Matrix _userChar;    // User characteristics
   Matrix _itemChar;    // Item characteristics
+  
+  CountMap _validation_map;
+  CountMap _test_map;
   
 private:
   void read_generic_train(string dir);
@@ -106,6 +113,9 @@ private:
   uint32_t _likes;
   StrMapInv _movie_names;
   StrMapInv _movie_types;
+  
+  FreqMap _validation_users_of_movie;
+  IDMap _leave_one_out;
 };
 
 inline uint32_t

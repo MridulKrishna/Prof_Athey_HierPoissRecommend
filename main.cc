@@ -312,6 +312,8 @@ int main(int argc, char **argv) {
             fname.c_str());
     return -1;
   }
+
+  ratings.readValidationAndTest(fname.c_str());
   ratings.readObserved(fname.c_str());
   
   cout << "Constructing hgaprec" << endl;

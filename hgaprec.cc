@@ -12,30 +12,34 @@
 HGAPRec::HGAPRec(Env &env, Ratings &ratings)
   : _env(env), _ratings(ratings),
 _n(env.n), _m(env.m), _uc(env.uc),_ic(env.ic),_k(env.k),
-    _iter(0),
-    _start_time(time(0)),
-    _theta("theta", 0.3, 0.3, _n,_k,&_r),
-    _beta("beta", 0.3, 0.3, _m,_k,&_r),
-    _thetabias("thetabias", 0.3, 0.3, _n, 1, &_r),
-    _betabias("betabias", 0.3, 0.3, _m, 1, &_r),
-    _htheta("htheta", 0.3, 0.3, _n, _k, &_r),
-    _hbeta("hbeta", 0.3, 0.3, _m, _k, &_r),
-    _hsigma("hsigma", 0.3, 0.3, _n, _ic, &_r),
-    _hrho("hrho", 0.3, 0.3, _m, _uc, &_r),
-    _thetarate("thetarate", 0.3, 0.3, _n, &_r),
-    _betarate("betarate", 0.3, 0.3, _m, &_r),
-    _theta_mle(_n, _k),
-    _beta_mle(_m, _k),
-    _old_theta_mle(_n, _k),
-    _old_beta_mle(_m, _k),
-    _lda_gamma(NULL), _lda_beta(NULL), 
-    _nmf_theta(NULL), _nmf_beta(NULL),
-    _ctr_theta(NULL), _ctr_beta(NULL),
-    _prev_h(.0), _nh(.0),
-    _save_ranking_file(false),
-    _use_rate_as_score(true),
-    _topN_by_user(100),
-    _maxval(0), _minval(65536)
+//_validation_map(),
+//_test_map(),
+//_validation_users_of_movie(),
+//_leave_one_out(),
+_iter(0),
+_start_time(time(0)),
+_theta("theta", 0.3, 0.3, _n,_k,&_r),
+_beta("beta", 0.3, 0.3, _m,_k,&_r),
+_thetabias("thetabias", 0.3, 0.3, _n, 1, &_r),
+_betabias("betabias", 0.3, 0.3, _m, 1, &_r),
+_htheta("htheta", 0.3, 0.3, _n, _k, &_r),
+_hbeta("hbeta", 0.3, 0.3, _m, _k, &_r),
+_hsigma("hsigma", 0.3, 0.3, _n, _ic, &_r),
+_hrho("hrho", 0.3, 0.3, _m, _uc, &_r),
+_thetarate("thetarate", 0.3, 0.3, _n, &_r),
+_betarate("betarate", 0.3, 0.3, _m, &_r),
+_theta_mle(_n, _k),
+_beta_mle(_m, _k),
+_old_theta_mle(_n, _k),
+_old_beta_mle(_m, _k),
+_lda_gamma(NULL), _lda_beta(NULL),
+_nmf_theta(NULL), _nmf_beta(NULL),
+_ctr_theta(NULL), _ctr_beta(NULL),
+_prev_h(.0), _nh(.0),
+_save_ranking_file(false),
+_use_rate_as_score(true),
+_topN_by_user(100),
+_maxval(0), _minval(65536)
 {
   // Initializes the random number generator
   gsl_rng_env_setup();
@@ -83,11 +87,11 @@ _n(env.n), _m(env.m), _uc(env.uc),_ic(env.ic),_k(env.k),
     exit(-1);
   }  
 
-  // Loads the other two files
-  if (!_env.write_training) {
-//    cout << "aqui" << endl;
-    load_validation_and_test_sets();
-  }
+//  // Loads the other two files
+//  if (!_env.write_training) {
+////    cout << "aqui" << endl;
+//    load_validation_and_test_sets();
+//  }
 
   if (!_env.hier) {
     Env::plog("theta shape:", _theta.sprior());
@@ -119,55 +123,57 @@ HGAPRec::~HGAPRec()
   fclose(_rf);
 }
 
-void
-HGAPRec::load_validation_and_test_sets()
-{
-  char buf[4096];
-  sprintf(buf, "%s/validation.tsv", _env.datfname.c_str());
-  FILE *validf = fopen(buf, "r");
-  assert(validf);
-  if (_env.dataset == Env::NYT)
-    _ratings.read_nyt_train(validf, &_validation_map);
-  else
-    // Saves the ratings from the validation file in validation_map
-    _ratings.read_generic(validf, &_validation_map);
-  fclose(validf);
+// Deprecated. Now loads these in class Ratings
 
-  // Loop with iterator on the elements saved in _validation_map
-  // Builds a histogram with the number of users per movie in _validation_users_of_movie
-  for (CountMap::const_iterator i = _validation_map.begin();
-       i != _validation_map.end(); ++i) {
-    const Rating &r = i->first;
-    const Rating r2 = r;
-    _validation_users_of_movie[r.second]++;
-  }
-
-  sprintf(buf, "%s/test.tsv", _env.datfname.c_str());
-  FILE *testf = fopen(buf, "r");
-  assert(testf);
-  if (_env.dataset == Env::NYT)
-    _ratings.read_nyt_train(testf, &_test_map);
-  else
-    // Saves the ratings from the validation file in test_map
-    _ratings.read_generic(testf, &_test_map);
-  fclose(testf);
-  
-  // XXX: keeps one heldout test item for each user
-  // assumes leave-one-out
-  // JCC: Loop with iterator on the elements saved in _validation_map
-  // Builds a histogram with the number of users per movie in _validation_users_of_movie
-  for (CountMap::const_iterator i = _test_map.begin();
-       i != _test_map.end(); ++i) {
-    const Rating &r = i->first;
-    _leave_one_out[r.first] = r.second;
-    debug("adding %d -> %d to leave one out", r.first, r.second);
-  }
-
-  printf("+ loaded validation and test sets from %s\n", _env.datfname.c_str());
-  fflush(stdout);
-  Env::plog("test ratings", _test_map.size());
-  Env::plog("validation ratings", _validation_map.size());
-}
+//void
+//HGAPRec::load_validation_and_test_sets()
+//{
+//  char buf[4096];
+//  sprintf(buf, "%s/validation.tsv", _env.datfname.c_str());
+//  FILE *validf = fopen(buf, "r");
+//  assert(validf);
+//  if (_env.dataset == Env::NYT)
+//    _ratings.read_nyt_train(validf, &_validation_map);
+//  else
+//    // Saves the ratings from the validation file in validation_map
+//    _ratings.read_generic(validf, &_validation_map);
+//  fclose(validf);
+//
+//  // Loop with iterator on the elements saved in _validation_map
+//  // Builds a histogram with the number of users per movie in _validation_users_of_movie
+//  for (CountMap::const_iterator i = _validation_map.begin();
+//       i != _validation_map.end(); ++i) {
+//    const Rating &r = i->first;
+//    const Rating r2 = r;
+//    _validation_users_of_movie[r.second]++;
+//  }
+//
+//  sprintf(buf, "%s/test.tsv", _env.datfname.c_str());
+//  FILE *testf = fopen(buf, "r");
+//  assert(testf);
+//  if (_env.dataset == Env::NYT)
+//    _ratings.read_nyt_train(testf, &_test_map);
+//  else
+//    // Saves the ratings from the validation file in test_map
+//    _ratings.read_generic(testf, &_test_map);
+//  fclose(testf);
+//  
+//  // XXX: keeps one heldout test item for each user
+//  // assumes leave-one-out
+//  // JCC: Loop with iterator on the elements saved in _validation_map
+//  // Builds a histogram with the number of users per movie in _validation_users_of_movie
+//  for (CountMap::const_iterator i = _test_map.begin();
+//       i != _test_map.end(); ++i) {
+//    const Rating &r = i->first;
+//    _leave_one_out[r.first] = r.second;
+//    debug("adding %d -> %d to leave one out", r.first, r.second);
+//  }
+//
+//  printf("+ loaded validation and test sets from %s\n", _env.datfname.c_str());
+//  fflush(stdout);
+//  Env::plog("test ratings", _test_map.size());
+//  Env::plog("validation ratings", _validation_map.size());
+//}
 
 void
 HGAPRec::initialize()
@@ -450,7 +456,7 @@ HGAPRec::write_chi_training_matrix(double wals_C)
     }
   }
 
-  CountMap *mp = &_validation_map;
+  CountMap *mp = &_ratings._validation_map;
   for (CountMap::const_iterator i = mp->begin();
        i != mp->end(); ++i) {
     const Rating &e = i->first;
@@ -1308,10 +1314,10 @@ HGAPRec::compute_likelihood(bool validation)
   CountMap *mp = NULL;
   FILE *ff = NULL;
   if (validation) {
-    mp = &_validation_map;
+    mp = &_ratings._validation_map;
     ff = _vf;
   } else {
-    mp = &_test_map;
+    mp = &_ratings._test_map;
     ff = _tf;
   }
 
@@ -1475,8 +1481,8 @@ HGAPRec::compute_rmse()
   }  
   //load_beta_and_theta();
   double s = .0;
-  for (CountMap::const_iterator i = _test_map.begin();
-       i != _test_map.end(); ++i) {
+  for (CountMap::const_iterator i = _ratings._test_map.begin();
+       i != _ratings._test_map.end(); ++i) {
     const Rating &r = i->first;
     uint32_t n = r.first;
     uint32_t m = r.second;
@@ -1486,10 +1492,10 @@ HGAPRec::compute_rmse()
     s += (u - v) * (u - v);
     fprintf(outf, "%d\t%.5f\n", v, u);
   }
-  fprintf(_rf, "%.5f\n", sqrt(s / _test_map.size()));
+  fprintf(_rf, "%.5f\n", sqrt(s / _ratings._test_map.size()));
   fflush(_rf);
   fclose(outf);
-  return sqrt(s / _test_map.size());
+  return sqrt(s / _ratings._test_map.size());
 }
 
 //
@@ -1574,8 +1580,8 @@ HGAPRec::compute_itemrank(bool final)
         nranked++;
       
       // If the movie is in the test set
-      CountMap::const_iterator itr = _test_map.find(r);
-      if (itr != _test_map.end()) {
+      CountMap::const_iterator itr = _ratings._test_map.find(r);
+      if (itr != _ratings._test_map.end()) {
         // Compute whether it counts as a hit
         int v_ = itr->second;
         int v;
@@ -1687,8 +1693,8 @@ HGAPRec::compute_precision(bool save_ranking_file)
       mlist[m].first = m;
       mlist[m].second = u;
       ndcglist[m].first = m;
-      CountMap::const_iterator itr = _test_map.find(r);
-      if (itr != _test_map.end()) {
+      CountMap::const_iterator itr = _ratings._test_map.find(r);
+      if (itr != _ratings._test_map.end()) {
         ndcglist[m].second = itr->second;
       } else {
         ndcglist[m].second = 0;
@@ -1725,8 +1731,8 @@ HGAPRec::compute_precision(bool save_ranking_file)
       }
       
       // If the movie is in the test set
-      CountMap::const_iterator itr = _test_map.find(r);
-      if (itr != _test_map.end()) {
+      CountMap::const_iterator itr = _ratings._test_map.find(r);
+      if (itr != _ratings._test_map.end()) {
         // Saves the rating from the test set as v_
         int v_ = itr->second;
         
@@ -1972,9 +1978,9 @@ HGAPRec::gen_msr_csv()
     debug("user: %d", it->second);
 
     // id of heldout item
-    IDMap::const_iterator ct = _leave_one_out.find(n);
+    IDMap::const_iterator ct = _ratings.leave_one_out().find(n);
     debug("heldout item for user %d (%d)",   it->second, n);
-    assert (ct != _leave_one_out.end());
+    assert (ct != _ratings.leave_one_out().end());
 
     uint32_t test_item_seq = ct->second;
     IDMap::const_iterator pt = _ratings.seq2movie().find(test_item_seq);
@@ -2032,8 +2038,8 @@ HGAPRec::gen_msr_csv()
       ntraining_users = q->size();
     
     uint32_t nvalid_users = 0;
-    FreqMap::const_iterator itr = _validation_users_of_movie.find(test_item_seq);
-    if (itr != _validation_users_of_movie.end())
+    FreqMap::const_iterator itr = _ratings.validation_users_of_movie().find(test_item_seq);
+    if (itr != _ratings.validation_users_of_movie().end())
       nvalid_users = itr->second;
     
     // ItemCount

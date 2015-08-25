@@ -74,6 +74,8 @@ public:
   Dataset dataset;
   uint32_t n;  // users
   uint32_t m;  // movies
+  uint32_t nTrain; // users in train set
+  uint32_t mTrain; // movies in train set
   uint32_t k;  // factors
   uint32_t uc;  // Number of user characteristics
   uint32_t ic;  // Number of item characteristics

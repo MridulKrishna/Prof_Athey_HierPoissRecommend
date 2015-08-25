@@ -124,7 +124,7 @@ private:
     
     CountMap _validation_map;
     CountMap _test_map;
-    FreqMap _validation_users_of_movie;
+    FreqMap _validation_users_of_movie; // Histogram with number of users per movie
     IDMap _leave_one_out;
     
     IDMap _ctr_user_to_idx;
