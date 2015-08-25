@@ -326,13 +326,13 @@ GPMatrix::initialize()
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k)
       // Initial values: hyperparameter plus a small random shock
-      // ad[i][k] = _sprior + 0.01 * gsl_rng_uniform(*_r);
-      ad[i][k] = _sprior + 0.0 * gsl_rng_uniform(*_r);
+       ad[i][k] = _sprior + 0.01 * gsl_rng_uniform(*_r);
+//      ad[i][k] = _sprior + 0.0 * gsl_rng_uniform(*_r);
 
   for (uint32_t k = 0; k < _k; ++k)
     // Initial values are also hyperparameters plus a small shock
-//    bd[0][k] = _rprior + 0.1 * gsl_rng_uniform(*_r);
-    bd[0][k] = _rprior + 0.0 * gsl_rng_uniform(*_r);
+    bd[0][k] = _rprior + 0.1 * gsl_rng_uniform(*_r);
+//    bd[0][k] = _rprior + 0.0 * gsl_rng_uniform(*_r);
   
   // Copy the values along user/item
   for (uint32_t i = 0; i < _n; ++i)
@@ -375,8 +375,8 @@ GPMatrix::initialize_exp()
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k) {
       // Initial value: prior plus random shock (why do it again?)
-//      b[k] = _rprior + 0.1 * gsl_rng_uniform(*_r);
-      b[k] = _rprior + 0.0 * gsl_rng_uniform(*_r);
+      b[k] = _rprior + 0.1 * gsl_rng_uniform(*_r);
+//      b[k] = _rprior + 0.0 * gsl_rng_uniform(*_r);
       assert(b[k]);
       
       // Means: shape/rate parameter
@@ -705,14 +705,14 @@ GPMatrixGR::initialize()
   
   for (uint32_t i = 0; i < _n; ++i) {
     for (uint32_t k = 0; k < _k; ++k) {
-//      ad[i][k] = _sprior + 0.01 * gsl_rng_uniform(*_r);
-      ad[i][k] = _sprior + 0.0 * gsl_rng_uniform(*_r);
+      ad[i][k] = _sprior + 0.01 * gsl_rng_uniform(*_r);
+//      ad[i][k] = _sprior + 0.0 * gsl_rng_uniform(*_r);
     }
   }
   
   for (uint32_t k = 0; k < _k; ++k) {
-//    bd[k] = _rprior + 0.1 * gsl_rng_uniform(*_r);
-    bd[k] = _rprior + 0.0 * gsl_rng_uniform(*_r);
+    bd[k] = _rprior + 0.1 * gsl_rng_uniform(*_r);
+//    bd[k] = _rprior + 0.0 * gsl_rng_uniform(*_r);
   }
   set_to_prior();
 }
@@ -994,10 +994,10 @@ GPArray::initialize()
   double *ad = _scurr.data();
   double *bd = _rcurr.data();
   for (uint32_t i = 0; i < _n; ++i) {
-//    ad[i] = _sprior + 0.01 * gsl_rng_uniform(*_r);
-//    bd[i] = _rprior + 0.1 * gsl_rng_uniform(*_r);
-    ad[i] = _sprior + 0.0 * gsl_rng_uniform(*_r);
-    bd[i] = _rprior + 0.0 * gsl_rng_uniform(*_r);
+    ad[i] = _sprior + 0.01 * gsl_rng_uniform(*_r);
+    bd[i] = _rprior + 0.1 * gsl_rng_uniform(*_r);
+//    ad[i] = _sprior + 0.0 * gsl_rng_uniform(*_r);
+//    bd[i] = _rprior + 0.0 * gsl_rng_uniform(*_r);
   }
   set_to_prior();
 }
@@ -1008,15 +1008,15 @@ GPArray::initialize2(double v)
   double *ad = _scurr.data();
   double *bd = _rcurr.data();
   for (uint32_t i = 0; i < _n; ++i) {
-//    cout << _sprior << " " << _rprior << endl;
-//    ad[i] = _sprior + 0.01 * gsl_rng_uniform(*_r)
+    cout << _sprior << " " << _rprior << endl;
+    ad[i] = _sprior + 0.01 * gsl_rng_uniform(*_r);
     
     // Error?????
 //    ad[i] = _sprior + 0.0 * gsl_rng_uniform(*_r);
 //    bd[i] = _rprior + v;
     
-    ad[i] = _sprior + v;
-    bd[i] = _rprior + 0.0 * gsl_rng_uniform(*_r);
+//    ad[i] = _sprior + v;
+//    bd[i] = _rprior + 0.0 * gsl_rng_uniform(*_r);
   }
   set_to_prior();
 }
