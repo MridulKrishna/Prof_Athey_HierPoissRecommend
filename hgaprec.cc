@@ -1267,8 +1267,13 @@ HGAPRec::vb_hier()
     // Computes the expectations with the (new) current values
     _betarate.compute_expectations();
     
-//    _betarate.rate_curr().print();
-    
+    if (_iter == 10) {
+      _betarate.shape_curr().print();
+      _betarate.rate_curr().print();
+      _thetarate.shape_curr().print();
+      _thetarate.rate_curr().print();
+    }
+      
     printf("\r iteration %d", _iter);
     
     fflush(stdout);

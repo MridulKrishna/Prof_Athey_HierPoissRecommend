@@ -102,11 +102,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462176299.643991"
+            timestampString = "462181968.608643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1306"
-            endingLineNumber = "1306"
+            startingLineNumber = "1311"
+            endingLineNumber = "1311"
             landmarkName = "HGAPRec::compute_likelihood(bool validation)"
             landmarkType = "5">
          </BreakpointContent>
@@ -118,11 +118,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462176299.643991"
+            timestampString = "462181968.608643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1307"
-            endingLineNumber = "1307"
+            startingLineNumber = "1312"
+            endingLineNumber = "1312"
             landmarkName = "HGAPRec::compute_likelihood(bool validation)"
             landmarkType = "5">
          </BreakpointContent>
@@ -134,11 +134,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462176299.643991"
+            timestampString = "462181968.608643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1318"
-            endingLineNumber = "1318"
+            startingLineNumber = "1323"
+            endingLineNumber = "1323"
             landmarkName = "HGAPRec::compute_likelihood(bool validation)"
             landmarkType = "5">
          </BreakpointContent>
@@ -150,11 +150,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462176299.643991"
+            timestampString = "462181968.608643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1332"
-            endingLineNumber = "1332"
+            startingLineNumber = "1337"
+            endingLineNumber = "1337"
             landmarkName = "HGAPRec::compute_likelihood(bool validation)"
             landmarkType = "5">
          </BreakpointContent>
@@ -166,11 +166,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462176299.643991"
+            timestampString = "462181968.608643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1341"
-            endingLineNumber = "1341"
+            startingLineNumber = "1346"
+            endingLineNumber = "1346"
             landmarkName = "HGAPRec::compute_likelihood(bool validation)"
             landmarkType = "5">
          </BreakpointContent>
@@ -182,11 +182,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462176299.643991"
+            timestampString = "462181968.608643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1352"
-            endingLineNumber = "1352"
+            startingLineNumber = "1357"
+            endingLineNumber = "1357"
             landmarkName = "HGAPRec::compute_likelihood(bool validation)"
             landmarkType = "5">
          </BreakpointContent>
@@ -404,11 +404,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462176299.643991"
+            timestampString = "462181968.608643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1325"
-            endingLineNumber = "1325"
+            startingLineNumber = "1330"
+            endingLineNumber = "1330"
             landmarkName = "HGAPRec::compute_likelihood(bool validation)"
             landmarkType = "5">
          </BreakpointContent>
@@ -420,11 +420,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462176299.643991"
+            timestampString = "462181968.608643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1327"
-            endingLineNumber = "1327"
+            startingLineNumber = "1332"
+            endingLineNumber = "1332"
             landmarkName = "HGAPRec::compute_likelihood(bool validation)"
             landmarkType = "5">
          </BreakpointContent>
@@ -436,11 +436,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462176299.643991"
+            timestampString = "462181968.608643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1671"
-            endingLineNumber = "1671"
+            startingLineNumber = "1676"
+            endingLineNumber = "1676"
             landmarkName = "HGAPRec::compute_precision(bool save_ranking_file)"
             landmarkType = "5">
          </BreakpointContent>
@@ -452,11 +452,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462176299.643991"
+            timestampString = "462181968.608643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1669"
-            endingLineNumber = "1669"
+            startingLineNumber = "1674"
+            endingLineNumber = "1674"
             landmarkName = "HGAPRec::compute_precision(bool save_ranking_file)"
             landmarkType = "5">
          </BreakpointContent>
@@ -796,11 +796,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462176299.643991"
+            timestampString = "462181968.608643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1272"
-            endingLineNumber = "1272"
+            startingLineNumber = "1277"
+            endingLineNumber = "1277"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>

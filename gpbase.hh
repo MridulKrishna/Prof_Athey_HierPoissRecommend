@@ -1008,15 +1008,15 @@ GPArray::initialize2(double v)
   double *ad = _scurr.data();
   double *bd = _rcurr.data();
   for (uint32_t i = 0; i < _n; ++i) {
-    cout << _sprior << " " << _rprior << endl;
-    ad[i] = _sprior + 0.01 * gsl_rng_uniform(*_r);
+//    cout << _sprior << " " << _rprior << endl;
+//    ad[i] = _sprior + 0.01 * gsl_rng_uniform(*_r);
     
     // Error?????
-//    ad[i] = _sprior + 0.0 * gsl_rng_uniform(*_r);
+//    ad[i] = _sprior + 0.01 * gsl_rng_uniform(*_r);
 //    bd[i] = _rprior + v;
     
-//    ad[i] = _sprior + v;
-//    bd[i] = _rprior + 0.0 * gsl_rng_uniform(*_r);
+    ad[i] = _sprior + v;
+    bd[i] = _rprior + 0.1 * gsl_rng_uniform(*_r);
   }
   set_to_prior();
 }
