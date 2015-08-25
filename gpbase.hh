@@ -332,7 +332,7 @@ GPMatrix::initialize()
   for (uint32_t k = 0; k < _k; ++k)
     // Initial values are also hyperparameters plus a small shock
     bd[0][k] = _rprior + 0.1 * gsl_rng_uniform(*_r);
-//    bd[0][k] = _rprior + 0.0 * gsl_rng_uniform(*_r);
+//    bd[0][k] = _rprior + 0. * gsl_rng_uniform(*_r);
   
   // Copy the values along user/item
   for (uint32_t i = 0; i < _n; ++i)
@@ -352,6 +352,7 @@ GPMatrix::initialize2(double v)
     for (uint32_t k = 0; k < _k; ++k) {
       // Initial values: hyperparameter plus a small random shock
       ad[i][k] = _sprior + 0.01 * gsl_rng_uniform(*_r);
+//      ad[i][k] = _sprior + 0.0 * gsl_rng_uniform(*_r);
       // Prior plus argument v, which in the paper is Ka or Kc
       bd[i][k] = _rprior + v;
     }
@@ -398,6 +399,7 @@ GPMatrix::initialize_exp(double v)
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k) {
       b[k] = v + 0.1 * gsl_rng_uniform(*_r);
+//      b[k] = v + 0. * gsl_rng_uniform(*_r);
       assert(b[k]);
       vd1[i][k] = ad[i][k] / b[k];
       vd2[i][k] = gsl_sf_psi(ad[i][k]) - log(b[k]);
@@ -705,7 +707,7 @@ GPMatrixGR::initialize()
   
   for (uint32_t i = 0; i < _n; ++i) {
     for (uint32_t k = 0; k < _k; ++k) {
-      ad[i][k] = _sprior + 0.01 * gsl_rng_uniform(*_r);
+            ad[i][k] = _sprior + 0.01 * gsl_rng_uniform(*_r);
 //      ad[i][k] = _sprior + 0.0 * gsl_rng_uniform(*_r);
     }
   }
@@ -725,6 +727,7 @@ GPMatrixGR::initialize2(double v)
   for (uint32_t i = 0; i < _n; ++i) {
     for (uint32_t k = 0; k < _k; ++k) {
       ad[i][k] = _sprior + 0.01 * gsl_rng_uniform(*_r);
+//      ad[i][k] = _sprior + 0.0 * gsl_rng_uniform(*_r);
     }
   }
   for (uint32_t k = 0; k < _k; ++k)
@@ -744,6 +747,7 @@ GPMatrixGR::initialize_exp(double v)
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k) {
       b[k] = v + 0.1 * gsl_rng_uniform(*_r);
+//      b[k] = v + 0. * gsl_rng_uniform(*_r);
       vd1[i][k] = ad[i][k] / b[k];
       vd2[i][k] = gsl_sf_psi(ad[i][k]) - log(b[k]);
     }
@@ -762,6 +766,7 @@ GPMatrixGR::initialize_exp()
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k) {
       b[k] = _rprior + 0.1 * gsl_rng_uniform(*_r);
+//      b[k] = _rprior + 0. * gsl_rng_uniform(*_r);
       vd1[i][k] = ad[i][k] / b[k];
       vd2[i][k] = gsl_sf_psi(ad[i][k]) - log(b[k]);
     }
@@ -1008,15 +1013,18 @@ GPArray::initialize2(double v)
   double *ad = _scurr.data();
   double *bd = _rcurr.data();
   for (uint32_t i = 0; i < _n; ++i) {
-//    cout << _sprior << " " << _rprior << endl;
-//    ad[i] = _sprior + 0.01 * gsl_rng_uniform(*_r);
     
+    // -----------------------------------------
     // Error?????
 //    ad[i] = _sprior + 0.01 * gsl_rng_uniform(*_r);
 //    bd[i] = _rprior + v;
+    // -----------------------------------------
     
     ad[i] = _sprior + v;
     bd[i] = _rprior + 0.1 * gsl_rng_uniform(*_r);
+    
+//    ad[i] = _sprior + v;
+//    bd[i] = _rprior + 0. * gsl_rng_uniform(*_r);
   }
   set_to_prior();
 }

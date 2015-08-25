@@ -1267,7 +1267,7 @@ HGAPRec::vb_hier()
     // Computes the expectations with the (new) current values
     _betarate.compute_expectations();
     
-    if (_iter == 10) {
+    if (_iter == 9) {
       _betarate.shape_curr().print();
       _betarate.rate_curr().print();
       _thetarate.shape_curr().print();
