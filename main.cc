@@ -91,6 +91,8 @@ int main(int argc, char **argv) {
     exit(0);
   }
   
+  int offset = 1;
+  
   string fname;
   uint32_t n = 0, m = 0;
   uint32_t k = 0;
@@ -285,6 +287,8 @@ int main(int argc, char **argv) {
       ctr = true;
     } else if (strcmp(argv[i], "-rating-threshold") == 0) {
       rating_threshold = atoi(argv[++i]);
+    } else if (strcmp(argv[i], "-nooffset") == 0) {
+      offset = 0;
     } else if (i > 0) {
       fprintf(stdout,  "error: unknown option %s\n", argv[i]);
       assert(0);
@@ -302,7 +306,7 @@ int main(int argc, char **argv) {
           write_training, rating_threshold,
           chi, wals, wals_l, wals_C,
           als, chinmf, climf,
-          mle_item, mle_user, canny, ctr);
+          mle_item, mle_user, canny, ctr, offset);
   env_global = &env;
   
   // Reads the input files

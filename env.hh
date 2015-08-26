@@ -65,7 +65,7 @@ public:
       bool write_training, uint32_t rating_threshold,
       bool graphchi, bool wals, double wals_l, uint32_t wals_C,
       bool als, bool chinmf, bool climf,
-      bool mle_item, bool mle_user, bool canny, bool ctr);
+      bool mle_item, bool mle_user, bool canny, bool ctr, int pOffset);
   ~Env() { fclose(_plogf); }
 
   static string prefix;
@@ -81,6 +81,7 @@ public:
   uint32_t ic;  // Number of item characteristics
   uint32_t t;
   uint32_t mini_batch_size;
+  int offset;
 
   // Hyperparameters
   double a;
@@ -231,7 +232,7 @@ Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fn
 	 bool write_trainingv, uint32_t rating_thresholdv,
 	 bool graphchiv, bool walsv, double l, uint32_t C,
 	 bool alsv, bool chinmfv, bool climfv,
-	 bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv)
+	 bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, int pOffset)
   : dataset(datasetv),
     n(N),
     m(M),
@@ -285,7 +286,8 @@ Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fn
     mle_user(mle_userv),
     mle_item(mle_itemv),
     canny(cannyv),
-    ctr(ctrv)
+    ctr(ctrv),
+    offset(pOffset)
 {
   ostringstream sa;
   sa << "n" << n << "-";

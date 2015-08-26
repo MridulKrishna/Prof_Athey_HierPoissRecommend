@@ -1,17 +1,18 @@
 #include "hgaprec.hh"
 #include "env.hh"
+#include <iostream>
+#include <iomanip>
 
 #ifdef HAVE_NMFLIB
 #include "./nmflib/include/common.h"
 #include "./nmflib/include/nmfdriver.h"
-#include <iostream>
 #include <math.h>
 #endif
 
 // The constructor saves the environment, ratings, and parameters. It also runs the constructors for the random variables.
 HGAPRec::HGAPRec(Env &env, Ratings &ratings)
   : _env(env), _ratings(ratings),
-_n(env.n), _m(env.m), _uc(env.uc),_ic(env.ic),_k(env.k),
+_n(env.n), _m(env.m), _uc(env.uc),_ic(env.ic),_k(env.k),_offset(env.offset),
 //_validation_map(),
 //_test_map(),
 //_validation_users_of_movie(),
@@ -196,10 +197,10 @@ HGAPRec::initialize()
     //_thetarate.set_to_prior();
 
   // Initializes the xi and eta parameters
-  _thetarate.initialize2((_k+_ic)*0.3);
+  _thetarate.initialize2((_k+_ic)*0.3,_offset);
   _thetarate.compute_expectations();
   
-  _betarate.initialize2((_k+_uc)*0.3);
+  _betarate.initialize2((_k+_uc)*0.3,_offset);
   _betarate.compute_expectations();
   
   //_betarate.set_to_prior_curr();
@@ -208,21 +209,21 @@ HGAPRec::initialize()
   //_hbeta.compute_expectations();
   
   // Initializes the beta and theta vectors
-  _hbeta.initialize();
-  _hbeta.initialize_exp();
+  _hbeta.initialize(_offset);
+  _hbeta.initialize_exp(_offset);
   
   //_hbeta.initialize_exp(_betarate.expected_v()[0]);
   //_htheta.initialize2(_m);
   //_htheta.compute_expectations();
   
-  _htheta.initialize();
-  _htheta.initialize_exp();
+  _htheta.initialize(_offset);
+  _htheta.initialize_exp(_offset);
   
-  _hsigma.initialize();
-  _hsigma.initialize_exp();
+  _hsigma.initialize(_offset);
+  _hsigma.initialize_exp(_offset);
   
-  _hrho.initialize();
-  _hrho.initialize_exp();
+  _hrho.initialize(_offset);
+  _hrho.initialize_exp(_offset);
 
     //_htheta.initialize_exp(_thetarate.expected_v()[0]);
 //  }
@@ -1039,11 +1040,14 @@ HGAPRec::vb_hier()
   // Constructs the array for the parameters of the multinomial distribution
   Array phi(x);
   
-  while (1) {
+  bool stop = false;
+  
+  while (!stop) {
     // Stop if the max number of iterations is reached
     if (_iter > _env.max_iterations) {
       exit(0);
     }
+    
     // Loop over users
     for (uint32_t n = 0; n < _n; ++n) {
 //      cout << "Loop over users " << n << endl;
@@ -1295,12 +1299,12 @@ HGAPRec::vb_hier()
 //      _thetarate.rate_curr().print();
 //    }
     
-    printf("\r iteration %d", _iter);
+    printf("iteration %d\n", _iter);
     
     fflush(stdout);
     if (_iter % _env.reportfreq == 0) {
-      compute_likelihood(true);
-      //compute_likelihood(false);
+      stop = compute_likelihood(true);
+      compute_likelihood(false);
       //compute_rmse();
       save_model();
       // Computes and saves number of relevant recommendations among best ranked items
@@ -1312,13 +1316,17 @@ HGAPRec::vb_hier()
         logl();
     }
     
-    // Saves the matrices in files
-    if (_env.save_state_now) {
-      lerr("Saving state at iteration %d duration %d secs", _iter, duration());
-      do_on_stop();
-    }
-    _iter++;
+    if (stop) {
+        do_on_stop();
+    } else {
+      // Saves the matrices in files
+      if (_env.save_state_now) {
+        lerr("Saving state at iteration %d duration %d secs", _iter, duration());
+        do_on_stop();
+      }
+      _iter++;
 
+    }
 //    if ( _iter == 1) {
 //      _betarate.shape_curr().print();
 //      _betarate.rate_curr().print();
@@ -1326,9 +1334,9 @@ HGAPRec::vb_hier()
   }
 }
 
-// Calculates log likelihood. Validation tells whether it should check the stopping criteria
-void
-HGAPRec::compute_likelihood(bool validation)
+// Calculates log likelihood. Validation tells whether it should be calculated for the validation or test set. If validation, also check the stopping criterion.
+bool
+HGAPRec::compute_likelihood(bool validationLikelihood)
 {
 //  cout << validation << endl;
   // k: index of ratings in validation/training
@@ -1336,10 +1344,10 @@ HGAPRec::compute_likelihood(bool validation)
   // s: stores the sum of log likelihoods
   double s = .0, szeros = 0, sones = 0;
   
-  // Saves either _validation_map or _test_map in mp (depending on what?)
+  // Saves either _validation_map or _test_map in mp (depending on whether the parameter validation is true)
   CountMap *mp = NULL;
   FILE *ff = NULL;
-  if (validation) {
+  if (validationLikelihood) {
     mp = &_ratings._validation_map;
     ff = _vf;
   } else {
@@ -1360,6 +1368,7 @@ HGAPRec::compute_likelihood(bool validation)
     
     // Finds the log likelihood and adds it
     double u = _env.hier ? rating_likelihood_hier(n,m,r) : rating_likelihood(n,m,r);
+  
     s += u;
     k += 1;
   }
@@ -1370,19 +1379,29 @@ HGAPRec::compute_likelihood(bool validation)
   fflush(ff);
   
   // Average log likelihood
-  a = s / k;  
+  a = s / k;
+  if (validationLikelihood) {
+    cout << "Log-likelihood: (total,number,average)" << endl;
+    cout << "Validation: " ;
+    cout << setprecision(10) << s << " " << k << " " << a << endl;
+  } else {
+    cout << "Test: " ;
+    cout << setprecision(10) << s << " " << k << " " << a << endl;
+  }
+  
+  bool stop = false;
   
   // Check validation criterion
-  if (validation) {
-    bool stop = false;
+  if (validationLikelihood) {
     int why = -1;
     
     // Check stopping criteria every iteration after 30
     if (_iter > 30) {
       
       cout << " Likelihood change: " << fabs((a - _prev_h) / _prev_h) << endl;
+      cout << a << " " << a -  _prev_h << endl;
       // If log likelihood increased, is not zero, and it increased less than 0.000001 of the previous value, set why to zero
-      if (a > _prev_h && _prev_h != 0 && fabs((a - _prev_h) / _prev_h) < 0.000001) {
+      if (a >= _prev_h && _prev_h != 0 && fabs((a - _prev_h) / _prev_h) < 0.000001) {
         
         stop = true;
         why = 0;
@@ -1395,7 +1414,7 @@ HGAPRec::compute_likelihood(bool validation)
       
       if (_nh > 2) { // be robust to small fluctuations in predictive likelihood
         why = 1;
-        //stop = true;
+        stop = true;
       }
     }
     // Store average log likelihood in _prev_h (previous likelihood)
@@ -1404,11 +1423,8 @@ HGAPRec::compute_likelihood(bool validation)
     fprintf(f, "%d\t%d\t%.5f\t%d\n",
             _iter, duration(), a, why);
     fclose(f);
-    if (stop) {
-      do_on_stop();
-      exit(0);
-    }
   }
+  return stop;
 }
 
 double

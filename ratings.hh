@@ -29,7 +29,8 @@ public:
     _curr_user_seq(0), 
     _curr_movie_seq(0),
     _nratings(0),
-    _likes(0) { }
+    _likes(0),
+    _offset(env.offset){ }
   ~Ratings() { }
 
   int read(string s);
@@ -93,6 +94,8 @@ private:
   string movies_by_user_s() const;
   bool add_movie(uint32_t id);
   bool add_user(uint32_t id);
+  
+  int _offset;
 
   SparseMatrixR _users2rating;
   SparseMatrix _users;

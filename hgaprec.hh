@@ -70,7 +70,7 @@ private:
                  Array &phi);
     
     void load_validation_and_test_sets();
-    void compute_likelihood(bool validation);
+    bool compute_likelihood(bool validation);
     double pair_likelihood(uint32_t p, uint32_t q, yval_t y) const;
     double log_factorial(uint32_t n)  const;
     
@@ -102,6 +102,8 @@ private:
     uint32_t _ic;
     uint32_t _k;
     uint32_t _iter;
+    
+    int _offset;
     
     GPMatrixGR _theta;
     GPMatrixGR _beta;

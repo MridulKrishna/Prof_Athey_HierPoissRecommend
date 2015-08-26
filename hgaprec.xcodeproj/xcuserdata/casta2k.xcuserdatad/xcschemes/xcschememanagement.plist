@@ -31,10 +31,15 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
-		<key>testFiles.xcscheme</key>
+		<key>testFiles no offset.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>3</integer>
+		</dict>
+		<key>testFiles.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>

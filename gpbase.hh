@@ -135,10 +135,10 @@ public:
   void sum_rows(Array &v);
   void scaled_sum_rows(Array &v, const Array &scale);
   void sum_cols(Array &v);
-  void initialize();
-  void initialize2(double v);
-  void initialize_exp();
-  void initialize_exp(double v);
+  void initialize(int offset);
+  void initialize2(double v, int offset);
+  void initialize_exp(int offset);
+  void initialize_exp(double v, int offset);
   void save_state(const IDMap &m) const;
   void load_from_lda(string dir, double alpha, uint32_t K);
   void set_prior_rate(const Array &ev, const Array &elogv);
@@ -318,7 +318,7 @@ GPMatrix::scaled_sum_rows(Array &v, const Array &scale)
 
 // Sets the current parameters for the first iteration, at the hyperparameters plus a random shock
 inline void
-GPMatrix::initialize()
+GPMatrix::initialize(int offset)
 {
   // Gets the matrices of current parameters to modify them
   double **ad = _scurr.data();
@@ -326,13 +326,11 @@ GPMatrix::initialize()
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k)
       // Initial values: hyperparameter plus a small random shock
-       ad[i][k] = _sprior + 0.01 * gsl_rng_uniform(*_r);
-//      ad[i][k] = _sprior + 0.0 * gsl_rng_uniform(*_r);
+       ad[i][k] = _sprior + offset * 0.01 * gsl_rng_uniform(*_r);
 
   for (uint32_t k = 0; k < _k; ++k)
     // Initial values are also hyperparameters plus a small shock
-    bd[0][k] = _rprior + 0.1 * gsl_rng_uniform(*_r);
-//    bd[0][k] = _rprior + 0. * gsl_rng_uniform(*_r);
+    bd[0][k] = _rprior + offset* 0.1 * gsl_rng_uniform(*_r);
   
   // Copy the values along user/item
   for (uint32_t i = 0; i < _n; ++i)
@@ -343,7 +341,7 @@ GPMatrix::initialize()
 
 // Sets the current rate parameters for the first iteration, at the hyperparameters plus a random shock. The shape parameters are set at the prior plus argument v
 inline void
-GPMatrix::initialize2(double v)
+GPMatrix::initialize2(double v, int offset)
 {
   // Gets the matrices of current parameters to modify them
   double **ad = _scurr.data();
@@ -351,8 +349,7 @@ GPMatrix::initialize2(double v)
   for (uint32_t i = 0; i < _n; ++i) {
     for (uint32_t k = 0; k < _k; ++k) {
       // Initial values: hyperparameter plus a small random shock
-      ad[i][k] = _sprior + 0.01 * gsl_rng_uniform(*_r);
-//      ad[i][k] = _sprior + 0.0 * gsl_rng_uniform(*_r);
+      ad[i][k] = _sprior + offset*0.01 * gsl_rng_uniform(*_r);
       // Prior plus argument v, which in the paper is Ka or Kc
       bd[i][k] = _rprior + v;
     }
@@ -362,7 +359,7 @@ GPMatrix::initialize2(double v)
 
 // Sets the means of user and item attributes and the log means ( used for the vector of parameters for the multinomial distribution, phi in the paper) for the first iteration, at the computed values from previous parameters plus a small shock
 inline void
-GPMatrix::initialize_exp()
+GPMatrix::initialize_exp(int offset)
 {
   // Gets the matrix of current parameters which should have been initialized already
   double **ad = _scurr.data();
@@ -376,8 +373,7 @@ GPMatrix::initialize_exp()
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k) {
       // Initial value: prior plus random shock (why do it again?)
-      b[k] = _rprior + 0.1 * gsl_rng_uniform(*_r);
-//      b[k] = _rprior + 0.0 * gsl_rng_uniform(*_r);
+      b[k] = _rprior + offset * 0.1 * gsl_rng_uniform(*_r);
       assert(b[k]);
       
       // Means: shape/rate parameter
@@ -389,7 +385,7 @@ GPMatrix::initialize_exp()
 } 
 
 inline void
-GPMatrix::initialize_exp(double v)
+GPMatrix::initialize_exp(double v, int offset)
 {
   double **ad = _scurr.data();
   double **vd1 = _Ev.data();
@@ -398,8 +394,7 @@ GPMatrix::initialize_exp(double v)
   Array b(_k);  
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k) {
-      b[k] = v + 0.1 * gsl_rng_uniform(*_r);
-//      b[k] = v + 0. * gsl_rng_uniform(*_r);
+      b[k] = v + offset * 0.1 * gsl_rng_uniform(*_r);
       assert(b[k]);
       vd1[i][k] = ad[i][k] / b[k];
       vd2[i][k] = gsl_sf_psi(ad[i][k]) - log(b[k]);
@@ -542,10 +537,10 @@ public:
   void compute_expectations();
   void sum_rows(Array &v);
   void scaled_sum_rows(Array &v, const Array &scale);
-  void initialize();
-  void initialize2(double v);
-  void initialize_exp();
-  void initialize_exp(double v);
+  void initialize(int offset);
+  void initialize2(double v, int offset);
+  void initialize_exp(int offset);
+  void initialize_exp(double v, int offset);
   double compute_elbo_term_helper() const;
   void sum_cols(Array &v);
 
@@ -678,7 +673,7 @@ GPMatrixGR::scaled_sum_rows(Array &v, const Array &scale)
 }
 
 inline void
-GPMatrixGR::initialize()
+GPMatrixGR::initialize(int offset)
 {
   /* 
   double **ad = _scurr.data();
@@ -707,27 +702,24 @@ GPMatrixGR::initialize()
   
   for (uint32_t i = 0; i < _n; ++i) {
     for (uint32_t k = 0; k < _k; ++k) {
-            ad[i][k] = _sprior + 0.01 * gsl_rng_uniform(*_r);
-//      ad[i][k] = _sprior + 0.0 * gsl_rng_uniform(*_r);
+            ad[i][k] = _sprior + offset * 0.01 * gsl_rng_uniform(*_r);
     }
   }
   
   for (uint32_t k = 0; k < _k; ++k) {
-    bd[k] = _rprior + 0.1 * gsl_rng_uniform(*_r);
-//    bd[k] = _rprior + 0.0 * gsl_rng_uniform(*_r);
+    bd[k] = _rprior + offset * 0.1 * gsl_rng_uniform(*_r);
   }
   set_to_prior();
 }
 
 inline void
-GPMatrixGR::initialize2(double v)
+GPMatrixGR::initialize2(double v, int offset)
 {
   double **ad = _scurr.data();
   double *bd = _rcurr.data();
   for (uint32_t i = 0; i < _n; ++i) {
     for (uint32_t k = 0; k < _k; ++k) {
-      ad[i][k] = _sprior + 0.01 * gsl_rng_uniform(*_r);
-//      ad[i][k] = _sprior + 0.0 * gsl_rng_uniform(*_r);
+      ad[i][k] = _sprior + offset * 0.01 * gsl_rng_uniform(*_r);
     }
   }
   for (uint32_t k = 0; k < _k; ++k)
@@ -737,7 +729,7 @@ GPMatrixGR::initialize2(double v)
 
 
 inline void
-GPMatrixGR::initialize_exp(double v) 
+GPMatrixGR::initialize_exp(double v, int offset)
 {
   double **ad = _scurr.data();
   double **vd1 = _Ev.data();
@@ -746,8 +738,7 @@ GPMatrixGR::initialize_exp(double v)
   Array b(_k);  
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k) {
-      b[k] = v + 0.1 * gsl_rng_uniform(*_r);
-//      b[k] = v + 0. * gsl_rng_uniform(*_r);
+      b[k] = v + offset * 0.1 * gsl_rng_uniform(*_r);
       vd1[i][k] = ad[i][k] / b[k];
       vd2[i][k] = gsl_sf_psi(ad[i][k]) - log(b[k]);
     }
@@ -756,7 +747,7 @@ GPMatrixGR::initialize_exp(double v)
 
 
 inline void
-GPMatrixGR::initialize_exp()
+GPMatrixGR::initialize_exp(int offset)
 {
   double **ad = _scurr.data();
   double **vd1 = _Ev.data();
@@ -765,8 +756,7 @@ GPMatrixGR::initialize_exp()
   Array b(_k);  
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k) {
-      b[k] = _rprior + 0.1 * gsl_rng_uniform(*_r);
-//      b[k] = _rprior + 0. * gsl_rng_uniform(*_r);
+      b[k] = _rprior + offset * 0.1 * gsl_rng_uniform(*_r);
       vd1[i][k] = ad[i][k] / b[k];
       vd2[i][k] = gsl_sf_psi(ad[i][k]) - log(b[k]);
     }
@@ -892,8 +882,8 @@ public:
   void update_rate_next(uint32_t n, double v);
   void swap();
   void compute_expectations();
-  void initialize();
-  void  initialize2(double v);
+  void initialize(int offset);
+  void  initialize2(double v, int offset);
   void initialize_exp();
 
   double compute_elbo_term_helper() const;
@@ -994,21 +984,19 @@ GPArray::compute_expectations()
 }
 
 inline void
-GPArray::initialize()
+GPArray::initialize(int offset)
 {
   double *ad = _scurr.data();
   double *bd = _rcurr.data();
   for (uint32_t i = 0; i < _n; ++i) {
-    ad[i] = _sprior + 0.01 * gsl_rng_uniform(*_r);
-    bd[i] = _rprior + 0.1 * gsl_rng_uniform(*_r);
-//    ad[i] = _sprior + 0.0 * gsl_rng_uniform(*_r);
-//    bd[i] = _rprior + 0.0 * gsl_rng_uniform(*_r);
+    ad[i] = _sprior + offset * 0.01 * gsl_rng_uniform(*_r);
+    bd[i] = _rprior + offset * 0.1 * gsl_rng_uniform(*_r);
   }
   set_to_prior();
 }
 
 inline void
-GPArray::initialize2(double v)
+GPArray::initialize2(double v, int offset)
 {
   double *ad = _scurr.data();
   double *bd = _rcurr.data();
@@ -1021,10 +1009,7 @@ GPArray::initialize2(double v)
     // -----------------------------------------
     
     ad[i] = _sprior + v;
-    bd[i] = _rprior + 0.1 * gsl_rng_uniform(*_r);
-    
-//    ad[i] = _sprior + v;
-//    bd[i] = _rprior + 0. * gsl_rng_uniform(*_r);
+    bd[i] = _rprior + offset * 0.1 * gsl_rng_uniform(*_r);
   }
   set_to_prior();
 }
