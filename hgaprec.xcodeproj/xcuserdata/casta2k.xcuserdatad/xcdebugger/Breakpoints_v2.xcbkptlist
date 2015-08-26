@@ -102,7 +102,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462263028.762105"
+            timestampString = "462267862.833511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1342"
@@ -118,7 +118,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462263028.762105"
+            timestampString = "462267862.833511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1343"
@@ -134,7 +134,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462263028.762105"
+            timestampString = "462267862.833511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1354"
@@ -150,7 +150,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462263028.762105"
+            timestampString = "462267862.833511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1368"
@@ -166,7 +166,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462263028.762105"
+            timestampString = "462267862.833511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1378"
@@ -182,7 +182,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462264379.35604"
+            timestampString = "462267862.833511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1397"
@@ -198,11 +198,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "main.cc"
-            timestampString = "462260305.153905"
+            timestampString = "462270358.380664"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "676"
-            endingLineNumber = "676">
+            startingLineNumber = "685"
+            endingLineNumber = "685">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -404,7 +404,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462263028.762105"
+            timestampString = "462267862.833511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1361"
@@ -420,7 +420,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462263028.762105"
+            timestampString = "462267862.833511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1363"
@@ -436,7 +436,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462264379.35604"
+            timestampString = "462267862.833511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1718"
@@ -452,7 +452,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462264379.35604"
+            timestampString = "462267862.833511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1716"
@@ -828,11 +828,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "main.cc"
-            timestampString = "462260305.153905"
+            timestampString = "462270358.380664"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "321"
-            endingLineNumber = "321"
+            startingLineNumber = "330"
+            endingLineNumber = "330"
             landmarkName = "main(int argc, char **argv)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1404,12 +1404,172 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462264379.35604"
+            timestampString = "462267862.833511"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1406"
             endingLineNumber = "1406"
             landmarkName = "HGAPRec::compute_likelihood(bool validationLikelihood)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "hgaprec.cc"
+            timestampString = "462267862.833511"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1401"
+            endingLineNumber = "1401"
+            landmarkName = "HGAPRec::compute_likelihood(bool validationLikelihood)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "main.cc"
+            timestampString = "462270358.380664"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "304"
+            endingLineNumber = "304"
+            landmarkName = "main(int argc, char **argv)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "main.cc"
+            timestampString = "462270358.380664"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "309"
+            endingLineNumber = "309"
+            landmarkName = "main(int argc, char **argv)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "main.cc"
+            timestampString = "462270358.380664"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "305"
+            endingLineNumber = "305"
+            landmarkName = "main(int argc, char **argv)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "env.hh"
+            timestampString = "462270999.448661"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "404"
+            endingLineNumber = "404"
+            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string Noutfname, bool nmival, string gfname, uint32_t rfreq, bool sid, string lbl, bool alogl, double rseed, uint32_t maxitr, bool load, string loc, bool gen_hout, double av, double bv, double cv, double dv, Env::Dataset datasetv, bool batchv, bool binary_datav, bool biasv, bool hierv, bool explore, bool vbv, bool nmfv, bool nmfloadv, bool ldav, bool vwldav, bool write_trainingv, uint32_t rating_thresholdv, bool graphchiv, bool walsv, double l, uint32_t C, bool alsv, bool chinmfv, bool climfv, bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, int pOffset)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "env.hh"
+            timestampString = "462270999.448661"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "405"
+            endingLineNumber = "405"
+            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string Noutfname, bool nmival, string gfname, uint32_t rfreq, bool sid, string lbl, bool alogl, double rseed, uint32_t maxitr, bool load, string loc, bool gen_hout, double av, double bv, double cv, double dv, Env::Dataset datasetv, bool batchv, bool binary_datav, bool biasv, bool hierv, bool explore, bool vbv, bool nmfv, bool nmfloadv, bool ldav, bool vwldav, bool write_trainingv, uint32_t rating_thresholdv, bool graphchiv, bool walsv, double l, uint32_t C, bool alsv, bool chinmfv, bool climfv, bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, int pOffset)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "env.hh"
+            timestampString = "462270999.448661"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "408"
+            endingLineNumber = "408"
+            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string Noutfname, bool nmival, string gfname, uint32_t rfreq, bool sid, string lbl, bool alogl, double rseed, uint32_t maxitr, bool load, string loc, bool gen_hout, double av, double bv, double cv, double dv, Env::Dataset datasetv, bool batchv, bool binary_datav, bool biasv, bool hierv, bool explore, bool vbv, bool nmfv, bool nmfloadv, bool ldav, bool vwldav, bool write_trainingv, uint32_t rating_thresholdv, bool graphchiv, bool walsv, double l, uint32_t C, bool alsv, bool chinmfv, bool climfv, bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, int pOffset)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "env.hh"
+            timestampString = "462270999.448661"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "400"
+            endingLineNumber = "400"
+            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string Noutfname, bool nmival, string gfname, uint32_t rfreq, bool sid, string lbl, bool alogl, double rseed, uint32_t maxitr, bool load, string loc, bool gen_hout, double av, double bv, double cv, double dv, Env::Dataset datasetv, bool batchv, bool binary_datav, bool biasv, bool hierv, bool explore, bool vbv, bool nmfv, bool nmfloadv, bool ldav, bool vwldav, bool write_trainingv, uint32_t rating_thresholdv, bool graphchiv, bool walsv, double l, uint32_t C, bool alsv, bool chinmfv, bool climfv, bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, int pOffset)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "env.hh"
+            timestampString = "462270999.448661"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "403"
+            endingLineNumber = "403"
+            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string Noutfname, bool nmival, string gfname, uint32_t rfreq, bool sid, string lbl, bool alogl, double rseed, uint32_t maxitr, bool load, string loc, bool gen_hout, double av, double bv, double cv, double dv, Env::Dataset datasetv, bool batchv, bool binary_datav, bool biasv, bool hierv, bool explore, bool vbv, bool nmfv, bool nmfloadv, bool ldav, bool vwldav, bool write_trainingv, uint32_t rating_thresholdv, bool graphchiv, bool walsv, double l, uint32_t C, bool alsv, bool chinmfv, bool climfv, bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, int pOffset)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "env.hh"
+            timestampString = "462270999.448661"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "401"
+            endingLineNumber = "401"
+            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string Noutfname, bool nmival, string gfname, uint32_t rfreq, bool sid, string lbl, bool alogl, double rseed, uint32_t maxitr, bool load, string loc, bool gen_hout, double av, double bv, double cv, double dv, Env::Dataset datasetv, bool batchv, bool binary_datav, bool biasv, bool hierv, bool explore, bool vbv, bool nmfv, bool nmfloadv, bool ldav, bool vwldav, bool write_trainingv, uint32_t rating_thresholdv, bool graphchiv, bool walsv, double l, uint32_t C, bool alsv, bool chinmfv, bool climfv, bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, int pOffset)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

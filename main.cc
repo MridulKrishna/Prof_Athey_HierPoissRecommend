@@ -94,6 +94,8 @@ int main(int argc, char **argv) {
   int offset = 1;
   
   string fname;
+  string outfname = "";
+  
   uint32_t n = 0, m = 0;
   uint32_t k = 0;
   uint32_t uc = 0, ic = 0;
@@ -289,6 +291,9 @@ int main(int argc, char **argv) {
       rating_threshold = atoi(argv[++i]);
     } else if (strcmp(argv[i], "-nooffset") == 0) {
       offset = 0;
+    } else if (strcmp(argv[i], "-outdir") == 0) {
+      outfname = string(argv[++i]);
+      fprintf(stdout, "+ output dir = %s\n", outfname.c_str());
     } else if (i > 0) {
       fprintf(stdout,  "error: unknown option %s\n", argv[i]);
       assert(0);
@@ -296,8 +301,12 @@ int main(int argc, char **argv) {
     ++i;
   };
   
+  if ( outfname.compare("") == 0 ) {
+    outfname = fname;
+  }
+    
   // Initializes the environment: variables to run the code
-  Env env(n, m, k, uc, ic, fname, nmi, ground_truth_fname, rfreq,
+  Env env(n, m, k, uc, ic, fname, outfname, nmi, ground_truth_fname, rfreq,
           strid, label, logl, rand_seed, max_iterations,
           model_load, model_location,
           gen_heldout, a, b, c, d, dataset,

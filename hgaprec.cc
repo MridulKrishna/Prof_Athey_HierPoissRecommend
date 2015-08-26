@@ -2152,18 +2152,18 @@ void
 HGAPRec::save_model()
 {
   if (_env.hier) {
-    _hbeta.save_state(_ratings.seq2movie());
-    _betarate.save_state(_ratings.seq2movie());
-    _htheta.save_state(_ratings.seq2user());
-    _thetarate.save_state(_ratings.seq2user());
+    _hbeta.save_state(_ratings.seq2movie(),_env.outfname);
+    _betarate.save_state(_ratings.seq2movie(),_env.outfname);
+    _htheta.save_state(_ratings.seq2user(),_env.outfname);
+    _thetarate.save_state(_ratings.seq2user(),_env.outfname);
   } else {
-    _beta.save_state(_ratings.seq2movie());
-    _theta.save_state(_ratings.seq2user());
+    _beta.save_state(_ratings.seq2movie(),_env.outfname);
+    _theta.save_state(_ratings.seq2user(),_env.outfname);
   }
 
   if (_env.bias) {
-    _betabias.save_state(_ratings.seq2movie());
-    _thetabias.save_state(_ratings.seq2user());
+    _betabias.save_state(_ratings.seq2movie(),_env.outfname);
+    _thetabias.save_state(_ratings.seq2user(),_env.outfname);
   }
   if (_env.canny || _env.mle_user || _env.mle_item) {
     _theta_mle.save(Env::file_str("/theta_mle.tsv"), _ratings.seq2user());

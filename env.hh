@@ -14,6 +14,7 @@
 #include <map>
 #include <list>
 #include <vector>
+#include<sys/stat.h>
 #include "matrix.hh"
 #include "log.hh"
 
@@ -53,7 +54,7 @@ class Env {
 public:
   typedef enum { NETFLIX, MOVIELENS, MENDELEY, ECHONEST, NYT } Dataset;
   typedef enum { CREATE_TRAIN_TEST_SETS, TRAINING } Mode;
-  Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname,
+  Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string outfname,
       bool nmi, string ground_truth_fname, uint32_t rfreq,
       bool strid, string label, bool alogl, double rseed,
       uint32_t max_iterations, bool load, string loc, 
@@ -69,6 +70,8 @@ public:
   ~Env() { fclose(_plogf); }
 
   static string prefix;
+//  static string outprefix;
+  
   static Logger::Level level;
 
   Dataset dataset;
@@ -104,6 +107,7 @@ public:
   double seed;
   bool save_state_now;
   string datfname;
+  string outfname;
   string label;
   bool nmi;
   string ground_truth_fname;
@@ -140,6 +144,7 @@ public:
 
   template<class T> static void plog(string s, const T &v);
   static string file_str(string fname);
+  static string outfile_str(string fname);
 
 private:
   static FILE *_plogf;
@@ -218,8 +223,15 @@ Env::file_str(string fname)
   return s;
 }
 
+inline string
+Env::outfile_str(string fname)
+{
+  string s = prefix + fname;
+  return s;
+}
+
 inline
-Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname,
+Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string Noutfname,
 	 bool nmival, string gfname, uint32_t rfreq,
 	 bool sid, string lbl, bool alogl, double rseed,
 	 uint32_t maxitr, bool load, 
@@ -256,6 +268,7 @@ Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fn
     seed(rseed),
     save_state_now(false),
     datfname(fname),
+    outfname(Noutfname),
     label(lbl),
     nmi(nmival),
     ground_truth_fname(gfname),
@@ -292,7 +305,9 @@ Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fn
   ostringstream sa;
   sa << "n" << n << "-";
   sa << "m" << m << "-";
-  sa << "k" << k;
+  sa << "k" << k << "-";
+  sa << "uc" << uc << "-";
+  sa << "ic" << ic;
   if (label != "")
     sa << "-" << label;
   else if (datfname.length() > 3) {
@@ -380,8 +395,17 @@ Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fn
 
   fprintf(stdout, "+ Creating directory %s\n", prefix.c_str());
   fflush(stdout);
+  
+  struct stat buffer;
+  
+  int out = stat((outfname+"/"+prefix).c_str(), &buffer);
+  
+  if ( out != 0 ) {
+    cout << "+ Creating directory " << outfname << "/" << prefix << endl;
+    assert(!mkdir((outfname+"/"+prefix).c_str(), S_IRUSR | S_IWUSR | S_IXUSR));
+  }
 
-  assert (Logger::initialize(prefix, "infer.log", 
+  assert (Logger::initialize(prefix, "infer.log",
 			     true, level) >= 0);
   _plogf = fopen(file_str("/param.txt").c_str(), "w");
   if (!_plogf)  {

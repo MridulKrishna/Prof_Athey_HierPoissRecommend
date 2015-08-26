@@ -23,7 +23,7 @@ public:
   virtual uint32_t n() const = 0;
   virtual uint32_t k() const = 0;
   virtual double compute_elbo_term_helper() const = 0;
-  virtual void save_state(const IDMap &m) const = 0;
+  virtual void save_state(const IDMap &m, string filename) const = 0;
   virtual void load()  = 0;
   virtual void load_from_lda(string dir, double alpha, uint32_t K) 
   { lerr("load_from_lda() unimplemented!\n"); }
@@ -139,7 +139,7 @@ public:
   void initialize2(double v, int offset);
   void initialize_exp(int offset);
   void initialize_exp(double v, int offset);
-  void save_state(const IDMap &m) const;
+  void save_state(const IDMap &m, string filename) const;
   void load_from_lda(string dir, double alpha, uint32_t K);
   void set_prior_rate(const Array &ev, const Array &elogv);
 
@@ -432,14 +432,14 @@ GPMatrix::compute_elbo_term_helper() const
 }
 
 inline void
-GPMatrix::save_state(const IDMap &m) const
+GPMatrix::save_state(const IDMap &m, string filename) const
 {
   string expv_fname = string("/") + name() + ".tsv";
   string shape_fname = string("/") + name() + "_shape.tsv";
   string rate_fname = string("/") + name() + "_rate.tsv";
-  _scurr.save(Env::file_str(shape_fname), m);
-  _rcurr.save(Env::file_str(rate_fname), m);
-  _Ev.save(Env::file_str(expv_fname), m);
+  _scurr.save(filename+"/"+Env::outfile_str(shape_fname), m);
+  _rcurr.save(filename+"/"+Env::outfile_str(rate_fname), m);
+  _Ev.save(filename+"/"+Env::outfile_str(expv_fname), m);
 }
 
 // inline void
@@ -544,7 +544,7 @@ public:
   double compute_elbo_term_helper() const;
   void sum_cols(Array &v);
 
-  void save_state(const IDMap &m) const;
+  void save_state(const IDMap &m, string filename) const;
   void load();
   void load_from_lda(string dir, double alpha, uint32_t K);
 
@@ -791,7 +791,7 @@ GPMatrixGR::compute_elbo_term_helper() const
 
 // Saves the mean, shape, and rate parameters in the file. The argument should contain _ratings.seq2movie(), the mapping from indices in the program to the codes for items and users to print in the output
 inline void
-GPMatrixGR::save_state(const IDMap &m) const
+GPMatrixGR::save_state(const IDMap &m, string filename) const
 {
   string expv_fname = string("/") + name() + ".tsv";
   string shape_fname = string("/") + name() + "_shape.tsv";
@@ -887,7 +887,7 @@ public:
   void initialize_exp();
 
   double compute_elbo_term_helper() const;
-  void save_state(const IDMap &m) const;
+  void save_state(const IDMap &m, string filename) const;
   void load();
 
 private:
@@ -1035,14 +1035,14 @@ GPArray::compute_elbo_term_helper() const
 }
 
 inline void
-GPArray::save_state(const IDMap &m) const
+GPArray::save_state(const IDMap &m, string filename) const
 {
   string expv_fname = string("/") + name() + ".tsv";
   string shape_fname = string("/") + name() + "_shape.tsv";
   string rate_fname = string("/") + name() + "_rate.tsv";
-  _scurr.save(Env::file_str(shape_fname), m);
-  _rcurr.save(Env::file_str(rate_fname), m);
-  _Ev.save(Env::file_str(expv_fname), m);
+  _scurr.save(Env::outfile_str(shape_fname), m);
+  _rcurr.save(Env::outfile_str(rate_fname), m);
+  _Ev.save(Env::outfile_str(expv_fname), m);
 }
 
 inline void

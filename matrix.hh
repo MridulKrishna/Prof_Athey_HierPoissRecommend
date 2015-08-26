@@ -1197,6 +1197,8 @@ D2Array<double>::save(string name, const IDMap &m) const
     FILE * tf = fopen(name.c_str(), "w");
     if (!tf)
         lerr("cannot open file %s\n", name.c_str());
+   
+    cout << name << endl;
     assert (tf);
     const double **cd = const_data();
     uint32_t id = 0;
