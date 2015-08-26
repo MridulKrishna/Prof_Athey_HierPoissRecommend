@@ -1102,20 +1102,24 @@ HGAPRec::vb_hier()
 //        cout << phi.sum(0) << endl;
 //        phi.print();
         
-        // Defines the subarrays of phi for latent variables, user observables, and item observables
+        // Defines the subarrays of phi for latent variables, user observables, and item observables and updates the next shape parameter of theta and beta (gamma and kappa) by adding y_{ui} phi_{uik} to the nth row of gamma and the mth row of kappa (the first equation in steps 2 and 3 of the algorithm in the paper)
         Array phik(_k);
         Array phil(_ic);
         Array phim(_uc);
         
         phik.copy_from(phi.subarray(0,_k-1));
-        phil.copy_from(phi.subarray(_k,_k+_ic-1));
-        phim.copy_from(phi.subarray(_k+_ic,_k+_ic+_uc-1));
-        
-        // Updates the next shape parameter of theta and beta (gamma and kappa) by adding y_{ui} phi_{uik} to the nth row of gamma and the mth row of kappa (the first equation in steps 2 and 3 of the algorithm in the paper)
         _htheta.update_shape_next1(n, phik);
         _hbeta.update_shape_next1(m, phik);
-        _hsigma.update_shape_next1(n, phil);
-        _hrho.update_shape_next1(m, phim);
+        
+        if (_ic > 0) {
+          phil.copy_from(phi.subarray(_k,_k+_ic-1));
+          _hsigma.update_shape_next1(n, phil);
+        }
+        
+        if ( _uc > 0) {
+          phim.copy_from(phi.subarray(_k+_ic,_k+_ic+_uc-1));
+          _hrho.update_shape_next1(m, phim);
+        }
         
         if (_env.bias) {
           _thetabias.update_shape_next3(n, 0, phi[_k]);
@@ -1150,21 +1154,24 @@ HGAPRec::vb_hier()
     // Computes expectations and log expectations based on the new parameters
     _htheta.compute_expectations();
     
-    // Computes the sums of user characteristics (second term for \mu_{ul}^{rte}
-    Array itemSum(_ic);
-    _ratings._itemChar.colsum(itemSum);
-    
-    // Sets the prior rate based on expectations with current parameters, i.e.,\frac{\kappa^{shp}}{\kappa^{rte}}
-    _hsigma.set_prior_rate(_thetarate.expected_v(),
-                           _thetarate.expected_logv());
-    
-    // Adds the previous sum (itemSum) to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
-    _hsigma.update_rate_next(itemSum);
-    // Swaps the current and the next values for the parameters
-    _hsigma.swap();
-    
-    // Computes expectations and log expectations based on the new parameters
-    _hsigma.compute_expectations();
+    // If there are unobserved item characteristics...
+    if (_ic > 0) {
+      // Computes the sums of user characteristics (second term for \mu_{ul}^{rte}
+      Array itemSum(_ic);
+      _ratings._itemChar.colsum(itemSum);
+      
+      // Sets the prior rate based on expectations with current parameters, i.e.,\frac{\kappa^{shp}}{\kappa^{rte}}
+      _hsigma.set_prior_rate(_thetarate.expected_v(),
+                             _thetarate.expected_logv());
+      
+      // Adds the previous sum (itemSum) to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
+      _hsigma.update_rate_next(itemSum);
+      // Swaps the current and the next values for the parameters
+      _hsigma.swap();
+      
+      // Computes expectations and log expectations based on the new parameters
+      _hsigma.compute_expectations();
+    }
     
 //    _htheta.shape_curr().print();
 //    _htheta.rate_curr().print();
@@ -1191,21 +1198,24 @@ HGAPRec::vb_hier()
     // Computes expectations and log expectations based on the new parameters
     _hbeta.compute_expectations();
     
-    // Computes the sums of user characteristics (second term for \mu_{ul}^{rte}
-    Array userSum(_uc);
-    _ratings._userChar.colsum(userSum);
-    
-    // Sets the prior rate based on expectations with current parameters, i.e.,\frac{\tau^{shp}}{\tau^{rte}}
-    _hrho.set_prior_rate(_betarate.expected_v(),
+    // If there are unobserved user characteristics...
+    if (_ic > 0) {
+      // Computes the sums of user characteristics (second term for \mu_{ul}^{rte}
+      Array userSum(_uc);
+      _ratings._userChar.colsum(userSum);
+      
+      // Sets the prior rate based on expectations with current parameters, i.e.,\frac{\tau^{shp}}{\tau^{rte}}
+      _hrho.set_prior_rate(_betarate.expected_v(),
                            _betarate.expected_logv());
-    
-    // Adds the previous sum to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
-    _hrho.update_rate_next(userSum);
-    // Swaps the current and the next values for the parameters
-    _hrho.swap();
-    
-    // Computes expectations and log expectations based on the new parameters
-    _hrho.compute_expectations();
+      
+      // Adds the previous sum to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
+      _hrho.update_rate_next(userSum);
+      // Swaps the current and the next values for the parameters
+      _hrho.swap();
+      
+      // Computes expectations and log expectations based on the new parameters
+      _hrho.compute_expectations();
+    }
     
 //        _hbeta.shape_curr().print();
 //        _hbeta.rate_curr().print();
@@ -1230,16 +1240,21 @@ HGAPRec::vb_hier()
     Array sigmacolsum(_n);
     // Computes the second term of \kappa^{rte}_{uk})
     _htheta.sum_cols(thetacolsum);
-    // Computes the third term of \kappa^{rte}_{uk})
-    _hsigma.sum_cols(sigmacolsum);
     
 //    sigmacolsum.print();
     
     // Adds (K+L)a to the shape parameter of xi
     _thetarate.update_shape_next((_k+_ic) * _thetarate.sprior());
-    // Adds the new terms to the rate parameter of xi
+    // Adds the new term to the rate parameter of xi
     _thetarate.update_rate_next(thetacolsum);
-    _thetarate.update_rate_next(sigmacolsum);
+    
+    // With unobserved item characteristics...
+    if (_ic > 0) {
+      // Computes the third term of \kappa^{rte}_{uk})
+      _hsigma.sum_cols(sigmacolsum);
+      // Adds the new term to the rate parameter of xi
+      _thetarate.update_rate_next(sigmacolsum);
+    }
     debug("thetacolsum = %s", thetacolsum.s().c_str());
     
     // Swaps the current and the next values for the parameters
@@ -1253,13 +1268,19 @@ HGAPRec::vb_hier()
     Array rhocolsum(_m);
     // Computes the second term of \tau^{rte}_{uk})
     _hbeta.sum_cols(betacolsum);
-    // Computes the third term of \tau^{rte}_{uk})
-    _hrho.sum_cols(rhocolsum);
     // Adds (K+M)c to the shape parameter of eta
     _betarate.update_shape_next((_k+_uc) * _betarate.sprior());
-    // Adds the new terms to the rate parameter of eta
+    // Adds the new term to the rate parameter of eta
     _betarate.update_rate_next(betacolsum);
-    _betarate.update_rate_next(rhocolsum);
+    
+    // With unobserved user characteristics...
+    if (_uc > 0) {
+      // Computes the third term of \tau^{rte}_{uk})
+      _hrho.sum_cols(rhocolsum);
+      // Adds the new term to the rate parameter of eta
+      _betarate.update_rate_next(rhocolsum);
+    }
+    
     debug("betacolsum = %s", betacolsum.s().c_str());
     
     // Swaps the current and the next values for the parameters
@@ -1267,19 +1288,19 @@ HGAPRec::vb_hier()
     // Computes the expectations with the (new) current values
     _betarate.compute_expectations();
     
-    if (_iter == 9) {
-      _betarate.shape_curr().print();
-      _betarate.rate_curr().print();
-      _thetarate.shape_curr().print();
-      _thetarate.rate_curr().print();
-    }
-      
+//    if (_iter == 9) {
+//      _betarate.shape_curr().print();
+//      _betarate.rate_curr().print();
+//      _thetarate.shape_curr().print();
+//      _thetarate.rate_curr().print();
+//    }
+    
     printf("\r iteration %d", _iter);
     
     fflush(stdout);
     if (_iter % _env.reportfreq == 0) {
       compute_likelihood(true);
-      compute_likelihood(false);
+      //compute_likelihood(false);
       //compute_rmse();
       save_model();
       // Computes and saves number of relevant recommendations among best ranked items
@@ -1298,10 +1319,10 @@ HGAPRec::vb_hier()
     }
     _iter++;
 
-    if ( _iter == 1) {
+//    if ( _iter == 1) {
 //      _betarate.shape_curr().print();
 //      _betarate.rate_curr().print();
-    }
+//    }
   }
 }
 
@@ -1351,39 +1372,42 @@ HGAPRec::compute_likelihood(bool validation)
   // Average log likelihood
   a = s / k;  
   
-  if (!validation)
-    return;
-  
-  bool stop = false;
-  int why = -1;
-  
-  // Check if the number of iterations is greater than 30
-  if (_iter > 30) {
-    // If log likelihood increased, is not zero, and it increased less than 0.000001 of the previous value, set why to zero
-    if (a > _prev_h && _prev_h != 0 && fabs((a - _prev_h) / _prev_h) < 0.000001) {
-      //stop = true;
-      why = 0;
-    }
-    // Count the number of times in a row that the likelihood decreased
-    else if (a < _prev_h)
-      _nh++;
-    else if (a > _prev_h)
-      _nh = 0;
+  // Check validation criterion
+  if (validation) {
+    bool stop = false;
+    int why = -1;
     
-    if (_nh > 2) { // be robust to small fluctuations in predictive likelihood
-      why = 1;
-      //stop = true;
+    // Check stopping criteria every iteration after 30
+    if (_iter > 30) {
+      
+      cout << " Likelihood change: " << fabs((a - _prev_h) / _prev_h) << endl;
+      // If log likelihood increased, is not zero, and it increased less than 0.000001 of the previous value, set why to zero
+      if (a > _prev_h && _prev_h != 0 && fabs((a - _prev_h) / _prev_h) < 0.000001) {
+        
+        stop = true;
+        why = 0;
+      }
+      // Count the number of times in a row that the likelihood decreased
+      else if (a < _prev_h)
+        _nh++;
+      else if (a > _prev_h)
+        _nh = 0;
+      
+      if (_nh > 2) { // be robust to small fluctuations in predictive likelihood
+        why = 1;
+        //stop = true;
+      }
     }
-  }
-  // Store average log likelihood as previous value
-  _prev_h = a;
-  FILE *f = fopen(Env::file_str("/max.txt").c_str(), "w");
-  fprintf(f, "%d\t%d\t%.5f\t%d\n", 
-	  _iter, duration(), a, why);
-  fclose(f);
-  if (stop) {
-    do_on_stop();
-    exit(0);
+    // Store average log likelihood in _prev_h (previous likelihood)
+    _prev_h = a;
+    FILE *f = fopen(Env::file_str("/max.txt").c_str(), "w");
+    fprintf(f, "%d\t%d\t%.5f\t%d\n",
+            _iter, duration(), a, why);
+    fclose(f);
+    if (stop) {
+      do_on_stop();
+      exit(0);
+    }
   }
 }
 
