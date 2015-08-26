@@ -796,9 +796,9 @@ GPMatrixGR::save_state(const IDMap &m, string filename) const
   string expv_fname = string("/") + name() + ".tsv";
   string shape_fname = string("/") + name() + "_shape.tsv";
   string rate_fname = string("/") + name() + "_rate.tsv";
-  _scurr.save(Env::file_str(shape_fname), m);
-  _rcurr.save(Env::file_str(rate_fname), m);
-  _Ev.save(Env::file_str(expv_fname), m);
+  _scurr.save(filename+"/"+Env::outfile_str(shape_fname), m);
+  _rcurr.save(filename+"/"+Env::outfile_str(rate_fname), m);
+  _Ev.save(filename+"/"+Env::outfile_str(expv_fname), m);
 }
 
 inline void
@@ -1040,9 +1040,9 @@ GPArray::save_state(const IDMap &m, string filename) const
   string expv_fname = string("/") + name() + ".tsv";
   string shape_fname = string("/") + name() + "_shape.tsv";
   string rate_fname = string("/") + name() + "_rate.tsv";
-  _scurr.save(Env::outfile_str(shape_fname), m);
-  _rcurr.save(Env::outfile_str(rate_fname), m);
-  _Ev.save(Env::outfile_str(expv_fname), m);
+  _scurr.save(filename+"/"+Env::outfile_str(shape_fname), m);
+  _rcurr.save(filename+"/"+Env::outfile_str(rate_fname), m);
+  _Ev.save(filename+"/"+Env::outfile_str(expv_fname), m);
 }
 
 inline void

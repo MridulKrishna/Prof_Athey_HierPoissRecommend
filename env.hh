@@ -27,8 +27,8 @@ typedef D2Array<KV> MatrixKV;
 typedef D1Array<KV> KVArray;
 typedef D1Array<KVI> KVIArray;
 
-typedef std::map<uint32_t, yval_t> RatingMap;
-typedef std::map<uint32_t, uint32_t> IDMap;
+typedef std::map<uint64_t, yval_t> RatingMap;
+typedef std::map<uint64_t, uint64_t> IDMap;
 typedef std::map<uint32_t, uint32_t> FreqMap;
 typedef std::map<string, uint32_t> FreqStrMap;
 typedef std::map<string, uint32_t> StrMap;

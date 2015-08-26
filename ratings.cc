@@ -119,7 +119,7 @@ Ratings::readObserved(string dir)
     ifstream infile(buf);
     string line;
     int nLines = 0;
-    set<uint32_t> users;
+    set<uint64_t> users;
     
     // Loops over the lines of the file and saves the variables
     while ( getline(infile,line)) {
@@ -130,13 +130,13 @@ Ratings::readObserved(string dir)
       assert(size(strs)==_env.uc+1);
       
       // Gets the code of the user in that line
-      int uCode = stoi(strs.at(0));
+      uint64_t uCode = stoi(strs.at(0));
       // Checks that the user is in the list of users
 //      cout << uCode << endl;
       assert(_user2seq.find(uCode) != _user2seq.end());
       // Checks that this is the first line for that user
       assert(users.insert(uCode).second);
-      uint32_t pos = _user2seq[uCode];
+      uint64_t pos = _user2seq[uCode];
       
 //      cout << uCode << " " << pos << endl;
       
@@ -160,7 +160,7 @@ Ratings::readObserved(string dir)
     ifstream infile(buf);
     string line;
     int nLines = 0;
-    set<uint32_t> items;
+    set<uint64_t> items;
     
     // Loops over the lines of the file and saves the variables
     while ( getline(infile,line)) {
@@ -171,12 +171,13 @@ Ratings::readObserved(string dir)
       assert(size(strs)==_env.ic+1);
       
       // Gets the code of the item in that line
-      uint32_t iCode = stol(strs.at(0));
+      uint64_t iCode = stol(strs.at(0));
+      cout << iCode << endl;
       // Checks that the user is in the list of users
       assert(_movie2seq.find(iCode) != _movie2seq.end());
       // Checks that this is the first line for that user
       assert(items.insert(iCode).second);
-      uint32_t pos = _movie2seq[iCode];
+      uint64_t pos = _movie2seq[iCode];
       
 //      cout << iCode << " " << pos << endl;
       
@@ -230,20 +231,21 @@ Ratings::read_generic(FILE *f, CountMap *cmap)
   //char b[128];
   
   // Integers that will store the values read from each line for the user, item, and rating (mid because of movie?)
-  uint32_t mid = 0, uid = 0, rating = 0;
+  uint64_t mid = 0, uid = 0;
+  uint32_t rating;
   
   // Loop that reads each line in the file
   while (!feof(f)) {
     
     // Checks that the line has 3 numbers
-    if (fscanf(f, "%u\t%u\t%u\n", &uid, &mid, &rating) < 0) {
+    if (fscanf(f, "%llu\t%llu\t%u\n", &uid, &mid, &rating) < 0) {
       printf("error: unexpected lines in file\n");
       fclose(f);
       exit(-1);
     }
-    
-    if ( uid == 2169292)
-      cout << uid << endl;
+   
+//    if ( uid == 2169292)
+//      cout << uid << endl;
     
     IDMap::iterator it = _user2seq.find(uid);
     IDMap::iterator mt = _movie2seq.find(mid);
@@ -274,8 +276,8 @@ Ratings::read_generic(FILE *f, CountMap *cmap)
     }
     
     // Finds the indices for the user and the item
-    uint32_t m = _movie2seq[mid];
-    uint32_t n = _user2seq[uid];
+    uint64_t m = _movie2seq[mid];
+    uint64_t n = _user2seq[uid];
     
     // If the value is not zero (otherwise do nothing)
     if (input_rating_class(rating) > 0) {
@@ -378,8 +380,8 @@ Ratings::read_nyt_train(FILE *f, CountMap *cmap)
     
     assert (mt != _movie2seq.end());
 
-    uint32_t m = _movie2seq[mid];
-    uint32_t n = _user2seq[uid];
+    uint64_t m = _movie2seq[mid];
+    uint64_t n = _user2seq[uid];
     
     if (input_rating_class(rating) > 0) {
       if (!cmap) {

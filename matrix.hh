@@ -34,7 +34,7 @@ public:
     WordCount(): inherited() { }
     WordCount(uint32_t a, uint16_t b): inherited(a,b) { }
 };
-typedef std::map<uint32_t, uint32_t> IDMap;
+typedef std::map<uint64_t, uint64_t> IDMap;
 
 using namespace std;
 
@@ -1198,10 +1198,10 @@ D2Array<double>::save(string name, const IDMap &m) const
     if (!tf)
         lerr("cannot open file %s\n", name.c_str());
    
-    cout << name << endl;
+//    cout << name << endl;
     assert (tf);
     const double **cd = const_data();
-    uint32_t id = 0;
+    uint64_t id = 0;
     for (uint32_t i = 0; i < _m; ++i) {
         IDMap::const_iterator idt = m.find(i);
         if (idt != m.end())
@@ -1210,7 +1210,8 @@ D2Array<double>::save(string name, const IDMap &m) const
             id = i;
         
         fprintf(tf,"%d\t", i);
-        fprintf(tf,"%d\t", id);
+        fprintf(tf,"%llu\t", id);
+        
         for (uint32_t k = 0; k < _n; ++k) {
             if (k == _n - 1)
                 fprintf(tf,"%.8f\n", cd[i][k]);
@@ -1230,7 +1231,7 @@ D2Array<double>::save_transpose(string name, const IDMap &m) const
         lerr("cannot open file %s\n", name.c_str());
     assert (tf);
     const double **cd = const_data();
-    uint32_t id = 0;
+    uint64_t id = 0;
     for (uint32_t i = 0; i < _n; ++i) {
         IDMap::const_iterator idt = m.find(i);
         if (idt != m.end())

@@ -1303,8 +1303,8 @@ HGAPRec::vb_hier()
     
     fflush(stdout);
     if (_iter % _env.reportfreq == 0) {
-      stop = compute_likelihood(true);
       compute_likelihood(false);
+      stop = compute_likelihood(true);
       //compute_rmse();
       save_model();
       // Computes and saves number of relevant recommendations among best ranked items
@@ -1381,12 +1381,12 @@ HGAPRec::compute_likelihood(bool validationLikelihood)
   // Average log likelihood
   a = s / k;
   if (validationLikelihood) {
-    cout << "Log-likelihood: (total,number,average)" << endl;
     cout << "Validation: " ;
-    cout << setprecision(10) << s << " " << k << " " << a << endl;
+    cout << setprecision(10) << s << "\t" << k << "\t" << a << endl;
   } else {
+    cout << "Log-likelihood: (total,number,average)" << endl;
     cout << "Test: " ;
-    cout << setprecision(10) << s << " " << k << " " << a << endl;
+    cout << setprecision(10) << s << "\t" << k << "\t" << a << endl;
   }
   
   bool stop = false;
@@ -2156,6 +2156,8 @@ HGAPRec::save_model()
     _betarate.save_state(_ratings.seq2movie(),_env.outfname);
     _htheta.save_state(_ratings.seq2user(),_env.outfname);
     _thetarate.save_state(_ratings.seq2user(),_env.outfname);
+    _hsigma.save_state(_ratings.seq2user(),_env.outfname);
+    _hrho.save_state(_ratings.seq2movie(),_env.outfname);
   } else {
     _beta.save_state(_ratings.seq2movie(),_env.outfname);
     _theta.save_state(_ratings.seq2user(),_env.outfname);

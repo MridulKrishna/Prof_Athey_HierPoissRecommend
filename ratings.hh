@@ -92,8 +92,8 @@ private:
   int read_nyt(string dir);
   int read_mendeley_metadata(string dir);
   string movies_by_user_s() const;
-  bool add_movie(uint32_t id);
-  bool add_user(uint32_t id);
+  bool add_movie(uint64_t id);
+  bool add_user(uint64_t id);
   
   int _offset;
 
@@ -135,7 +135,7 @@ Ratings::m() const
 
 // Adds a new user to the lists
 inline bool
-Ratings::add_user(uint32_t id)
+Ratings::add_user(uint64_t id)
 {
   if (_curr_user_seq >= _env.n) {
     debug("max users %d reached", _env.n);
@@ -165,7 +165,7 @@ Ratings::add_user(uint32_t id)
 
 // Adds a new user to the list
 inline bool
-Ratings::add_movie(uint32_t id)
+Ratings::add_movie(uint64_t id)
 {
   if (_curr_movie_seq >= _env.m) {
     debug("max movies %d reached", _env.m);
