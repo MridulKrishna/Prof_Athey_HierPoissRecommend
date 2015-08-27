@@ -172,7 +172,7 @@ Ratings::readObserved(string dir)
       
       // Gets the code of the item in that line
       uint64_t iCode = stol(strs.at(0));
-      cout << iCode << endl;
+//      cout << iCode << endl;
       // Checks that the user is in the list of users
       assert(_movie2seq.find(iCode) != _movie2seq.end());
       // Checks that this is the first line for that user

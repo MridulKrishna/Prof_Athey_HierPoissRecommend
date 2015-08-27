@@ -42,6 +42,7 @@ _use_rate_as_score(true),
 _topN_by_user(100),
 _maxval(0), _minval(65536)
 {
+  cout << "Offset: " << _offset << endl;
   // Initializes the random number generator
   gsl_rng_env_setup();
   const gsl_rng_type *T = gsl_rng_default;
