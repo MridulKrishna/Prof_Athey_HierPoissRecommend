@@ -403,6 +403,7 @@ D1Array<double>::normalize()
         _data[i] = _data[i] / s;
 }
 
+// Multiplies each element of the array by s
 template<class T> inline D1Array<T> &
 D1Array<T>::scale(T s)
 {
@@ -895,8 +896,8 @@ public:
     T colsum(uint32_t p) const;
     
     void set_elements(T v);
-    void set_elements(uint32_t m, const Array &v);
-    void set_elements(uint32_t m, T v);
+    void set_row(uint32_t row, const Array &values);
+    void set_row(uint32_t row, T value);
     double dot(uint32_t i, uint32_t j);
     void zero();
     void zero(uint32_t a);
@@ -976,7 +977,7 @@ D2Array<T>::set(uint32_t m, uint32_t n, T val)
     _data[m][n] = val;
 }
 
-
+// Sets all elements to v
 template<class T> inline void
 D2Array<T>::set_elements(T v)
 {
@@ -985,19 +986,21 @@ D2Array<T>::set_elements(T v)
             _data[i][j] = v;
 }
 
+// Sets row m to v, a vector
 template<class T> inline void
-D2Array<T>::set_elements(uint32_t m, const Array &v)
+D2Array<T>::set_row(uint32_t row, const Array &value )
 {
-    assert (v.size() == _n);
+    assert (value.size() == _n);
     for (uint32_t j = 0; j < _n; ++j)
-        _data[m][j] = v[j];
+        _data[row][j] = value[j];
 }
 
+// Sets row m to v, a scalar
 template<class T> inline void
-D2Array<T>::set_elements(uint32_t m, T v)
+D2Array<T>::set_row(uint32_t row, T value)
 {
     for (uint32_t j = 0; j < _n; ++j)
-        _data[m][j] = v;
+        _data[row][j] = value;
 }
 
 template<class T> inline void
@@ -1041,6 +1044,7 @@ D2Array<T>::zero(uint32_t a)
         _data[a][j] = 0;
 }
 
+// Multiplies each element of the matrix by s
 template<class T> inline D2Array<T> &
 D2Array<T>::scale(T s)
 {

@@ -1293,7 +1293,15 @@ HGAPRec::vb_hier()
     // Computes the expectations with the (new) current values
     _betarate.compute_expectations();
     
-//    if (_iter == 9) {
+//    if (_iter == 60) {
+//      cout << "Beta shape: " << endl;
+//      _hbeta.shape_curr().print();
+//            cout << "Beta rate: " << endl;
+//      _hbeta.rate_curr().print();
+//            cout << "Theta shape: " << endl;
+//      _htheta.shape_curr().print();
+//                  cout << "Theta rate: " << endl;
+//      _htheta.rate_curr().print();
 //      _betarate.shape_curr().print();
 //      _betarate.rate_curr().print();
 //      _thetarate.shape_curr().print();
@@ -1356,6 +1364,8 @@ HGAPRec::compute_likelihood(bool validationLikelihood)
     ff = _tf;
   }
 
+  cout << mp->size() << endl;
+  
   // Loop over ratings
   for (CountMap::const_iterator i = mp->begin();
        i != mp->end(); ++i) {

@@ -182,13 +182,26 @@ GPMatrix::set_to_prior_curr()
   _rcurr.set_elements(_rprior);
 }
 
-// Saves
+// Sets in the prior rate
 inline void
 GPMatrix::set_prior_rate(const Array &ev, const Array &elogv)
 {
   assert (ev.size() == _n && elogv.size() == _n);
   for (uint32_t n = 0; n < _n; ++n) {
-    _rnext.set_elements(n, ev[n]);
+    _rnext.set_row(n, ev[n]);
+    _hier_rprior[n] = ev[n];
+    _hier_log_rprior[n] = elogv[n];
+  }
+  _hier = true;
+}
+
+// Saves
+inline void
+GPMatrix::set_prior_rate_scale(const Array &ev, const Array &elogv, const Array &scale)
+{
+  assert (ev.size() == _n && elogv.size() == _n);
+  for (uint32_t n = 0; n < _n; ++n) {
+    _rnext.set_row(n, ev[n]);
     _hier_rprior[n] = ev[n];
     _hier_log_rprior[n] = elogv[n];
   }
