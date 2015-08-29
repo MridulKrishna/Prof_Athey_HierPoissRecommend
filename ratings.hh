@@ -23,8 +23,10 @@ public:
     _users2rating(env.n),
     _users(env.n),
     _movies(env.m),
-    _userChar(env.n,env.uc,true),
-    _itemChar(env.m,env.ic,true),
+    _userObs(env.n,env.uc,true),
+    _itemObs(env.m,env.ic,true),
+    _userObsScale(env.uc),
+    _itemObsScale(env.ic),
     _env(env),
     _curr_user_seq(0), 
     _curr_movie_seq(0),
@@ -78,8 +80,11 @@ public:
   FreqMap validation_users_of_movie();
   IDMap leave_one_out();
   
-  Matrix _userChar;    // User characteristics
-  Matrix _itemChar;    // Item characteristics
+  Matrix _userObs;    // User characteristics
+  Matrix _itemObs;    // Item characteristics
+  
+  Array _userObsScale;
+  Array _itemObsScale;
   
   CountMap _validation_map;
   CountMap _test_map;

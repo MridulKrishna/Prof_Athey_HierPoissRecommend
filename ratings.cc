@@ -144,12 +144,25 @@ Ratings::readObserved(string dir)
 
       // Loops over the variables in the line and saves each one in the matrix of observed characteristics
       for ( int i = 0; i<_env.uc; i++) {
-//        _userChar.get(pos,i) = stod(strs.at(i+1));
-        _userChar.set(pos,i,stod(strs.at(i+1)));
+//        _userObs.get(pos,i) = stod(strs.at(i+1));
+        _userObs.set(pos,i,stod(strs.at(i+1)));
       }
     }
     assert(nLines==_env.n);
-//    _userChar.print();
+//    _userObs.print();
+    
+    // Compute vector of scale of observed user characteristics
+    if (_env.scale == Env::MEAN) {
+      _userObs.colmeans(_userObsScale);
+    } else if (_env.scale == Env::ONES) {
+      _userObsScale.set_elements(1);
+    } else if (_env.scale == Env::STD) {
+      cout << "Scale type not implemented yet" << endl;
+      exit(0);
+    } else {
+      cout << "Invalid scale type" << endl;
+      exit(0);
+    }
   }
   
   // Read item characteristics if the number is nonzero
@@ -185,11 +198,24 @@ Ratings::readObserved(string dir)
       
       // Loops over the variables in the line and saves each one in the matrix of observed characteristics
       for ( int i = 0; i<_env.ic; i++) {
-        _itemChar.get(pos,i) = stod(strs.at(i+1));
+        _itemObs.get(pos,i) = stod(strs.at(i+1));
       }
     }
     assert(nLines==_env.m);
-//    _itemChar.print();
+//    _itemObs.print();
+    
+    // Compute vector of scale of observed item characteristics
+    if (_env.scale == Env::MEAN) {
+      _itemObs.colmeans(_itemObsScale);
+    } else if (_env.scale == Env::ONES) {
+      _itemObsScale.set_elements(1);
+    } else if (_env.scale == Env::STD) {
+      cout << "Scale type not implemented yet" << endl;
+      exit(0);
+    } else {
+      cout << "Invalid scale type" << endl;
+      exit(0);
+    }
   }
 }
 

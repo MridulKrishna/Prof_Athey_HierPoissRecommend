@@ -23,12 +23,12 @@ _theta("theta", 0.3, 0.3, _n,_k,&_r),
 _beta("beta", 0.3, 0.3, _m,_k,&_r),
 _thetabias("thetabias", 0.3, 0.3, _n, 1, &_r),
 _betabias("betabias", 0.3, 0.3, _m, 1, &_r),
-_htheta("htheta", 0.3, 0.3, _n, _k, &_r),
-_hbeta("hbeta", 0.3, 0.3, _m, _k, &_r),
-_hsigma("hsigma", 0.3, 0.3, _n, _ic, &_r),
-_hrho("hrho", 0.3, 0.3, _m, _uc, &_r),
-_thetarate("thetarate", 0.3, 0.3, _n, &_r),
-_betarate("betarate", 0.3, 0.3, _m, &_r),
+_htheta("htheta", env.a, env.bp, _n, _k, &_r),
+_hbeta("hbeta", env.c, env.dp, _m, _k, &_r),
+_hsigma("hsigma", env.e, env.bp, _n, _ic, &_r),
+_hrho("hrho", env.f, env.dp, _m, _uc, &_r),
+_thetarate("thetarate", env.ap, env.ap/env.bp, _n, &_r),
+_betarate("betarate", env.cp, env.cp/env.dp, _m, &_r),
 _theta_mle(_n, _k),
 _beta_mle(_m, _k),
 _old_theta_mle(_n, _k),
@@ -101,17 +101,17 @@ _maxval(0), _minval(65536)
     Env::plog("beta shape:", _beta.sprior());
     Env::plog("beta rate:", _beta.rprior());
   } else {
-    Env::plog("htheta shape:", _htheta.sprior());
-    Env::plog("htheta rate:", _htheta.rprior());
-
-    Env::plog("hbeta shape:", _hbeta.sprior());
-    Env::plog("hbeta rate:", _hbeta.rprior());
-
-    Env::plog("thetarate shape:", _thetarate.sprior());
-    Env::plog("thetarate rate:", _thetarate.rprior());
-
-    Env::plog("betarate shape:", _betarate.sprior());
-    Env::plog("betarate rate:", _thetarate.rprior());
+//    Env::plog("htheta shape:", _htheta.sprior());
+//    Env::plog("htheta rate:", _htheta.rprior());
+//
+//    Env::plog("hbeta shape:", _hbeta.sprior());
+//    Env::plog("hbeta rate:", _hbeta.rprior());
+//
+//    Env::plog("thetarate shape:", _thetarate.sprior());
+//    Env::plog("thetarate rate:", _thetarate.rprior());
+//
+//    Env::plog("betarate shape:", _betarate.sprior());
+//    Env::plog("betarate rate:", _thetarate.rprior());
   }
 }
 
@@ -178,64 +178,38 @@ HGAPRec::~HGAPRec()
 //}
 
 void
-HGAPRec::initialize()
-{
-//  //cout << "initialize()" << endl;
-//  if (!_env.hier) {
-//    _beta.initialize();
-//    _theta.initialize();
-//
-//    _beta.initialize_exp();
-//    _theta.initialize_exp();
-//
-//    //_theta.initialize2(_m);
-//    //_theta.compute_expectations();
-//    //_beta.initialize2(_n);
-//    //_beta.compute_expectations();
-//
-//  } else {
-    //_thetarate.set_to_prior_curr();
-    //_thetarate.set_to_prior();
-
+HGAPRec::initialize() {
   // Initializes the xi and eta parameters
   _thetarate.initialize2((_k+_ic)*0.3,_offset);
   _thetarate.compute_expectations();
+//  _thetarate.shape_curr().print();
+//    _thetarate.rate_curr().print();
   
   _betarate.initialize2((_k+_uc)*0.3,_offset);
   _betarate.compute_expectations();
-  
-  //_betarate.set_to_prior_curr();
-  //_betarate.set_to_prior();
-  //_hbeta.initialize2(_n);
-  //_hbeta.compute_expectations();
+//  _betarate.shape_curr().print();
+//    _betarate.rate_curr().print();
   
   // Initializes the beta and theta vectors
   _hbeta.initialize(_offset);
   _hbeta.initialize_exp(_offset);
-  
-  //_hbeta.initialize_exp(_betarate.expected_v()[0]);
-  //_htheta.initialize2(_m);
-  //_htheta.compute_expectations();
+//      _hbeta.shape_curr().print();
+//        _hbeta.rate_curr().print();
   
   _htheta.initialize(_offset);
   _htheta.initialize_exp(_offset);
+//  _htheta.shape_curr().print();
+//  _htheta.rate_curr().print();
   
   _hsigma.initialize(_offset);
   _hsigma.initialize_exp(_offset);
+//  _hsigma.shape_curr().print();
+//  _hsigma.rate_curr().print();
   
   _hrho.initialize(_offset);
   _hrho.initialize_exp(_offset);
-
-    //_htheta.initialize_exp(_thetarate.expected_v()[0]);
-//  }
-  
-//  if (_env.bias) {
-//    _thetabias.initialize2(_m);
-//    _thetabias.compute_expectations();
-//    
-//    _betabias.initialize2(_n);
-//    _betabias.compute_expectations();
-//  }
+//  _hrho.shape_curr().print();
+//  _hrho.rate_curr().print();
 }
 
 // Calculates the vector of probabilites for the multinomial distribution and saves it in argument phi
@@ -279,8 +253,8 @@ HGAPRec::get_phi(GPBase<Matrix> &theta, uint32_t u, GPBase<Matrix> &beta, uint32
   const double  **elogsigma = sigma.expected_logv().const_data();
   const double  **elogrho = rho.expected_logv().const_data();
   
-  const Matrix* userChar = &_ratings._userChar;
-  const Matrix* itemChar = &_ratings._itemChar;
+  const Matrix* userChar = &_ratings._userObs;
+  const Matrix* itemChar = &_ratings._itemObs;
   
   // Makes phi a zero vector
   phi.zero();
@@ -1082,23 +1056,20 @@ HGAPRec::vb_hier()
 //        cout << "Rating: " << y2 << endl;
 //        ////////
         
-        if (_env.bias) {
-          const double **tbias = _thetabias.expected_logv().const_data();
-          const double **bbias = _betabias.expected_logv().const_data();
-          
-          get_phi(_htheta, n, _hbeta, m, tbias[n][0], bbias[m][0], phi);
-        } else
-          // Finds phi from the current parameters of hbeta, htheta, hsigma, and hrho (the equation in step 1 of the algorithm in the paper)
-
-          get_phi(_htheta, n, _hbeta, m, _hsigma, _hrho, _ic, _uc, phi);
-     
-//        cout << phi.sum(0) << endl;
-//        phi.print();
+        // Finds phi from the current parameters of hbeta, htheta, hsigma, and hrho (the equation in step 1 of the algorithm in the paper)
+        get_phi(_htheta, n, _hbeta, m, _hsigma, _hrho, _ic, _uc, phi);
         
+//        cout << phi.sum(0) << endl;
+//        if (_iter == 0) {
+//          cout << "Phi: " << endl;
+//          phi.print();
+//        }
+      
         // Makes phi sum up to y to get y_{ui} phi_{uik}
         if (y > 1) {
           phi.scale(y);
         }
+        
 
 //        if (_iter == 0 && n == 0 && j == 1)
 //        cout << n << " " << j << endl;
@@ -1129,7 +1100,6 @@ HGAPRec::vb_hier()
         if (_env.bias) {
           _thetabias.update_shape_next3(n, 0, phi[_k]);
           _betabias.update_shape_next3(m, 0, phi[_k+1]);
-          
         }
 //        phi.print();
       }
@@ -1163,11 +1133,11 @@ HGAPRec::vb_hier()
     if (_ic > 0) {
       // Computes the sums of user characteristics (second term for \mu_{ul}^{rte}
       Array itemSum(_ic);
-      _ratings._itemChar.colsum(itemSum);
+      _ratings._itemObs.colsum(itemSum);
       
       // Sets the prior rate based on expectations with current parameters, i.e.,\frac{\kappa^{shp}}{\kappa^{rte}}
-      _hsigma.set_prior_rate(_thetarate.expected_v(),
-                             _thetarate.expected_logv());
+      _hsigma.set_prior_rate_scaled(_thetarate.expected_v(),
+                             _thetarate.expected_logv(),_ratings._itemObsScale);
       
       // Adds the previous sum (itemSum) to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
       _hsigma.update_rate_next(itemSum);
@@ -1178,8 +1148,11 @@ HGAPRec::vb_hier()
       _hsigma.compute_expectations();
     }
     
+//    cout << "Theta: " << endl;
 //    _htheta.shape_curr().print();
 //    _htheta.rate_curr().print();
+//
+//    cout << "Sigma: " << endl;
 //    _hsigma.shape_curr().print();
 //    _hsigma.rate_curr().print();
     
@@ -1207,11 +1180,11 @@ HGAPRec::vb_hier()
     if (_ic > 0) {
       // Computes the sums of user characteristics (second term for \mu_{ul}^{rte}
       Array userSum(_uc);
-      _ratings._userChar.colsum(userSum);
+      _ratings._userObs.colsum(userSum);
       
       // Sets the prior rate based on expectations with current parameters, i.e.,\frac{\tau^{shp}}{\tau^{rte}}
-      _hrho.set_prior_rate(_betarate.expected_v(),
-                           _betarate.expected_logv());
+      _hrho.set_prior_rate_scaled(_betarate.expected_v(),
+                           _betarate.expected_logv(),_ratings._userObsScale);
       
       // Adds the previous sum to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
       _hrho.update_rate_next(userSum);
@@ -1222,31 +1195,21 @@ HGAPRec::vb_hier()
       _hrho.compute_expectations();
     }
     
-//        _hbeta.shape_curr().print();
-//        _hbeta.rate_curr().print();
-//        _hrho.shape_curr().print();
-//        _hrho.rate_curr().print();
-    
-    if (_env.bias) {
-      _thetabias.update_rate_next_all(0, _m);
-      _thetabias.swap();
-      _thetabias.compute_expectations();
-      
-      _betabias.update_rate_next_all(0, _n);
-      _betabias.swap();
-      _betabias.compute_expectations();
-    }
+//    cout << "Beta: " << endl;
+//    _hbeta.shape_curr().print();
+//    _hbeta.rate_curr().print();
+//    
+//    cout << "Rho: " << endl;
+//    _hrho.shape_curr().print();
+//    _hrho.rate_curr().print();
     
     //-------------------------------------
     // Update the rate parameters for the popularity and activity parameters
     //-------------------------------------
 
     Array thetacolsum(_n);
-    Array sigmacolsum(_n);
     // Computes the second term of \kappa^{rte}_{uk})
     _htheta.sum_cols(thetacolsum);
-    
-//    sigmacolsum.print();
     
     // Adds (K+L)a to the shape parameter of xi
     _thetarate.update_shape_next((_k+_ic) * _thetarate.sprior());
@@ -1255,8 +1218,9 @@ HGAPRec::vb_hier()
     
     // With unobserved item characteristics...
     if (_ic > 0) {
+      Array sigmacolsum(_n);
       // Computes the third term of \kappa^{rte}_{uk})
-      _hsigma.sum_cols(sigmacolsum);
+      _hsigma.sum_cols_weight(_ratings._itemObsScale,sigmacolsum);
       // Adds the new term to the rate parameter of xi
       _thetarate.update_rate_next(sigmacolsum);
     }
@@ -1270,7 +1234,7 @@ HGAPRec::vb_hier()
 //    _thetarate.rate_curr().print();
     
     Array betacolsum(_m);
-    Array rhocolsum(_m);
+
     // Computes the second term of \tau^{rte}_{uk})
     _hbeta.sum_cols(betacolsum);
     // Adds (K+M)c to the shape parameter of eta
@@ -1280,8 +1244,9 @@ HGAPRec::vb_hier()
     
     // With unobserved user characteristics...
     if (_uc > 0) {
+      Array rhocolsum(_m);
       // Computes the third term of \tau^{rte}_{uk})
-      _hrho.sum_cols(rhocolsum);
+      _hrho.sum_cols_weight(_ratings._userObsScale,rhocolsum);
       // Adds the new term to the rate parameter of eta
       _betarate.update_rate_next(rhocolsum);
     }
@@ -1293,20 +1258,25 @@ HGAPRec::vb_hier()
     // Computes the expectations with the (new) current values
     _betarate.compute_expectations();
     
-//    if (_iter == 60) {
-//      cout << "Beta shape: " << endl;
-//      _hbeta.shape_curr().print();
-//            cout << "Beta rate: " << endl;
-//      _hbeta.rate_curr().print();
-//            cout << "Theta shape: " << endl;
-//      _htheta.shape_curr().print();
-//                  cout << "Theta rate: " << endl;
-//      _htheta.rate_curr().print();
-//      _betarate.shape_curr().print();
-//      _betarate.rate_curr().print();
-//      _thetarate.shape_curr().print();
-//      _thetarate.rate_curr().print();
-//    }
+    if (_iter == 0) {
+      cout << "Beta shape: " << endl;
+      _hbeta.shape_curr().print();
+      cout << "Beta rate: " << endl;
+      _hbeta.rate_curr().print();
+      cout << "Theta shape: " << endl;
+      _htheta.shape_curr().print();
+      cout << "Theta rate: " << endl;
+      _htheta.rate_curr().print();
+      
+      cout << "Eta shape: " << endl;
+      _betarate.shape_curr().print();
+      cout << "Eta rate: " << endl;
+      _betarate.rate_curr().print();
+      cout << "Xi shape: " << endl;
+      _thetarate.shape_curr().print();
+      cout << "Xi rate: " << endl;
+      _thetarate.rate_curr().print();
+    }
     
     printf("iteration %d\n", _iter);
     
@@ -1364,7 +1334,7 @@ HGAPRec::compute_likelihood(bool validationLikelihood)
     ff = _tf;
   }
 
-  cout << mp->size() << endl;
+//  cout << mp->size() << endl;
   
   // Loop over ratings
   for (CountMap::const_iterator i = mp->begin();
@@ -1482,8 +1452,8 @@ HGAPRec::rating_likelihood_hier(uint32_t p, uint32_t q, yval_t y) const
   const double **ebeta = _hbeta.expected_v().const_data();
   const double **esigma = _hsigma.expected_v().const_data();
   const double **erho = _hrho.expected_v().const_data();
-  double **itemChar = _ratings._itemChar.data();
-  double **userChar = _ratings._userChar.data();
+  double **itemChar = _ratings._itemObs.data();
+  double **userChar = _ratings._userObs.data();
   
   // Finds the sum of dot products \theta_u\beta_i+\sigma_u\x_i+\w_u\rho_i
   double s = .0;

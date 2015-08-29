@@ -57,23 +57,23 @@ public:
   Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string outfname,
       bool nmi, string ground_truth_fname, uint32_t rfreq,
       bool strid, string label, bool alogl, double rseed,
-      uint32_t max_iterations, bool load, string loc, 
+      uint32_t max_iterations, bool load, string loc,
       bool gen_hout,
-      double av, double bv, double cv, double dv,
-      Env::Dataset d, bool batch, bool binary_data, 
-      bool bias, bool hier, bool explore, bool vb, 
-      bool nmf, bool nmfload, bool lda, bool vwlda, 
+      double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf,
+      Env::Dataset d, bool batch, bool binary_data,
+      bool bias, bool hier, bool explore, bool vb,
+      bool nmf, bool nmfload, bool lda, bool vwlda,
       bool write_training, uint32_t rating_threshold,
       bool graphchi, bool wals, double wals_l, uint32_t wals_C,
       bool als, bool chinmf, bool climf,
-      bool mle_item, bool mle_user, bool canny, bool ctr, int pOffset);
+      bool mle_item, bool mle_user, bool canny, bool ctr, int pOffset, int scale, double scaleFactor);
   ~Env() { fclose(_plogf); }
-
+  
   static string prefix;
-//  static string outprefix;
+  //  static string outprefix;
   
   static Logger::Level level;
-
+  
   Dataset dataset;
   uint32_t n;  // users
   uint32_t m;  // movies
@@ -85,13 +85,10 @@ public:
   uint32_t t;
   uint32_t mini_batch_size;
   int offset;
-
+  
   // Hyperparameters
-  double a;
-  double b;
-  double c;
-  double d;
-
+  double a, ap, bp, c, cp, dp, e, f;
+  
   double alpha;
   double tau0;
   double tau1;
@@ -136,16 +133,23 @@ public:
   bool als;
   bool chinmf;
   bool climf;
-
+  
   bool mle_item;
   bool mle_user;
   bool canny;
   bool ctr;
-
+  
+  int scale;
+  double scaleFactor;
+  
+  static const int ONES = 1;
+  static const int MEAN = 2;
+  static const int STD = 3;
+  
   template<class T> static void plog(string s, const T &v);
   static string file_str(string fname);
   static string outfile_str(string fname);
-
+  
 private:
   static FILE *_plogf;
 };
@@ -232,75 +236,77 @@ Env::outfile_str(string fname)
 
 inline
 Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string Noutfname,
-	 bool nmival, string gfname, uint32_t rfreq,
-	 bool sid, string lbl, bool alogl, double rseed,
-	 uint32_t maxitr, bool load, 
-	 string loc, bool gen_hout,
-	 double av, double bv, double cv, double dv,
-	 Env::Dataset datasetv, bool batchv, 
-	 bool binary_datav, bool biasv,  bool hierv,
-	 bool explore, bool vbv, bool nmfv, bool nmfloadv, 
-	 bool ldav, bool vwldav, 
-	 bool write_trainingv, uint32_t rating_thresholdv,
-	 bool graphchiv, bool walsv, double l, uint32_t C,
-	 bool alsv, bool chinmfv, bool climfv,
-	 bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, int pOffset)
-  : dataset(datasetv),
-    n(N),
-    m(M),
-    k(K),
-    uc(UC),
-    ic(IC),
-    t(2),
-    mini_batch_size(1000),
-    a(av), b(bv), c(cv), d(dv),
-    tau0(0),
-    tau1(0),
-    heldout_ratio(0.2),
-    validation_ratio(0.01),
-    reportfreq(rfreq),
-    epsilon(0.001),
-    logepsilon(log(epsilon)),
-    nolambda(true),
-    strid(sid),
-    logl(alogl),
-    max_iterations(maxitr),
-    seed(rseed),
-    save_state_now(false),
-    datfname(fname),
-    outfname(Noutfname),
-    label(lbl),
-    nmi(nmival),
-    ground_truth_fname(gfname),
-    model_load(load),
-    model_location(loc),
-    gen_heldout(gen_hout),
-    online_iterations(1),
-    meanchangethresh(0.001),
-    batch(batchv),
-    mode(TRAINING),
-    binary_data(binary_datav),
-    bias(biasv), 
-    hier(hierv),
-    vb(vbv),
-    nmf(nmfv),
-    nmfload(nmfloadv),
-    lda(ldav),
-    vwlda(vwldav),
-    write_training(write_trainingv),
-    rating_threshold(rating_thresholdv),
-    graphchi(graphchiv),
-    wals(walsv),
-    wals_l(l),
-    wals_C(C),
-    als(alsv),
-    chinmf(chinmfv),
-    climf(climfv),
-    mle_user(mle_userv),
-    mle_item(mle_itemv),
-    canny(cannyv),
-    ctr(ctrv),
-    offset(pOffset)
+         bool nmival, string gfname, uint32_t rfreq,
+         bool sid, string lbl, bool alogl, double rseed,
+         uint32_t maxitr, bool load,
+         string loc, bool gen_hout,
+         double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf,
+         Env::Dataset datasetv, bool batchv,
+         bool binary_datav, bool biasv,  bool hierv,
+         bool explore, bool vbv, bool nmfv, bool nmfloadv,
+         bool ldav, bool vwldav,
+         bool write_trainingv, uint32_t rating_thresholdv,
+         bool graphchiv, bool walsv, double l, uint32_t C,
+         bool alsv, bool chinmfv, bool climfv,
+         bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, int pOffset, int nScale, double nScaleFactor)
+: dataset(datasetv),
+n(N),
+m(M),
+k(K),
+uc(UC),
+ic(IC),
+t(2),
+mini_batch_size(1000),
+a(Na), ap(Nap), bp(Nbp), c(Nc), cp(Ncp), dp(Ndp), e(Ne), f(Nf),
+tau0(0),
+tau1(0),
+heldout_ratio(0.2),
+validation_ratio(0.01),
+reportfreq(rfreq),
+epsilon(0.001),
+logepsilon(log(epsilon)),
+nolambda(true),
+strid(sid),
+logl(alogl),
+max_iterations(maxitr),
+seed(rseed),
+save_state_now(false),
+datfname(fname),
+outfname(Noutfname),
+label(lbl),
+nmi(nmival),
+ground_truth_fname(gfname),
+model_load(load),
+model_location(loc),
+gen_heldout(gen_hout),
+online_iterations(1),
+meanchangethresh(0.001),
+batch(batchv),
+mode(TRAINING),
+binary_data(binary_datav),
+bias(biasv),
+hier(hierv),
+vb(vbv),
+nmf(nmfv),
+nmfload(nmfloadv),
+lda(ldav),
+vwlda(vwldav),
+write_training(write_trainingv),
+rating_threshold(rating_thresholdv),
+graphchi(graphchiv),
+wals(walsv),
+wals_l(l),
+wals_C(C),
+als(alsv),
+chinmf(chinmfv),
+climf(climfv),
+mle_user(mle_userv),
+mle_item(mle_itemv),
+canny(cannyv),
+ctr(ctrv),
+offset(pOffset),
+scale(nScale),
+scaleFactor(nScaleFactor)
 {
   ostringstream sa;
   sa << "n" << n << "-";
@@ -315,60 +321,60 @@ Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fn
     if (isalpha(q[0]))
       sa << "-" << q;
   }
-
-  if (a != 0.3)
-    sa << "-a" << a;
-
-  if (b != 0.3)
-    sa << "-b" << b;
-
-  if (c != 0.3)
-    sa << "-c" << c;
-
-  if (d != 0.3)
-    sa << "-d" << d;
-
+  
+//  if (a != 0.3)
+//    sa << "-a" << a;
+//  
+//  if (b != 0.3)
+//    sa << "-b" << b;
+//  
+//  if (c != 0.3)
+//    sa << "-c" << c;
+//  
+//  if (d != 0.3)
+//    sa << "-d" << d;
+  
   if (batch)
     sa << "-batch";
   else
     sa << "-online";
-
+  
   if (binary_data)
     sa << "-bin";
   
   if (bias)
     sa << "-bias";
-
+  
   if (hier)
     sa << "-hier";
-
+  
   if (explore)
     sa << "-explore";
-
+  
   if (vb)
     sa << "-vb";
-
+  
   if (nmf || nmfload)
     sa << "-nmf";
-
+  
   if (lda)
     sa << "-lda";
-
+  
   if (vwlda)
     sa << "-vwlda";
-
+  
   if (graphchi)
     sa << "-chi";
-
+  
   if (ctr)
     sa << "-ctr";
-
+  
   if (seed)
     sa << "-seed" << seed;
-
+  
   if (write_training)
     sa << "-write-training";
-
+  
   if (graphchi) {
     if (chinmf)
       sa << "-nmf";
@@ -376,23 +382,23 @@ Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fn
       sa << "-als";
     else if (wals) {
       sa << "-wals";
-      sa << "-wl-" << wals_l; 
-      sa << "-wC-" << wals_C; 
+      sa << "-wl-" << wals_l;
+      sa << "-wC-" << wals_C;
     } else if (climf) {
       sa << "-climf";
     }
   }
-
+  
   if (mle_userv)
     sa << "-mle-user";
   else if (mle_itemv)
     sa << "-mle-item";
   else if (canny)
     sa << "-canny";
-
+  
   prefix = sa.str();
   level = Logger::TEST;
-
+  
   fprintf(stdout, "+ Creating directory %s\n", prefix.c_str());
   fflush(stdout);
   
@@ -404,15 +410,15 @@ Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fn
     cout << "+ Creating directory " << outfname << "/" << prefix << endl;
     assert(!mkdir((outfname+"/"+prefix).c_str(), S_IRUSR | S_IWUSR | S_IXUSR));
   }
-
+  
   assert (Logger::initialize(prefix, "infer.log",
-			     true, level) >= 0);
+                             true, level) >= 0);
   _plogf = fopen(file_str("/param.txt").c_str(), "w");
   if (!_plogf)  {
     printf("cannot open param file:%s\n",  strerror(errno));
     exit(-1);
   }
-
+  
   plog("n", n);
   plog("k", k);
   plog("t", t);
@@ -420,9 +426,13 @@ Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fn
   plog("validation_ratio", validation_ratio);
   plog("seed", seed);
   plog("a", a);
-  plog("b", b);
+  plog("ap", ap);
+  plog("bp", bp);
   plog("c", c);
-  plog("d", d);
+  plog("cp", cp);
+  plog("dp", dp);
+  plog("e", e);
+  plog("f", f);
   plog("reportfreq", reportfreq);
   plog("vb", vb);
   plog("bias", bias);
@@ -441,11 +451,11 @@ Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fn
 }
 
 /*
-   src: http://www.delorie.com/gnu/docs/glibc/libc_428.html
-   Subtract the `struct timeval' values X and Y,
-   storing the result in RESULT.
-   Return 1 if the difference is negative, otherwise 0.
-*/
+ src: http://www.delorie.com/gnu/docs/glibc/libc_428.html
+ Subtract the `struct timeval' values X and Y,
+ storing the result in RESULT.
+ Return 1 if the difference is negative, otherwise 0.
+ */
 inline int
 timeval_subtract(struct timeval *result, struct timeval *x, struct timeval *y)
 {
@@ -460,12 +470,12 @@ timeval_subtract(struct timeval *result, struct timeval *x, struct timeval *y)
     y->tv_usec += 1000000 * nsec;
     y->tv_sec -= nsec;
   }
-
+  
   /* Compute the time remaining to wait.
-     tv_usec is certainly positive. */
+   tv_usec is certainly positive. */
   result->tv_sec = x->tv_sec - y->tv_sec;
   result->tv_usec = x->tv_usec - y->tv_usec;
-
+  
   /* Return 1 if result is negative. */
   return x->tv_sec < y->tv_sec;
 }
@@ -475,7 +485,7 @@ timeval_add (struct timeval *result, const struct timeval *x)
 {
   result->tv_sec  += x->tv_sec;
   result->tv_usec += x->tv_usec;
-
+  
   if (result->tv_usec >= 1000000) {
     result->tv_sec++;
     result->tv_usec -= 1000000;

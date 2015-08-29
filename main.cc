@@ -123,7 +123,7 @@ int main(int argc, char **argv) {
   bool pred_accuracy = false;
   bool gt_accuracy = false;
   bool p = false;
-  double a = 0.3, b = 0.3, c = 0.3, d = 0.3;
+  double a=0.3, ap=0.3, bp=0.3, c=0.3, cp=0.3, dp=0.3, e=0.3, f=0.3;
   Env::Dataset dataset = Env::MENDELEY;
   bool binary_data = false;
   bool bias = false;
@@ -152,6 +152,9 @@ int main(int argc, char **argv) {
   bool mle_user = false;
   bool canny = false;
   bool ctr = false;
+  
+  int scale = Env::MEAN;
+  double scaleFactor = 1;
   
   uint32_t i = 0;
   
@@ -233,12 +236,20 @@ int main(int argc, char **argv) {
       dataset = Env::NYT;
     } else if (strcmp(argv[i], "-a") == 0) {
       a = atof(argv[++i]);
-    } else if (strcmp(argv[i], "-b") == 0) {
-      b = atof(argv[++i]);
+    } else if (strcmp(argv[i], "-ap") == 0) {
+      ap = atof(argv[++i]);
+    } else if (strcmp(argv[i], "-bp") == 0) {
+      bp = atof(argv[++i]);
     } else if (strcmp(argv[i], "-c") == 0) {
       c = atof(argv[++i]);
-    } else if (strcmp(argv[i], "-d") == 0) {
-      d = atof(argv[++i]);
+    } else if (strcmp(argv[i], "-cp") == 0) {
+      cp = atof(argv[++i]);
+    } else if (strcmp(argv[i], "-dp") == 0) {
+      dp = atof(argv[++i]);
+    } else if (strcmp(argv[i], "-e") == 0) {
+      e = atof(argv[++i]);
+    } else if (strcmp(argv[i], "-f") == 0) {
+      f = atof(argv[++i]);
     } else if (strcmp(argv[i], "-binary-data") == 0) {
       binary_data = true;
     } else if (strcmp(argv[i], "-bias") == 0) {
@@ -294,6 +305,12 @@ int main(int argc, char **argv) {
     } else if (strcmp(argv[i], "-outdir") == 0) {
       outfname = string(argv[++i]);
       fprintf(stdout, "+ output dir = %s\n", outfname.c_str());
+    } else if (strcmp(argv[i], "-std") == 0) {
+      scale = Env::STD;
+    } else if (strcmp(argv[i], "-ones") == 0) {
+      scale = Env::ONES;
+    } else if (strcmp(argv[i], "-scfact") == 0) {
+      scaleFactor = atof(argv[++i]);
     } else if (i > 0) {
       fprintf(stdout,  "error: unknown option %s\n", argv[i]);
       assert(0);
@@ -309,13 +326,13 @@ int main(int argc, char **argv) {
   Env env(n, m, k, uc, ic, fname, outfname, nmi, ground_truth_fname, rfreq,
           strid, label, logl, rand_seed, max_iterations,
           model_load, model_location,
-          gen_heldout, a, b, c, d, dataset,
+          gen_heldout, a, ap, bp, c, cp, dp, e, f, dataset,
           batch, binary_data, bias, hier,
           explore, vb, nmf, nmfload, lda, vwlda,
           write_training, rating_threshold,
           chi, wals, wals_l, wals_C,
           als, chinmf, climf,
-          mle_item, mle_user, canny, ctr, offset);
+          mle_item, mle_user, canny, ctr, offset, scale, scaleFactor);
   env_global = &env;
   
   // Reads the input files

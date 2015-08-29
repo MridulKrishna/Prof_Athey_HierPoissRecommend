@@ -68,13 +68,14 @@ GPBase<T>::compute_elbo_term() const
 // curr is the current value, next the next value
 class GPMatrix : public GPBase<Matrix> {
 public:
+  // Constructor with constant parameters
   GPMatrix(string name, double a, double b,
 	   uint32_t n, uint32_t k,
 	   gsl_rng **r): 
     GPBase<Matrix>(name),
     _n(n), _k(k),
     _sprior(a), // shape 
-    _rprior(b), // rate
+    _rprior(k,b), // rate
     _hier(false),
     _hier_rprior(n),
     _hier_log_rprior(n),
@@ -85,12 +86,37 @@ public:
     _Ev(n,k),
     _Elogv(n,k),
     _r(r) {
-      /*
-      cout << "here" << endl;
-      double** mat = _scurr.data();
-      cout << mat[k][n] << endl;
-      */
+//      cout << "here" << endl;
+//      double** mat = _scurr.data();
+//      cout << k << " " << n << endl;
+//      _rprior.print();
+//      cout << mat[k][n] << endl;
     }
+  
+  //Constructor with an array of rate parameters
+  GPMatrix(string name, double a, Array rate,
+           uint32_t n, uint32_t k,
+           gsl_rng **r):
+  GPBase<Matrix>(name),
+  _n(n), _k(k),
+  _sprior(a), // shape
+  _rprior(rate), // rate
+  _hier(false),
+  _hier_rprior(n),
+  _hier_log_rprior(n),
+  _scurr(n,k),
+  _snext(n,k),
+  _rnext(n,k),
+  _rcurr(n,k),
+  _Ev(n,k),
+  _Elogv(n,k),
+  _r(r) {
+    
+//     cout << "here" << endl;
+//     double** mat = _scurr.data();
+//     cout << mat[k][n] << endl;
+    
+  }
   virtual ~GPMatrix() { }
 
   uint32_t n() const { return _n;}
@@ -114,7 +140,7 @@ public:
   Matrix &expected_logv()    { return _Elogv; }
 
   const double sprior() const { return _sprior; }
-  const double rprior() const { return _rprior; }
+  const Array rprior() const { return _rprior; }
 
   void set_to_prior();
   void set_to_prior_curr();
@@ -135,6 +161,7 @@ public:
   void sum_rows(Array &v);
   void scaled_sum_rows(Array &v, const Array &scale);
   void sum_cols(Array &v);
+  void sum_cols_weight(const Array & weights,Array &v);
   void initialize(int offset);
   void initialize2(double v, int offset);
   void initialize_exp(int offset);
@@ -142,7 +169,7 @@ public:
   void save_state(const IDMap &m, string filename) const;
   void load_from_lda(string dir, double alpha, uint32_t K);
   void set_prior_rate(const Array &ev, const Array &elogv);
-
+  void set_prior_rate_scaled(const Array &ev, const Array &elogv, Array &scale);
 
 
   double compute_elbo_term_helper() const;
@@ -152,7 +179,7 @@ private:
   uint32_t _k;	
   gsl_rng **_r;
   double _sprior;
-  double _rprior;
+  Array _rprior;
 
   bool _hier;
   Array _hier_rprior;
@@ -172,14 +199,14 @@ inline void
 GPMatrix::set_to_prior()
 {
   _snext.set_elements(_sprior);
-  _rnext.set_elements(_rprior);
+  _rnext.set_rows(_rprior);
 }
 
 inline void
 GPMatrix::set_to_prior_curr()
 {
   _scurr.set_elements(_sprior);
-  _rcurr.set_elements(_rprior);
+  _rcurr.set_rows(_rprior);
 }
 
 // Sets in the prior rate
@@ -197,13 +224,17 @@ GPMatrix::set_prior_rate(const Array &ev, const Array &elogv)
 
 // Saves
 inline void
-GPMatrix::set_prior_rate_scale(const Array &ev, const Array &elogv, const Array &scale)
+GPMatrix::set_prior_rate_scaled(const Array &ev, const Array &elogv, Array &scale)
 {
   assert (ev.size() == _n && elogv.size() == _n);
+  assert(scale.size() == _k);
   for (uint32_t n = 0; n < _n; ++n) {
-    _rnext.set_row(n, ev[n]);
-    _hier_rprior[n] = ev[n];
-    _hier_log_rprior[n] = elogv[n];
+    for ( uint32_t k = 0; k < _k; ++k) {
+      _rnext.set(n,k, ev[n]*scale[k]);
+      //Not sure what the next two lines do
+//    _hier_rprior[n] = ev[n];
+//    _hier_log_rprior[n] = elogv[n];
+    }
   }
   _hier = true;
 }
@@ -313,10 +344,24 @@ GPMatrix::sum_rows(Array &v)
 inline void
 GPMatrix::sum_cols(Array &v)
 {
+  assert(v.size()==_n);
   const double **ev = _Ev.const_data();
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k)
       v[i] += ev[i][k];
+}
+
+// Sums columns and saves them as an arry
+inline void
+GPMatrix::sum_cols_weight(const Array &weights,Array &v) {
+  assert(v.size()==_n);
+  assert(weights.size()==_k);
+  const double **ev = _Ev.const_data();
+  for (uint32_t i = 0; i < _n; ++i) {
+    for (uint32_t k = 0; k < _k; ++k) {
+      v[i] += weights.get(k)*ev[i][k];
+    }
+  }
 }
 
 inline void
@@ -338,17 +383,20 @@ GPMatrix::initialize(int offset)
   double **bd = _rcurr.data();
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k)
-      // Initial values: hyperparameter plus a small random shock
+      // Initial shape values: hyperparameter plus a small random shock
        ad[i][k] = _sprior + offset * 0.01 * gsl_rng_uniform(*_r);
 
-  for (uint32_t k = 0; k < _k; ++k)
-    // Initial values are also hyperparameters plus a small shock
-    bd[0][k] = _rprior + offset* 0.1 * gsl_rng_uniform(*_r);
+  for (uint32_t k = 0; k < _k; ++k) {
+    // Initial rate values are also hyperparameters plus a small shock
+    bd[0][k] = _rprior[k] + offset* 0.1 * gsl_rng_uniform(*_r);
+  }
   
   // Copy the values along user/item
-  for (uint32_t i = 0; i < _n; ++i)
-    for (uint32_t k = 0; k < _k; ++k)
+  for (uint32_t i = 0; i < _n; ++i) {
+    for (uint32_t k = 0; k < _k; ++k) {
       bd[i][k] = bd[0][k];
+    }
+  }
   set_to_prior();
 }
 
@@ -364,7 +412,7 @@ GPMatrix::initialize2(double v, int offset)
       // Initial values: hyperparameter plus a small random shock
       ad[i][k] = _sprior + offset*0.01 * gsl_rng_uniform(*_r);
       // Prior plus argument v, which in the paper is Ka or Kc
-      bd[i][k] = _rprior + v;
+      bd[i][k] = _rprior[k] + v;
     }
   }
   set_to_prior();
@@ -386,7 +434,7 @@ GPMatrix::initialize_exp(int offset)
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k) {
       // Initial value: prior plus random shock (why do it again?)
-      b[k] = _rprior + offset * 0.1 * gsl_rng_uniform(*_r);
+      b[k] = _rprior[k] + offset * 0.1 * gsl_rng_uniform(*_r);
       assert(b[k]);
       
       // Means: shape/rate parameter
@@ -430,8 +478,8 @@ GPMatrix::compute_elbo_term_helper() const
 	s += _sprior * _hier_log_rprior[n] + (_sprior - 1) * elogtheta[n][k];
 	s -= _hier_rprior[n] * etheta[n][k] + gsl_sf_lngamma(_sprior);
       } else {
-	s += _sprior * log(_rprior) + (_sprior - 1) * elogtheta[n][k];
-	s -= _rprior * etheta[n][k] + gsl_sf_lngamma(_sprior);
+//	s += _sprior * log(_rprior) + (_sprior - 1) * elogtheta[n][k];
+//	s -= _rprior * etheta[n][k] + gsl_sf_lngamma(_sprior);
       }
     }
     double a = .0, b = .0;

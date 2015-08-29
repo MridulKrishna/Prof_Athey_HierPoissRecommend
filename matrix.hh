@@ -54,6 +54,7 @@ public:
     D1Array(): _n(0), _data(0) { }
     D1Array(uint32_t m, bool zero = true);
     D1Array(const D1Array<T> &a);
+    D1Array(uint32_t size,T value);
     ~D1Array();
     
     uint32_t n() const { return _n; }
@@ -109,10 +110,11 @@ public:
     //const T at(uint32_t p) const { return assert(p < _n); _data[p];}
     string s(uint32_t maxn = 0) const;
     
-    void print();
+    void print() const;
     D1Array subarray(uint32_t ini, uint32_t end);
-    T & get(uint32_t p);
+    T & get(uint32_t p) const;
     void set(uint32_t p, T val);
+    void elem_product(const D1Array<T> & vec1, const D1Array<T> & vec2, D1Array<T> & dest);
     
 private:
     uint32_t _n;
@@ -127,6 +129,17 @@ D1Array<T>::D1Array(uint32_t n, bool)
 :_n(n)
 {
     _data = new T[n];
+}
+
+// Constructs the array as a constant array of val of a given size
+template<class T> inline
+D1Array<T>::D1Array(uint32_t size, T val)
+:_n(size)
+{
+    _data = new T[size];
+    for (uint32_t i = 0; i <size; ++i) {
+        _data[i] = val;
+    }
 }
 
 template<> inline
@@ -657,6 +670,7 @@ D1Array<KV>::max(uint32_t &idx) const
 template<class T> inline T &
 D1Array<T>::operator[](uint32_t p)
 {
+//    cout << p << " " << _n << endl;
     assert (p < _n);
     return _data[p];
 }
@@ -736,7 +750,7 @@ D1Array<double>::save(string name, const IDMap &m) const
     FILE * tf = fopen(name.c_str(), "w");
     assert (tf);
     const double *cd = const_data();
-    uint32_t id = 0;
+    uint64_t id = 0;
     for (uint32_t i = 0; i < _n; ++i) {
         IDMap::const_iterator idt = m.find(i);
         if (idt != m.end())
@@ -745,7 +759,7 @@ D1Array<double>::save(string name, const IDMap &m) const
             id = i;
         
         fprintf(tf,"%d\t", i);
-        fprintf(tf,"%d\t", id);
+        fprintf(tf,"%llu\t", id);
         fprintf(tf,"%.8f\n", cd[i]);
     }
     fclose(tf);
@@ -757,7 +771,7 @@ D1Array<uint32_t>::save(string name, const IDMap &m) const
     FILE * tf = fopen(name.c_str(), "w");
     assert (tf);
     const uint32_t *cd = const_data();
-    uint32_t id = 0;
+    uint64_t id = 0;
     for (uint32_t i = 0; i < _n; ++i) {
         IDMap::const_iterator idt = m.find(i);
         if (idt != m.end())
@@ -766,7 +780,7 @@ D1Array<uint32_t>::save(string name, const IDMap &m) const
             id = i;
         
         fprintf(tf,"%d\t", i);
-        fprintf(tf,"%d\t", id);
+        fprintf(tf,"%llu\t", id);
         fprintf(tf,"%d\n", cd[i]);
     }
     fclose(tf);
@@ -812,12 +826,13 @@ D1Array<double>::load(string name) const
 
 // Prints the values in the array
 template<class T> inline void
-D1Array<T>::print() {
+D1Array<T>::print() const {
     for ( int i = 0; i < size(); ++i ) {
         cout << _data[i] << " ";
     }
     cout << ":" << endl;
 }
+
 
 // Returns a subarray from positions ini until end
 template<class T> inline D1Array<T>
@@ -833,7 +848,7 @@ D1Array<T>::subarray(uint32_t ini, uint32_t end) {
 }
 
 template<class T> inline T &
-D1Array<T>::get(uint32_t p)
+D1Array<T>::get(uint32_t p) const
 {
     assert (p < _n);
     return _data[p];
@@ -846,6 +861,17 @@ D1Array<T>::set(uint32_t p, T val)
     _data[p] = val;
 }
 
+// Saves the element-by-element product of vec1 and vec2 in dest
+template<class T> inline void
+elem_product(const D1Array<T> & vec1, const D1Array<T> & vec2, D1Array<T> & dest) {
+    assert(vec1.size() == vec2.size())
+    assert(vec1.size() == dest.size());
+    
+    for ( int i = 0; i<vec1.size(); ++i) {
+        dest.set(i,vec1.get(i),vec2.get(i));
+    }
+}
+
 template <class T>
 class D2Array {
 public:
@@ -856,11 +882,14 @@ public:
     uint32_t m() const { return _m; }
     uint32_t n() const { return _n; }
     
+    uint32_t size1() const { return _m; }
+    uint32_t size2() const { return _n; }
+    
     T at(uint32_t m, uint32_t n) const;
     
     // T must support operator+()
     void add(uint32_t m, uint32_t n, T val);
-    void set(uint32_t m, uint32_t n, T val);
+    void set(uint64_t m, uint64_t n, T val);
     
     void lognormalize();
     double logsum() const;
@@ -896,7 +925,9 @@ public:
     T colsum(uint32_t p) const;
     
     void set_elements(T v);
-    void set_row(uint32_t row, const Array &values);
+    void set_rows(D1Array<T> &v);
+    void set_rows(T value);
+    void set_row(uint32_t row, const D1Array<T> &values);
     void set_row(uint32_t row, T value);
     double dot(uint32_t i, uint32_t j);
     void zero();
@@ -916,13 +947,20 @@ public:
     
     string s() const;
     
-    void print();
+    void print() const;
     
     T &get(uint32_t p, uint32_t q);
     T get(uint32_t p, uint32_t q) const;
     
     void rowsum(D1Array<T> & s);
     void colsum(D1Array<T> & s);
+    
+    void elem_product(const D2Array<T> & mat1, const D2Array<T> & mat2, D2Array<T> & dest);
+    
+    void rowmeans(D1Array<T> & s);
+    void colmeans(D1Array<T> & s);
+    
+    void printSize();
     
 private:
     uint32_t _m;
@@ -971,7 +1009,7 @@ D2Array<T>::add(uint32_t m, uint32_t n, T val)
 }
 
 template<class T> inline void
-D2Array<T>::set(uint32_t m, uint32_t n, T val)
+D2Array<T>::set(uint64_t m, uint64_t n, T val)
 {
     assert (m < _m && n < _n);
     _data[m][n] = val;
@@ -986,9 +1024,25 @@ D2Array<T>::set_elements(T v)
             _data[i][j] = v;
 }
 
+// Saves rowV in every row
+template<class T> inline void
+D2Array<T>::set_rows(D1Array<T> &rowV) {
+    
+    assert(rowV.size() == _n);
+    for (uint32_t i = 0; i < _m; ++i) {
+        set_row(i,rowV);
+    }
+}
+
+// Saves value in every element
+template<class T> inline void
+D2Array<T>::set_rows(T value) {
+    set_elements(value);
+}
+
 // Sets row m to v, a vector
 template<class T> inline void
-D2Array<T>::set_row(uint32_t row, const Array &value )
+D2Array<T>::set_row(uint32_t row, const D1Array<T> &value )
 {
     assert (value.size() == _n);
     for (uint32_t j = 0; j < _n; ++j)
@@ -1095,6 +1149,7 @@ D2Array<T>::dim_equal(const D2Array<T> &a) const
     return a.m() == _m && a.n() == _n;
 }
 
+// Returns the sum of the p-th row
 template<class T> inline T
 D2Array<T>::sum(uint32_t p) const
 {
@@ -1104,6 +1159,7 @@ D2Array<T>::sum(uint32_t p) const
     return s;
 }
 
+// Returns the sum of the p-th column
 template<class T> inline T
 D2Array<T>::colsum(uint32_t p) const
 {
@@ -1244,7 +1300,7 @@ D2Array<double>::save_transpose(string name, const IDMap &m) const
             id = i;
         
         fprintf(tf,"%d\t", i);
-        fprintf(tf,"%d\t", id);
+        fprintf(tf,"%llu\t", id);
         for (uint32_t k = 0; k < _m; ++k) {
             if (k == _m - 1)
                 fprintf(tf,"%.8f\n", cd[k][i]);
@@ -1561,7 +1617,8 @@ D2Array<KV>::s() const
     return sa.str();
 }
 
-template<class T> inline void D2Array<T>::print() {
+// Prints the array
+template<class T> inline void D2Array<T>::print() const {
     //    cout << "aqui" << endl;
     for ( int i = 0; i< _m; i++) {
         for ( int j = 0; j< _n;j++) {
@@ -1655,6 +1712,7 @@ D2Array<T>::get(uint32_t p, uint32_t q)
     return _data[p][q];
 }
 
+// Sums by rows and saves them in s
 template<class T> inline void
 D2Array<T>::rowsum(D1Array<T> & s) {
     assert(s.size() == _m);
@@ -1664,6 +1722,7 @@ D2Array<T>::rowsum(D1Array<T> & s) {
     }
 }
 
+// Sums by columns and saves them in s
 template<class T> inline void
 D2Array<T>::colsum(D1Array<T> & s) {
     
@@ -1671,6 +1730,46 @@ D2Array<T>::colsum(D1Array<T> & s) {
     
     for (uint32_t i = 0; i<_n;++i) {
         s.set(i,colsum(i));
+    }
+}
+
+// Finds the means by rows and stores them in s
+template<class T> inline void
+D2Array<T>::rowmeans(D1Array<T> & s) {
+    assert(s.size() == _m);
+    
+    for (int i = 0; i<_m;++i) {
+        s.set(i,sum(i)/_n);
+    }
+}
+
+// Finds the means by columns and stores them in s
+template<class T> inline void
+D2Array<T>::colmeans(D1Array<T> & s) {
+    assert(s.size() == _n);
+    
+    for (uint32_t i = 0; i<_n;++i) {
+        s.set(i,colsum(i)/_m);
+    }
+}
+
+template<class T> inline void
+D2Array<T>::printSize() {
+    cout << _m << " " << _n << endl;
+}
+
+// Saves the element-by-element product of vec1 and vec2 in dest
+template<class T> inline void
+elem_product(const D2Array<T> & mat1, const D2Array<T> & mat2, D2Array<T> & dest) {
+    assert(mat1.size1() == mat2.size1())
+    assert(mat1.size1() == dest.size1());
+    assert(mat1.size2() == mat2.size2())
+    assert(mat1.size2() == dest.size2());
+    
+    for ( int i = 0; i<mat1.size1(); ++i) {
+        for ( int j = 0; j < mat1.size2(); ++j ) {
+            dest.set(i,j,mat1.get(i,j),mat2.get(i,j));
+        }
     }
 }
 
