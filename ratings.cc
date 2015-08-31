@@ -163,6 +163,7 @@ Ratings::readObserved(string dir)
       cout << "Invalid scale type" << endl;
       exit(0);
     }
+//    _userObsScale.print();
   }
   
   // Read item characteristics if the number is nonzero
@@ -216,6 +217,7 @@ Ratings::readObserved(string dir)
       cout << "Invalid scale type" << endl;
       exit(0);
     }
+//    _itemObsScale.print();
   }
 }
 

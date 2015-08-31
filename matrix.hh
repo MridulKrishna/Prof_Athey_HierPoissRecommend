@@ -244,6 +244,7 @@ D1Array<T>::abs_mean() const
 template<class T> inline void
 D1Array<T>::copy_from(const D1Array<T> &a)
 {
+//    cout << "Dims: " << a.size() << ", "<< _n << endl;
     assert (dim_equal(a));
     const T * const d = a.data();
     for (uint32_t i = 0; i < _n; ++i)

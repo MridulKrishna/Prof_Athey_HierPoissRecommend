@@ -94,13 +94,13 @@ public:
     }
   
   //Constructor with an array of rate parameters
-  GPMatrix(string name, double a, Array rate,
+  GPMatrix(string name, double a, double b, Array & rateScale,
            uint32_t n, uint32_t k,
            gsl_rng **r):
   GPBase<Matrix>(name),
   _n(n), _k(k),
   _sprior(a), // shape
-  _rprior(rate), // rate
+  _rprior(rateScale.size()), // rate
   _hier(false),
   _hier_rprior(n),
   _hier_log_rprior(n),
@@ -111,6 +111,8 @@ public:
   _Ev(n,k),
   _Elogv(n,k),
   _r(r) {
+    _rprior.copy_from(rateScale);
+    _rprior.scale(b);
     
 //     cout << "here" << endl;
 //     double** mat = _scurr.data();

@@ -25,8 +25,8 @@ _thetabias("thetabias", 0.3, 0.3, _n, 1, &_r),
 _betabias("betabias", 0.3, 0.3, _m, 1, &_r),
 _htheta("htheta", env.a, env.bp, _n, _k, &_r),
 _hbeta("hbeta", env.c, env.dp, _m, _k, &_r),
-_hsigma("hsigma", env.e, env.bp, _n, _ic, &_r),
-_hrho("hrho", env.f, env.dp, _m, _uc, &_r),
+_hsigma("hsigma", env.e, env.bp, _ratings._itemObsScale, _n, _ic, &_r),
+_hrho("hrho", env.f, env.dp, _ratings._userObsScale, _m, _uc, &_r),
 _thetarate("thetarate", env.ap, env.ap/env.bp, _n, &_r),
 _betarate("betarate", env.cp, env.cp/env.dp, _m, &_r),
 _theta_mle(_n, _k),
@@ -42,6 +42,7 @@ _use_rate_as_score(true),
 _topN_by_user(100),
 _maxval(0), _minval(65536)
 {
+  
   cout << "Offset: " << _offset << endl;
   // Initializes the random number generator
   gsl_rng_env_setup();
