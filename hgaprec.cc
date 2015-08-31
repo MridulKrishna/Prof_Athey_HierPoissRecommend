@@ -1018,6 +1018,9 @@ HGAPRec::vb_hier()
   
   bool stop = false;
   
+  _ratings._itemObsScale.print();
+  _ratings._userObsScale.print();
+  
   while (!stop) {
     // Stop if the max number of iterations is reached
     if (_iter > _env.max_iterations) {
@@ -1259,7 +1262,7 @@ HGAPRec::vb_hier()
     // Computes the expectations with the (new) current values
     _betarate.compute_expectations();
     
-    if (_iter == 0) {
+    if (_iter == 39) {
       cout << "Beta shape: " << endl;
       _hbeta.shape_curr().print();
       cout << "Beta rate: " << endl;

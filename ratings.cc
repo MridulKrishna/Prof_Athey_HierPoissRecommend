@@ -154,11 +154,13 @@ Ratings::readObserved(string dir)
     // Compute vector of scale of observed user characteristics
     if (_env.scale == Env::MEAN) {
       _userObs.colmeans(_userObsScale);
+      _userObsScale.scale(_env.scaleFactor);
     } else if (_env.scale == Env::ONES) {
       _userObsScale.set_elements(1);
+      _userObsScale.scale(_env.scaleFactor);
     } else if (_env.scale == Env::STD) {
-      cout << "Scale type not implemented yet" << endl;
-      exit(0);
+      _userObs.colstds(_userObsScale);
+      _userObsScale.scale(_env.scaleFactor);
     } else {
       cout << "Invalid scale type" << endl;
       exit(0);
@@ -208,17 +210,23 @@ Ratings::readObserved(string dir)
     // Compute vector of scale of observed item characteristics
     if (_env.scale == Env::MEAN) {
       _itemObs.colmeans(_itemObsScale);
+      _itemObsScale.scale(_env.scaleFactor);
     } else if (_env.scale == Env::ONES) {
       _itemObsScale.set_elements(1);
+      _itemObsScale.scale(_env.scaleFactor);
     } else if (_env.scale == Env::STD) {
-      cout << "Scale type not implemented yet" << endl;
-      exit(0);
+      _itemObs.print();
+      _itemObs.colstds(_itemObsScale);
+      _itemObsScale.scale(_env.scaleFactor);
     } else {
       cout << "Invalid scale type" << endl;
       exit(0);
     }
 //    _itemObsScale.print();
   }
+//  _userObsScale.print();
+//  _itemObsScale.print();
+//  _userObsScale.print();
 }
 
 // Reads a generic train data file

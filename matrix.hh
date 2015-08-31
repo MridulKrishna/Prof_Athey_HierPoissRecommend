@@ -904,6 +904,9 @@ public:
     
     D2Array &operator*=(T);
     D2Array &operator+=(const D2Array<T> &);
+    D2Array<T> operator+(const D2Array<T> &mat2);
+    D2Array<T> operator-(const D2Array<T> &mat2);
+    void operator=(const D2Array<T> &mat2);
     
     void save(string name, const IDMap &m) const { lerr("save not implemented"); }
     void save_transpose(string name, const IDMap &m) const;
@@ -955,6 +958,7 @@ public:
     
     void rowsum(D1Array<T> & s);
     void colsum(D1Array<T> & s);
+    void colstds(D1Array<T> & s);
     
     void elem_product(const D2Array<T> & mat1, const D2Array<T> & mat2, D2Array<T> & dest);
     
@@ -1561,6 +1565,49 @@ D2Array<T>::operator+=(const D2Array<T> &u)
     return *this;
 }
 
+// Matrix addition
+template<class T> inline D2Array<T>
+D2Array<T>::operator+(const D2Array<T> &mat2)
+{
+    assert (size1()==mat2.size1());
+    assert (size2()==mat2.size2());
+
+    D2Array<T> dest(size1(),size2());
+    
+    for (uint32_t i = 0; i < _m; ++i) {
+        for (uint32_t j = 0; j < _n; ++j) {
+            dest.set(i,j,get(i,j)+mat2.get(i,j));
+        }
+    }
+    return dest;
+}
+
+// Matrix subtraction
+template<class T> inline D2Array<T>
+D2Array<T>::operator-(const D2Array<T> &mat2)
+{
+    assert (size1()==mat2.size1());
+    assert (size2()==mat2.size2());
+    
+    D2Array<T> dest(size1(),size2());
+    
+    for (uint32_t i = 0; i < _m; ++i) {
+        for (uint32_t j = 0; j < _n; ++j) {
+            dest.set(i,j,get(i,j)-mat2.get(i,j));
+        }
+    }
+    return dest;
+}
+
+// Assignment operator, must have the correct size to run
+template<class T> inline void
+D2Array<T>::operator=(const D2Array<T> &mat){
+    assert (size1()==mat.size1());
+    assert (size2()==mat.size2());
+    
+    copy_from(mat);
+}
+
 template<class T> inline string
 D2Array<T>::s() const
 {
@@ -1751,6 +1798,32 @@ D2Array<T>::colmeans(D1Array<T> & s) {
     
     for (uint32_t i = 0; i<_n;++i) {
         s.set(i,colsum(i)/_m);
+    }
+}
+
+// Finds the standard deviations by columns and stores them in s
+template<class T> inline void
+D2Array<T>::colstds(D1Array<T> & s) {
+    assert(s.size() == _n);
+    
+    D1Array<T> means(_n);
+    D2Array<T> meanMat(_m,_n);
+    D2Array<T> demeaned(_m,_n);
+    
+    colmeans(means);
+    meanMat.set_rows(means);
+    demeaned = (*this-meanMat);
+    
+//    demeaned.print();
+    
+    for (uint32_t j = 0; j<_n;++j) {
+        
+        s.set(j,0);
+        for (uint32_t i = 0; i<_m;++i) {
+            
+            s.set(j,s.get(j) + pow(demeaned.get(i,j),2)/(_m-1));
+        }
+        s.set(j,sqrt(s.get(j)));
     }
 }
 
