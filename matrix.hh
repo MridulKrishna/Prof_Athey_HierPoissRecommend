@@ -105,6 +105,7 @@ public:
     T operator[](uint32_t p) const;
     
     void save(string name, const IDMap &m) const { }
+    void save(string name) const { }
     void load(string name) const { }
     
     //const T at(uint32_t p) const { return assert(p < _n); _data[p];}
@@ -744,7 +745,34 @@ D1Array<T>::norm() const
     return v;
 }
 
-//  name = Env::file_str(string("/") + "theta.tsv").c_str();
+// Saves the array to the file passed by parameter
+template<> inline void
+D1Array<double>::save(string name) const
+{
+    FILE * tf = fopen(name.c_str(), "w");
+    assert (tf);
+    const double *cd = const_data();
+    
+    for (uint32_t i = 0; i < _n; ++i) {
+        fprintf(tf,"%.8f\n", cd[i]);
+    }
+    fclose(tf);
+}
+
+// Saves the array to the file passed by parameter
+template<> inline void
+D1Array<uint32_t>::save(string name) const
+{
+    FILE * tf = fopen(name.c_str(), "w");
+    assert (tf);
+    const uint32_t *cd = const_data();
+    
+    for (uint32_t i = 0; i < _n; ++i) {
+        fprintf(tf,"%d\n", cd[i]);
+    }
+    fclose(tf);
+}
+
 template<> inline void
 D1Array<double>::save(string name, const IDMap &m) const
 {
@@ -908,7 +936,8 @@ public:
     D2Array<T> operator-(const D2Array<T> &mat2);
     void operator=(const D2Array<T> &mat2);
     
-    void save(string name, const IDMap &m) const { lerr("save not implemented"); }
+    void save(string name, const IDMap &m) const;
+    void save(string name) const;
     void save_transpose(string name, const IDMap &m) const;
     void load(string name, uint32_t skipcols=2,
               bool transpose=false, uint32_t skiprows=0)
@@ -1277,6 +1306,29 @@ D2Array<double>::save(string name, const IDMap &m) const
         fprintf(tf,"%d\t", i);
         fprintf(tf,"%llu\t", id);
         
+        for (uint32_t k = 0; k < _n; ++k) {
+            if (k == _n - 1)
+                fprintf(tf,"%.8f\n", cd[i][k]);
+            else
+                fprintf(tf,"%.8f\t", cd[i][k]);
+        }
+    }
+    fclose(tf);
+}
+
+//  name = Env::file_str(string("/") + "theta.tsv").c_str();
+template<> inline void
+D2Array<double>::save(string name) const
+{
+    FILE * tf = fopen(name.c_str(), "w");
+    if (!tf)
+        lerr("cannot open file %s\n", name.c_str());
+    
+    //    cout << name << endl;
+    assert (tf);
+    const double **cd = const_data();
+    uint64_t id = 0;
+    for (uint32_t i = 0; i < _m; ++i){
         for (uint32_t k = 0; k < _n; ++k) {
             if (k == _n - 1)
                 fprintf(tf,"%.8f\n", cd[i][k]);

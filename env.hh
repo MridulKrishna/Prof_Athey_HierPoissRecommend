@@ -18,7 +18,7 @@
 #include "matrix.hh"
 #include "log.hh"
 
-typedef uint8_t yval_t;
+typedef uint16_t yval_t;
 
 typedef D2Array<yval_t> AdjMatrix;
 typedef D2Array<double> Matrix;
@@ -396,6 +396,19 @@ scaleFactor(nScaleFactor)
   else if (canny)
     sa << "-canny";
   
+  if (scale != MEAN) {
+    if (scale == STD) {
+      sa << "-std";
+    }
+    else if (scale == ONES) {
+      sa << "-ones";
+    }
+  }
+  
+  if (scaleFactor != 1) {
+    sa << "-scfact" << scaleFactor;
+  }
+  
   prefix = sa.str();
   level = Logger::TEST;
   
@@ -413,7 +426,10 @@ scaleFactor(nScaleFactor)
   
   assert (Logger::initialize(prefix, "infer.log",
                              true, level) >= 0);
-  _plogf = fopen(file_str("/param.txt").c_str(), "w");
+
+  string name = outfname+"/"+prefix +"/param.txt";
+//  cout << name << endl;
+  _plogf = fopen(name.c_str(), "w");
   if (!_plogf)  {
     printf("cannot open param file:%s\n",  strerror(errno));
     exit(-1);

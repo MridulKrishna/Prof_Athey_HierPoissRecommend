@@ -29,6 +29,7 @@ _hsigma("hsigma", env.e, env.bp, _ratings._itemObsScale, _n, _ic, &_r),
 _hrho("hrho", env.f, env.dp, _ratings._userObsScale, _m, _uc, &_r),
 _thetarate("thetarate", env.ap, env.ap/env.bp, _n, &_r),
 _betarate("betarate", env.cp, env.cp/env.dp, _m, &_r),
+//phi(_k+_ic+_uc),
 _theta_mle(_n, _k),
 _beta_mle(_m, _k),
 _old_theta_mle(_n, _k),
@@ -53,40 +54,48 @@ _maxval(0), _minval(65536)
   Env::plog("infer n:", _n);
 
   // Creates various output files it will use later
-  _hf = fopen(Env::file_str("/heldout.txt").c_str(), "w");
+  
+  string name = _env.outfname+"/"+_env.prefix +"/heldout.txt";
+  _hf = fopen(name.c_str(), "w");
   if (!_hf)  {
     printf("cannot open heldout file:%s\n",  strerror(errno));
     exit(-1);
   }
-  _vf = fopen(Env::file_str("/validation.txt").c_str(), "w");
-  cout <<Env::file_str("/validation.txt").c_str()<< endl;
+  name = _env.outfname+"/"+_env.prefix +"/validation.txt";
+  _vf = fopen(name.c_str(), "w");
   if (!_vf)  {
-    printf("cannot open heldout file:%s\n",  strerror(errno));
+    printf("cannot open validation file:%s\n",  strerror(errno));
     exit(-1);
   }
-  _tf = fopen(Env::file_str("/test.txt").c_str(), "w");
+  name = _env.outfname+"/"+_env.prefix +"/test.txt";
+  _tf = fopen(name.c_str(), "w");
   if (!_tf)  {
-    printf("cannot open heldout file:%s\n",  strerror(errno));
+    printf("cannot open test file:%s\n",  strerror(errno));
     exit(-1);
   }
-  _af = fopen(Env::file_str("/logl.txt").c_str(), "w");
+  name = _env.outfname+"/"+_env.prefix +"/logl.txt";
+  cout << name << endl;
+  _af = fopen(name.c_str(), "w");
   if (!_af)  {
     printf("cannot open logl file:%s\n",  strerror(errno));
     exit(-1);
   }
-  _pf = fopen(Env::file_str("/precision.txt").c_str(), "w");
+  name = _env.outfname+"/"+_env.prefix +"/precision.txt";
+  _pf = fopen(name.c_str(), "w");
   if (!_pf)  {
-    printf("cannot open logl file:%s\n",  strerror(errno));
+    printf("cannot open precision file:%s\n",  strerror(errno));
     exit(-1);
-  }  
-  _df = fopen(Env::file_str("/ndcg.txt").c_str(), "w");
+  }
+  name = _env.outfname+"/"+_env.prefix +"/ndcg.txt";
+  _df = fopen(name.c_str(), "w");
   if (!_df)  {
-    printf("cannot open logl file:%s\n",  strerror(errno));
+    printf("cannot open ndcg file:%s\n",  strerror(errno));
     exit(-1);
-  }  
-  _rf = fopen(Env::file_str("/rmse.txt").c_str(), "w");
+  }
+  name = _env.outfname+"/"+_env.prefix +"/rmse.txt";
+  _rf = fopen(name.c_str(), "w");
   if (!_rf)  {
-    printf("cannot open logl file:%s\n",  strerror(errno));
+    printf("cannot open rmse file:%s\n",  strerror(errno));
     exit(-1);
   }  
 
@@ -1012,14 +1021,14 @@ HGAPRec::vb_hier()
   ///////////
   
   uint32_t x = _k+_uc+_ic;
-  
+//
   // Constructs the array for the parameters of the multinomial distribution
   Array phi(x);
   
   bool stop = false;
   
-  _ratings._itemObsScale.print();
-  _ratings._userObsScale.print();
+//  _ratings._itemObsScale.print();
+//  _ratings._userObsScale.print();
   
   while (!stop) {
     // Stop if the max number of iterations is reached
@@ -1068,6 +1077,8 @@ HGAPRec::vb_hier()
 //          cout << "Phi: " << endl;
 //          phi.print();
 //        }
+        
+//        _phi.set_row( r, phi);
       
         // Makes phi sum up to y to get y_{ui} phi_{uik}
         if (y > 1) {
@@ -1087,9 +1098,11 @@ HGAPRec::vb_hier()
         Array phil(_ic);
         Array phim(_uc);
         
-        phik.copy_from(phi.subarray(0,_k-1));
-        _htheta.update_shape_next1(n, phik);
-        _hbeta.update_shape_next1(m, phik);
+        if (_k>0) {
+          phik.copy_from(phi.subarray(0,_k-1));
+          _htheta.update_shape_next1(n, phik);
+          _hbeta.update_shape_next1(m, phik);
+        }
         
         if (_ic > 0) {
           phil.copy_from(phi.subarray(_k,_k+_ic-1));
@@ -1115,25 +1128,30 @@ HGAPRec::vb_hier()
     //----------------------------------
     // Updates for user parameters
     //----------------------------------
-    Array betarowsum(_k);
-    // Saves the sums over items of expected values for each factor ( the second part of \gamma^{rte}_{uk})
-    _hbeta.sum_rows(betarowsum);
     
-    // Sets the prior rate based on expectations with current parameters, i.e.,\frac{\kappa^{shp}}{\kappa^{rte}}
-    _htheta.set_prior_rate(_thetarate.expected_v(),
-                           _thetarate.expected_logv());
-    debug("adding %s to theta rate", _thetarate.expected_v().s().c_str());
-    debug("betarowsum %s", betarowsum.s().c_str());
+    // If there are latent characteristics...
     
-    // Adds the previous sum (betarowsum) to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
-    _htheta.update_rate_next(betarowsum);
-    // Swaps the current and the next values for the parameters
-    _htheta.swap();
+    if (_k>0) {
+      Array betarowsum(_k);
+      // Saves the sums over items of expected values for each factor ( the second part of \gamma^{rte}_{uk})
+      _hbeta.sum_rows(betarowsum);
+      
+      // Sets the prior rate based on expectations with current parameters, i.e.,\frac{\kappa^{shp}}{\kappa^{rte}}
+      _htheta.set_prior_rate(_thetarate.expected_v(),
+                             _thetarate.expected_logv());
+      debug("adding %s to theta rate", _thetarate.expected_v().s().c_str());
+      debug("betarowsum %s", betarowsum.s().c_str());
+      
+      // Adds the previous sum (betarowsum) to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
+      _htheta.update_rate_next(betarowsum);
+      // Swaps the current and the next values for the parameters
+      _htheta.swap();
+      
+      // Computes expectations and log expectations based on the new parameters
+      _htheta.compute_expectations();
+    }
     
-    // Computes expectations and log expectations based on the new parameters
-    _htheta.compute_expectations();
-    
-    // If there are unobserved item characteristics...
+    // If there are observed item characteristics...
     if (_ic > 0) {
       // Computes the sums of user characteristics (second term for \mu_{ul}^{rte}
       Array itemSum(_ic);
@@ -1164,23 +1182,26 @@ HGAPRec::vb_hier()
     // Updates for item parameters
     //----------------------------------
     
-    Array thetarowsum(_k);
-    // Saves the sums of expected values over users for each factor (the second part of \lambda^{rte}_{ik})
-    _htheta.sum_rows(thetarowsum);
+    // If there are latent variables...
+    if (_k>0) {
+      Array thetarowsum(_k);
+      // Saves the sums of expected values over users for each factor (the second part of \lambda^{rte}_{ik})
+      _htheta.sum_rows(thetarowsum);
+      
+      // Sets the prior rate based on expectations with current parameters, i.e., \frac{\tau^{shp}}{\tau^{rte}}
+      _hbeta.set_prior_rate(_betarate.expected_v(),
+                            _betarate.expected_logv());
+      
+      // Adds the previous sum to \frac{\tau^{shp}}{\tau^{shp}} in the next rate
+      _hbeta.update_rate_next(thetarowsum);
+      // Swaps the current and the next values for the parameters
+      _hbeta.swap();
+      
+      // Computes expectations and log expectations based on the new parameters
+      _hbeta.compute_expectations();
+    }
     
-    // Sets the prior rate based on expectations with current parameters, i.e., \frac{\tau^{shp}}{\tau^{rte}}
-    _hbeta.set_prior_rate(_betarate.expected_v(),
-                          _betarate.expected_logv());
-    
-    // Adds the previous sum to \frac{\tau^{shp}}{\tau^{shp}} in the next rate
-    _hbeta.update_rate_next(thetarowsum);
-    // Swaps the current and the next values for the parameters
-    _hbeta.swap();
-    
-    // Computes expectations and log expectations based on the new parameters
-    _hbeta.compute_expectations();
-    
-    // If there are unobserved user characteristics...
+    // If there are observed user characteristics...
     if (_ic > 0) {
       // Computes the sums of user characteristics (second term for \mu_{ul}^{rte}
       Array userSum(_uc);
@@ -1211,14 +1232,17 @@ HGAPRec::vb_hier()
     // Update the rate parameters for the popularity and activity parameters
     //-------------------------------------
 
-    Array thetacolsum(_n);
-    // Computes the second term of \kappa^{rte}_{uk})
-    _htheta.sum_cols(thetacolsum);
-    
-    // Adds (K+L)a to the shape parameter of xi
-    _thetarate.update_shape_next((_k+_ic) * _thetarate.sprior());
-    // Adds the new term to the rate parameter of xi
-    _thetarate.update_rate_next(thetacolsum);
+    // If there are latent variables...
+    if (_k>0) {
+      Array thetacolsum(_n);
+      // Computes the second term of \kappa^{rte}_{uk})
+      _htheta.sum_cols(thetacolsum);
+      
+      // Adds (K+L)a to the shape parameter of xi
+      _thetarate.update_shape_next((_k+_ic) * _thetarate.sprior());
+      // Adds the new term to the rate parameter of xi
+      _thetarate.update_rate_next(thetacolsum);
+    }
     
     // With unobserved item characteristics...
     if (_ic > 0) {
@@ -1230,21 +1254,24 @@ HGAPRec::vb_hier()
     }
     debug("thetacolsum = %s", thetacolsum.s().c_str());
     
-    // Swaps the current and the next values for the parameters
-    _thetarate.swap();
-    // Computes the expectations with the (new) current values
-    _thetarate.compute_expectations();
-    
-//    _thetarate.rate_curr().print();
-    
-    Array betacolsum(_m);
-
-    // Computes the second term of \tau^{rte}_{uk})
-    _hbeta.sum_cols(betacolsum);
-    // Adds (K+M)c to the shape parameter of eta
-    _betarate.update_shape_next((_k+_uc) * _betarate.sprior());
-    // Adds the new term to the rate parameter of eta
-    _betarate.update_rate_next(betacolsum);
+    // If there are latent variables...
+    if (_k>0) {
+      // Swaps the current and the next values for the parameters
+      _thetarate.swap();
+      // Computes the expectations with the (new) current values
+      _thetarate.compute_expectations();
+      
+      //    _thetarate.rate_curr().print();
+      
+      Array betacolsum(_m);
+      
+      // Computes the second term of \tau^{rte}_{uk})
+      _hbeta.sum_cols(betacolsum);
+      // Adds (K+M)c to the shape parameter of eta
+      _betarate.update_shape_next((_k+_uc) * _betarate.sprior());
+      // Adds the new term to the rate parameter of eta
+      _betarate.update_rate_next(betacolsum);
+    }
     
     // With unobserved user characteristics...
     if (_uc > 0) {
@@ -1262,25 +1289,25 @@ HGAPRec::vb_hier()
     // Computes the expectations with the (new) current values
     _betarate.compute_expectations();
     
-    if (_iter == 39) {
-      cout << "Beta shape: " << endl;
-      _hbeta.shape_curr().print();
-      cout << "Beta rate: " << endl;
-      _hbeta.rate_curr().print();
-      cout << "Theta shape: " << endl;
-      _htheta.shape_curr().print();
-      cout << "Theta rate: " << endl;
-      _htheta.rate_curr().print();
-      
-      cout << "Eta shape: " << endl;
-      _betarate.shape_curr().print();
-      cout << "Eta rate: " << endl;
-      _betarate.rate_curr().print();
-      cout << "Xi shape: " << endl;
-      _thetarate.shape_curr().print();
-      cout << "Xi rate: " << endl;
-      _thetarate.rate_curr().print();
-    }
+//    if (_iter == 0) {
+//      cout << "Beta shape: " << endl;
+//      _hbeta.shape_curr().print();
+//      cout << "Beta rate: " << endl;
+//      _hbeta.rate_curr().print();
+//      cout << "Theta shape: " << endl;
+//      _htheta.shape_curr().print();
+//      cout << "Theta rate: " << endl;
+//      _htheta.rate_curr().print();
+//      
+//      cout << "Eta shape: " << endl;
+//      _betarate.shape_curr().print();
+//      cout << "Eta rate: " << endl;
+//      _betarate.rate_curr().print();
+//      cout << "Xi shape: " << endl;
+//      _thetarate.shape_curr().print();
+//      cout << "Xi rate: " << endl;
+//      _thetarate.rate_curr().print();
+//    }
     
     printf("iteration %d\n", _iter);
     
@@ -1310,7 +1337,7 @@ HGAPRec::vb_hier()
       _iter++;
 
     }
-//    if ( _iter == 1) {
+//    if ( _iter == 55) {
 //      _betarate.shape_curr().print();
 //      _betarate.rate_curr().print();
 //    }
@@ -1321,6 +1348,7 @@ HGAPRec::vb_hier()
 bool
 HGAPRec::compute_likelihood(bool validationLikelihood)
 {
+//  testLogLikelihood = new Matrix(7998,5);
 //  cout << validation << endl;
   // k: index of ratings in validation/training
   uint32_t k = 0, kzeros = 0, kones = 0;
@@ -1352,12 +1380,38 @@ HGAPRec::compute_likelihood(bool validationLikelihood)
     yval_t r = i->second;
     
     // Finds the log likelihood and adds it
+//    cout << k << endl;
     double u = _env.hier ? rating_likelihood_hier(n,m,r) : rating_likelihood(n,m,r);
   
+    double rate;
+    double likelihood;
+    rating_likelihood_hier_return(n,m,r,rate,likelihood);
+    
+//    cout << "r: " << r << " rate: " << rate << " likelihood: " << likelihood << endl;
+//    IDMap userMap = _ratings.seq2user();
+//    IDMap itemMap = _ratings.seq2movie();
+//    testLogLikelihood->set(k,0,r);
+//    testLogLikelihood->set(k,1,rate);
+//    testLogLikelihood->set(k,2,userMap[n]);
+//    testLogLikelihood->set(k,3,itemMap[m]);
+//    testLogLikelihood->set(k,4,likelihood);
+
     s += u;
     k += 1;
+    
+//        cout << k << endl;
   }
-
+  
+//  if ( validationLikelihood) {
+//    string name = _env.outfname+"/"+Env::outfile_str("/likelihoodsValidation.tsv");
+////    cout << name << endl;
+////    testLogLikelihood->save(name.c_str());
+//  } else {
+//    string name = _env.outfname+"/"+Env::outfile_str("/likelihoodsTest.tsv");
+//    cout << name << endl;
+////    testLogLikelihood->save(name.c_str());
+//  }
+  
   double a = .0;
   info("s = %.5f\n", s);
   fprintf(ff, "%d\t%d\t%.9f\t%d\n", _iter, duration(), s / k, k);
@@ -1365,6 +1419,7 @@ HGAPRec::compute_likelihood(bool validationLikelihood)
   
   // Average log likelihood
   a = s / k;
+//cout << k << endl;
   if (validationLikelihood) {
     cout << "Validation: " ;
     cout << setprecision(10) << s << "\t" << k << "\t" << a << endl;
@@ -1404,11 +1459,13 @@ HGAPRec::compute_likelihood(bool validationLikelihood)
     }
     // Store average log likelihood in _prev_h (previous likelihood)
     _prev_h = a;
-    FILE *f = fopen(Env::file_str("/max.txt").c_str(), "w");
+    string name = _env.outfname+"/"+_env.prefix +"/max.txt";
+    FILE *f = fopen(name.c_str(), "w");
     fprintf(f, "%d\t%d\t%.5f\t%d\n",
             _iter, duration(), a, why);
     fclose(f);
   }
+//  delete testLogLikelihood;
   return stop;
 }
 
@@ -1478,16 +1535,61 @@ HGAPRec::rating_likelihood_hier(uint32_t p, uint32_t q, yval_t y) const
   if (s < 1e-30)
     s = 1e-30;
   
+  int y2 = y;
+//    cout << "y: " << y2 << " s: " << s << " ll: " << (y * log(s) - s - log_factorial(y)) << endl;
+
   // Returns log of Poisson pmf
   if (_env.binary_data)
     return y == 0 ? -s : log(1 - exp(-s));
   return y * log(s) - s - log_factorial(y);
 }
 
+// Computes the log likelihood for the rating of user p for item q
+double
+HGAPRec::rating_likelihood_hier_return(uint32_t p, uint32_t q, yval_t y, double & rate, double & likelihood) const
+{
+  // Gets the current expected values of theta, beta, sigma, and rho
+  const double **etheta = _htheta.expected_v().const_data();
+  const double **ebeta = _hbeta.expected_v().const_data();
+  const double **esigma = _hsigma.expected_v().const_data();
+  const double **erho = _hrho.expected_v().const_data();
+  double **itemChar = _ratings._itemObs.data();
+  double **userChar = _ratings._userObs.data();
+  
+  // Finds the sum of dot products \theta_u\beta_i+\sigma_u\x_i+\w_u\rho_i
+  double s = .0;
+  for (uint32_t k = 0; k < _k; ++k)
+    s += etheta[p][k] * ebeta[q][k];
+  for (uint32_t l = 0; l < _ic; ++l)
+    s += esigma[p][l] * itemChar[q][l];
+  for (uint32_t m = 0; m < _uc; ++m)
+    s += userChar[p][m] * erho[q][m];
+  
+  
+  if (_env.bias) {
+    const double **ethetabias = _thetabias.expected_v().const_data();
+    const double **ebetabias = _betabias.expected_v().const_data();
+    s += ethetabias[p][0] + ebetabias[q][0];
+  }
+  
+  if (s < 1e-30)
+    s = 1e-30;
+  
+  int y2 = y;
+//  cout << "y: " << y2 << " s: " << s << " ll: " << (y * log(s) - s - log_factorial(y)) << endl;
+  
+  rate = s;
+  likelihood = y * log(s) - s - log_factorial(y);
+  
+  // Returns log of Poisson pmf
+  if (_env.binary_data)
+    return y == 0 ? -s : log(1 - exp(-s));
+  return y * log(s) - s - log_factorial(y);
+}
 
 double
 HGAPRec::log_factorial(uint32_t n)  const
-{ 
+{
   double v = log(1);
   for (uint32_t i = 2; i <= n; ++i)
     v += log(i);
@@ -1504,9 +1606,10 @@ HGAPRec::do_on_stop()
 double
 HGAPRec::compute_rmse()
 {
-  FILE *outf = fopen(Env::file_str("/test_scores.tsv").c_str(), "w");
+  string name = _env.outfname+"/"+_env.prefix +"/test_scores.tsv";
+  FILE *outf = fopen(name.c_str(), "w");
   if (!_rf)  {
-    printf("cannot open logl file:%s\n",  strerror(errno));
+    printf("cannot open test_scores file:%s\n",  strerror(errno));
     exit(-1);
   }  
   //load_beta_and_theta();
@@ -1541,10 +1644,12 @@ HGAPRec::compute_itemrank(bool final)
 
   uint32_t total_users = 0;
   FILE *f = 0;
-  f = fopen(Env::file_str("/itemrank.tsv").c_str(), "w");
-  FILE *itemf = fopen(Env::file_str("/meanrank.txt").c_str(), "w");
+  string name = _env.outfname+"/"+_env.prefix +"/itemrank.tsv";
+  f = fopen(name.c_str(), "w");
+  string name2 = _env.outfname+"/"+_env.prefix +"/meanrank.txt";
+  FILE *itemf = fopen(name2.c_str(), "w");
   if (!itemf)  {
-    printf("cannot open logl file:%s\n",  strerror(errno));
+    printf("cannot open meanrank file:%s\n",  strerror(errno));
     exit(-1);
   }  
 
@@ -1662,8 +1767,10 @@ HGAPRec::compute_precision(bool save_ranking_file)
   double cumndcg10 = 0, cumndcg100 = 0; // Unused
   uint32_t total_users = 0;
   FILE *f = 0;
-  if (save_ranking_file)
-    f = fopen(Env::file_str("/ranking.tsv").c_str(), "w");
+  if (save_ranking_file) {
+    string name = _env.outfname+"/"+_env.prefix+"/ranking.tsv";
+    f = fopen(name.c_str(), "w");
+  }
   
   // Picks randomly a sample with either 1000 or one half of the users. Stores their indices in _sampled_users (a map of booleans)
   if (!save_ranking_file) {
@@ -2156,7 +2263,15 @@ HGAPRec::save_model()
     _theta_mle.save(Env::file_str("/theta_mle.tsv"), _ratings.seq2user());
     _beta_mle.save(Env::file_str("/beta_mle.tsv"), _ratings.seq2movie());
   }
+  
+//  save_phi();
 }
+
+//void
+//HGAPRec::save_phi() {
+//  string name = string("/phi.tsv");
+//  phi.save(_env.outfname+"/"+Env::outfile_str(name));
+//}
 
 void
 HGAPRec::logl()

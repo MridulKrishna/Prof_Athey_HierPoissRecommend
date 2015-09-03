@@ -36,7 +36,7 @@ Ratings::read(string s)
     } else {
         // Runs this line to read the file
         read_generic_train(s);
-        write_marginal_distributions();
+//        write_marginal_distributions();
     }
     
   char st[1024];
@@ -63,6 +63,8 @@ Ratings::readValidationAndTest(string dir)
   else
     // Saves the ratings from the validation file in validation_map
     read_generic(validf, &_validation_map);
+  
+  cout << "Validation size: " << _validation_map.size() << endl;
   fclose(validf);
   
   // Loop with iterator on the elements saved in _validation_map
@@ -82,6 +84,8 @@ Ratings::readValidationAndTest(string dir)
   else
     // Saves the ratings from the validation file in test_map
     read_generic(testf, &_test_map);
+  
+  cout << "Test size: " << _test_map.size() << endl;
   fclose(testf);
   
   // XXX: keeps one heldout test item for each user
@@ -215,7 +219,6 @@ Ratings::readObserved(string dir)
       _itemObsScale.set_elements(1);
       _itemObsScale.scale(_env.scaleFactor);
     } else if (_env.scale == Env::STD) {
-      _itemObs.print();
       _itemObs.colstds(_itemObsScale);
       _itemObsScale.scale(_env.scaleFactor);
     } else {
@@ -271,6 +274,7 @@ Ratings::read_generic(FILE *f, CountMap *cmap)
   uint32_t rating;
   
   // Loop that reads each line in the file
+//  int  num = 0;
   while (!feof(f)) {
     
     // Checks that the line has 3 numbers
@@ -279,6 +283,9 @@ Ratings::read_generic(FILE *f, CountMap *cmap)
       fclose(f);
       exit(-1);
     }
+    
+//    num++;
+//    cout << num << " " << uid << " " << mid << " " << rating << endl;
    
 //    if ( uid == 2169292)
 //      cout << uid << endl;
@@ -294,12 +301,16 @@ Ratings::read_generic(FILE *f, CountMap *cmap)
     // If all users and movies have been added, leave the loop
     // _curr_user_seq is the number of users added so far. Same for movies.
     if ((it == _user2seq.end() && _curr_user_seq >= _env.n) ||
-        (mt == _movie2seq.end() && _curr_movie_seq >= _env.m))
+        (mt == _movie2seq.end() && _curr_movie_seq >= _env.m)) {
+//      cout << "aqui" << endl;
       continue;
+    }
     
     // If the rating is a zero, do nothing
-    if (input_rating_class(rating) == 0)
+    if (input_rating_class(rating) == 0) {
+//      cout << "aqui" << endl;
       continue;
+    }
     
     if (it == _user2seq.end()) {
 //      cout << "Adding user" << endl;

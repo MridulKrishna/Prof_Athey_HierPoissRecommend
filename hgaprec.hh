@@ -10,12 +10,12 @@ public:
     HGAPRec(Env &env, Ratings &ratings);
     ~HGAPRec();
     
-    void vb();
-    void vb_bias();
+//    void vb();
+//    void vb_bias();
     void vb_hier();
-    void vb_mle_user();
-    void vb_mle_item();
-    void vb_canny();
+//    void vb_mle_user();
+//    void vb_mle_item();
+//    void vb_canny();
     
 #ifdef HAVE_NMFLIB
     void nmf();
@@ -86,10 +86,12 @@ private:
     
     void load_beta_and_theta();
     void save_model();
+    void save_phi();
     void logl();
     
     double rating_likelihood(uint32_t p, uint32_t q, yval_t y) const;
     double rating_likelihood_hier(uint32_t p, uint32_t q, yval_t y) const;
+    double rating_likelihood_hier_return(uint32_t p, uint32_t q, yval_t y, double & rate, double & likelihood) const;
     uint32_t duration() const;
     bool is_validation(const Rating &r) const;
     
@@ -123,6 +125,8 @@ private:
     Matrix _beta_mle;
     Matrix _old_theta_mle;
     Matrix _old_beta_mle;
+    
+//    Matrix _phi;
     
     CountMap _validation_map;
     CountMap _test_map;
@@ -167,6 +171,8 @@ private:
     
     bool _mle_user;
     bool _mle_item;
+    
+    Matrix * testLogLikelihood;
 };
 
 inline uint32_t
