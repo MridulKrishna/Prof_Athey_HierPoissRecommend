@@ -93,7 +93,7 @@ int mainRepeatedScale(int argc, char **argv) {
   scaleFs[4] = 8;
   scaleFs[5] = 10;
   
-  int offset = 1;
+  double offset = 1;
   
   string fname;
   string outfname = "";
@@ -303,6 +303,8 @@ int mainRepeatedScale(int argc, char **argv) {
       rating_threshold = atoi(argv[++i]);
     } else if (strcmp(argv[i], "-nooffset") == 0) {
       offset = 0;
+    } else if (strcmp(argv[i], "-offset") == 0) {
+      offset = atof(argv[++i]);
     } else if (strcmp(argv[i], "-outdir") == 0) {
       outfname = string(argv[++i]);
       fprintf(stdout, "+ output dir = %s\n", outfname.c_str());
@@ -471,7 +473,7 @@ int mainOnce(int argc, char **argv) {
     exit(0);
   }
   
-  int offset = 1;
+  double offset = 1;
   
   string fname;
   string outfname = "";
@@ -682,6 +684,8 @@ int mainOnce(int argc, char **argv) {
       rating_threshold = atoi(argv[++i]);
     } else if (strcmp(argv[i], "-nooffset") == 0) {
       offset = 0;
+    } else if (strcmp(argv[i], "-offset") == 0) {
+      offset = atof(argv[++i]);
     } else if (strcmp(argv[i], "-outdir") == 0) {
       outfname = string(argv[++i]);
       fprintf(stdout, "+ output dir = %s\n", outfname.c_str());

@@ -134,6 +134,8 @@ public:
   const Matrix &expected_v() const         { return _Ev;    }
   const Matrix &expected_logv() const      { return _Elogv; }
   
+  void expected_means(Array & means) const;
+  
   Matrix &shape_curr()       { return _scurr; }
   Matrix &rate_curr()        { return _rcurr; }
   Matrix &shape_next()       { return _snext; }
@@ -164,10 +166,11 @@ public:
   void scaled_sum_rows(Array &v, const Array &scale);
   void sum_cols(Array &v);
   void sum_cols_weight(const Array & weights,Array &v);
-  void initialize(int offset);
-  void initialize2(double v, int offset);
-  void initialize_exp(int offset);
-  void initialize_exp(double v, int offset);
+  void initialize(double offset);
+
+  void initialize2(double v, double offset);
+  void initialize_exp(double offset);
+  void initialize_exp(double v, double offset);
   void save_state(const IDMap &m, string filename) const;
   void load_from_lda(string dir, double alpha, uint32_t K);
   void set_prior_rate(const Array &ev, const Array &elogv);
@@ -378,7 +381,7 @@ GPMatrix::scaled_sum_rows(Array &v, const Array &scale)
 
 // Sets the current parameters for the first iteration, at the hyperparameters plus a random shock
 inline void
-GPMatrix::initialize(int offset)
+GPMatrix::initialize(double offset)
 {
   // Gets the matrices of current parameters to modify them
   double **ad = _scurr.data();
@@ -390,7 +393,7 @@ GPMatrix::initialize(int offset)
 
   for (uint32_t k = 0; k < _k; ++k) {
     // Initial rate values are also hyperparameters plus a small shock
-    bd[0][k] = _rprior[k] + offset* 0.1 * gsl_rng_uniform(*_r);
+    bd[0][k] = _rprior[k]*(1+offset* 0.1 * gsl_rng_uniform(*_r));
   }
   
   // Copy the values along user/item
@@ -404,7 +407,7 @@ GPMatrix::initialize(int offset)
 
 // Sets the current rate parameters for the first iteration, at the hyperparameters plus a random shock. The shape parameters are set at the prior plus argument v
 inline void
-GPMatrix::initialize2(double v, int offset)
+GPMatrix::initialize2(double v, double offset)
 {
   // Gets the matrices of current parameters to modify them
   double **ad = _scurr.data();
@@ -422,7 +425,7 @@ GPMatrix::initialize2(double v, int offset)
 
 // Sets the means of user and item attributes and the log means ( used for the vector of parameters for the multinomial distribution, phi in the paper) for the first iteration, at the computed values from previous parameters plus a small shock
 inline void
-GPMatrix::initialize_exp(int offset)
+GPMatrix::initialize_exp(double offset)
 {
   // Gets the matrix of current parameters which should have been initialized already
   double **ad = _scurr.data();
@@ -436,7 +439,7 @@ GPMatrix::initialize_exp(int offset)
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k) {
       // Initial value: prior plus random shock (why do it again?)
-      b[k] = _rprior[k] + offset * 0.1 * gsl_rng_uniform(*_r);
+      b[k] = _rprior[k]*(1+offset * 0.1 * gsl_rng_uniform(*_r));
       assert(b[k]);
       
       // Means: shape/rate parameter
@@ -448,7 +451,7 @@ GPMatrix::initialize_exp(int offset)
 } 
 
 inline void
-GPMatrix::initialize_exp(double v, int offset)
+GPMatrix::initialize_exp(double v, double offset)
 {
   double **ad = _scurr.data();
   double **vd1 = _Ev.data();
@@ -546,6 +549,15 @@ GPMatrix::load_from_lda(string dir, double alpha, uint32_t K)
   _Ev.save(Env::file_str(expv_fname), m);
 }
 
+// Saves the means of the expected values over users/items
+inline void
+GPMatrix::expected_means(Array & means) const {
+//  cout << means.size() << endl;
+//  cout << _k << endl;
+  assert(means.size()==_k);
+  _Ev.colmeans(means);
+}
+
 class GPMatrixGR : public GPBase<Matrix> { // global rates
 public:
   GPMatrixGR(string name, 
@@ -600,10 +612,10 @@ public:
   void compute_expectations();
   void sum_rows(Array &v);
   void scaled_sum_rows(Array &v, const Array &scale);
-  void initialize(int offset);
-  void initialize2(double v, int offset);
-  void initialize_exp(int offset);
-  void initialize_exp(double v, int offset);
+  void initialize(double offset);
+  void initialize2(double v, double offset);
+  void initialize_exp(double offset);
+  void initialize_exp(double v, double offset);
   double compute_elbo_term_helper() const;
   void sum_cols(Array &v);
 
@@ -736,7 +748,7 @@ GPMatrixGR::scaled_sum_rows(Array &v, const Array &scale)
 }
 
 inline void
-GPMatrixGR::initialize(int offset)
+GPMatrixGR::initialize(double offset)
 {
   /* 
   double **ad = _scurr.data();
@@ -776,7 +788,7 @@ GPMatrixGR::initialize(int offset)
 }
 
 inline void
-GPMatrixGR::initialize2(double v, int offset)
+GPMatrixGR::initialize2(double v, double offset)
 {
   double **ad = _scurr.data();
   double *bd = _rcurr.data();
@@ -792,7 +804,7 @@ GPMatrixGR::initialize2(double v, int offset)
 
 
 inline void
-GPMatrixGR::initialize_exp(double v, int offset)
+GPMatrixGR::initialize_exp(double v, double offset)
 {
   double **ad = _scurr.data();
   double **vd1 = _Ev.data();
@@ -810,7 +822,7 @@ GPMatrixGR::initialize_exp(double v, int offset)
 
 
 inline void
-GPMatrixGR::initialize_exp(int offset)
+GPMatrixGR::initialize_exp(double offset)
 {
   double **ad = _scurr.data();
   double **vd1 = _Ev.data();
@@ -945,8 +957,8 @@ public:
   void update_rate_next(uint32_t n, double v);
   void swap();
   void compute_expectations();
-  void initialize(int offset);
-  void  initialize2(double v, int offset);
+  void initialize(double offset);
+  void  initialize2(double v, double offset);
   void initialize_exp();
 
   double compute_elbo_term_helper() const;
@@ -1047,7 +1059,7 @@ GPArray::compute_expectations()
 }
 
 inline void
-GPArray::initialize(int offset)
+GPArray::initialize(double offset)
 {
   double *ad = _scurr.data();
   double *bd = _rcurr.data();
@@ -1059,7 +1071,7 @@ GPArray::initialize(int offset)
 }
 
 inline void
-GPArray::initialize2(double v, int offset)
+GPArray::initialize2(double v, double offset)
 {
   double *ad = _scurr.data();
   double *bd = _rcurr.data();

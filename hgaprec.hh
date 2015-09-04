@@ -91,7 +91,7 @@ private:
     
     double rating_likelihood(uint32_t p, uint32_t q, yval_t y) const;
     double rating_likelihood_hier(uint32_t p, uint32_t q, yval_t y) const;
-    double rating_likelihood_hier_return(uint32_t p, uint32_t q, yval_t y, double & rate, double & likelihood) const;
+//    double rating_likelihood_hier_return(uint32_t p, uint32_t q, yval_t y, double & rate, double & likelihood) const;
     uint32_t duration() const;
     bool is_validation(const Rating &r) const;
     
@@ -105,7 +105,7 @@ private:
     uint32_t _k;
     uint32_t _iter;
     
-    int _offset;
+    double _offset;
     
     GPMatrixGR _theta;
     GPMatrixGR _beta;

@@ -29,7 +29,7 @@
 		79CE5D4A1B70678500744AA7 /* hgaprec */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hgaprec; sourceTree = BUILT_PRODUCTS_DIR; };
 		79CE5D6D1B706D4B00744AA7 /* main.cc */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; path = main.cc; sourceTree = SOURCE_ROOT; tabWidth = 2; };
 		79CE5D701B706D4B00744AA7 /* env.hh */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.h; path = env.hh; sourceTree = SOURCE_ROOT; tabWidth = 2; };
-		79CE5D711B706D4B00744AA7 /* gpbase.hh */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.h; path = gpbase.hh; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.python; };
+		79CE5D711B706D4B00744AA7 /* gpbase.hh */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; indentWidth = 2; path = gpbase.hh; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		79CE5D721B706D4B00744AA7 /* hgaprec.cc */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; path = hgaprec.cc; sourceTree = SOURCE_ROOT; tabWidth = 2; usesTabs = 0; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		79CE5D731B706D4B00744AA7 /* hgaprec.hh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = hgaprec.hh; sourceTree = SOURCE_ROOT; };
 		79CE5D761B706D4B00744AA7 /* matrix.hh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = matrix.hh; sourceTree = SOURCE_ROOT; };

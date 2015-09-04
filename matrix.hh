@@ -932,8 +932,8 @@ public:
     
     D2Array &operator*=(T);
     D2Array &operator+=(const D2Array<T> &);
-    D2Array<T> operator+(const D2Array<T> &mat2);
-    D2Array<T> operator-(const D2Array<T> &mat2);
+    D2Array<T> const operator+(const D2Array<T> &mat2) const;
+    D2Array<T> const operator-(const D2Array<T> &mat2) const;
     void operator=(const D2Array<T> &mat2);
     
     void save(string name, const IDMap &m) const;
@@ -958,10 +958,12 @@ public:
     T colsum(uint32_t p) const;
     
     void set_elements(T v);
-    void set_rows(D1Array<T> &v);
+    void set_rows(const D1Array<T> &v);
     void set_rows(T value);
     void set_row(uint32_t row, const D1Array<T> &values);
     void set_row(uint32_t row, T value);
+    void set_col(uint32_t col, const D1Array<T> &values);
+    void set_col(uint32_t col, T value);
     double dot(uint32_t i, uint32_t j);
     void zero();
     void zero(uint32_t a);
@@ -985,14 +987,14 @@ public:
     T &get(uint32_t p, uint32_t q);
     T get(uint32_t p, uint32_t q) const;
     
-    void rowsum(D1Array<T> & s);
-    void colsum(D1Array<T> & s);
-    void colstds(D1Array<T> & s);
+    void rowsum(D1Array<T> & s) const;
+    void colsum(D1Array<T> & s) const;
+    void colstds(D1Array<T> & s) const;
     
     void elem_product(const D2Array<T> & mat1, const D2Array<T> & mat2, D2Array<T> & dest);
     
-    void rowmeans(D1Array<T> & s);
-    void colmeans(D1Array<T> & s);
+    void rowmeans(D1Array<T> & s) const;
+    void colmeans(D1Array<T> & s) const;
     
     void printSize();
     
@@ -1060,7 +1062,7 @@ D2Array<T>::set_elements(T v)
 
 // Saves rowV in every row
 template<class T> inline void
-D2Array<T>::set_rows(D1Array<T> &rowV) {
+D2Array<T>::set_rows(const D1Array<T> &rowV) {
     
     assert(rowV.size() == _n);
     for (uint32_t i = 0; i < _m; ++i) {
@@ -1089,6 +1091,23 @@ D2Array<T>::set_row(uint32_t row, T value)
 {
     for (uint32_t j = 0; j < _n; ++j)
         _data[row][j] = value;
+}
+
+// Sets column m to v, a vector
+template<class T> inline void
+D2Array<T>::set_col(uint32_t col, const D1Array<T> &value )
+{
+    assert (value.size() == _m);
+    for (uint32_t j = 0; j < _m; ++j)
+        _data[j][col] = value[j];
+}
+
+// Sets column m to v, a scalar
+template<class T> inline void
+D2Array<T>::set_col(uint32_t col, T value)
+{
+    for (uint32_t j = 0; j < _m; ++j)
+        _data[j][col] = value;
 }
 
 template<class T> inline void
@@ -1618,8 +1637,8 @@ D2Array<T>::operator+=(const D2Array<T> &u)
 }
 
 // Matrix addition
-template<class T> inline D2Array<T>
-D2Array<T>::operator+(const D2Array<T> &mat2)
+template<class T> inline D2Array<T> const
+D2Array<T>::operator+(const D2Array<T> &mat2) const
 {
     assert (size1()==mat2.size1());
     assert (size2()==mat2.size2());
@@ -1635,8 +1654,8 @@ D2Array<T>::operator+(const D2Array<T> &mat2)
 }
 
 // Matrix subtraction
-template<class T> inline D2Array<T>
-D2Array<T>::operator-(const D2Array<T> &mat2)
+template<class T> inline D2Array<T> const
+D2Array<T>::operator-(const D2Array<T> &mat2) const
 {
     assert (size1()==mat2.size1());
     assert (size2()==mat2.size2());
@@ -1814,7 +1833,7 @@ D2Array<T>::get(uint32_t p, uint32_t q)
 
 // Sums by rows and saves them in s
 template<class T> inline void
-D2Array<T>::rowsum(D1Array<T> & s) {
+D2Array<T>::rowsum(D1Array<T> & s) const {
     assert(s.size() == _m);
     
     for (int i = 0; i<_m;++i) {
@@ -1824,7 +1843,7 @@ D2Array<T>::rowsum(D1Array<T> & s) {
 
 // Sums by columns and saves them in s
 template<class T> inline void
-D2Array<T>::colsum(D1Array<T> & s) {
+D2Array<T>::colsum(D1Array<T> & s) const {
     
     assert(s.size() == _n);
     
@@ -1835,7 +1854,7 @@ D2Array<T>::colsum(D1Array<T> & s) {
 
 // Finds the means by rows and stores them in s
 template<class T> inline void
-D2Array<T>::rowmeans(D1Array<T> & s) {
+D2Array<T>::rowmeans(D1Array<T> & s) const {
     assert(s.size() == _m);
     
     for (int i = 0; i<_m;++i) {
@@ -1845,7 +1864,7 @@ D2Array<T>::rowmeans(D1Array<T> & s) {
 
 // Finds the means by columns and stores them in s
 template<class T> inline void
-D2Array<T>::colmeans(D1Array<T> & s) {
+D2Array<T>::colmeans(D1Array<T> & s) const {
     assert(s.size() == _n);
     
     for (uint32_t i = 0; i<_n;++i) {
@@ -1855,7 +1874,7 @@ D2Array<T>::colmeans(D1Array<T> & s) {
 
 // Finds the standard deviations by columns and stores them in s
 template<class T> inline void
-D2Array<T>::colstds(D1Array<T> & s) {
+D2Array<T>::colstds(D1Array<T> & s) const {
     assert(s.size() == _n);
     
     D1Array<T> means(_n);

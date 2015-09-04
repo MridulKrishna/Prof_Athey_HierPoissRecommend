@@ -86,11 +86,43 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462945955.193189"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1352"
-            endingLineNumber = "1352"
+            startingLineNumber = "1385"
+            endingLineNumber = "1385"
+            landmarkName = "HGAPRec::vb_hier()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "hgaprec.cc"
+            timestampString = "463022203.656195"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1386"
+            endingLineNumber = "1386"
+            landmarkName = "HGAPRec::vb_hier()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "hgaprec.cc"
+            timestampString = "463022203.656195"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1397"
+            endingLineNumber = "1397"
             landmarkName = "HGAPRec::compute_likelihood(bool validationLikelihood)"
             landmarkType = "5">
          </BreakpointContent>
@@ -102,11 +134,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462945955.193189"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1353"
-            endingLineNumber = "1353"
+            startingLineNumber = "1413"
+            endingLineNumber = "1413"
             landmarkName = "HGAPRec::compute_likelihood(bool validationLikelihood)"
             landmarkType = "5">
          </BreakpointContent>
@@ -118,11 +150,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462945955.193189"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1364"
-            endingLineNumber = "1364"
+            startingLineNumber = "1449"
+            endingLineNumber = "1449"
             landmarkName = "HGAPRec::compute_likelihood(bool validationLikelihood)"
             landmarkType = "5">
          </BreakpointContent>
@@ -134,43 +166,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462945955.193189"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1380"
-            endingLineNumber = "1380"
-            landmarkName = "HGAPRec::compute_likelihood(bool validationLikelihood)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "hgaprec.cc"
-            timestampString = "462955012.025153"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1416"
-            endingLineNumber = "1416"
-            landmarkName = "HGAPRec::compute_likelihood(bool validationLikelihood)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "hgaprec.cc"
-            timestampString = "462955012.025153"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1436"
-            endingLineNumber = "1436"
+            startingLineNumber = "1469"
+            endingLineNumber = "1469"
             landmarkName = "HGAPRec::compute_likelihood(bool validationLikelihood)"
             landmarkType = "5">
          </BreakpointContent>
@@ -182,11 +182,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "main.cc"
-            timestampString = "462846429.756026"
+            timestampString = "463021612.41338"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1087"
-            endingLineNumber = "1087">
+            startingLineNumber = "1091"
+            endingLineNumber = "1091">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -388,11 +388,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462945955.193189"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1373"
-            endingLineNumber = "1373"
+            startingLineNumber = "1406"
+            endingLineNumber = "1406"
             landmarkName = "HGAPRec::compute_likelihood(bool validationLikelihood)"
             landmarkType = "5">
          </BreakpointContent>
@@ -404,11 +404,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462945955.193189"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1375"
-            endingLineNumber = "1375"
+            startingLineNumber = "1408"
+            endingLineNumber = "1408"
             landmarkName = "HGAPRec::compute_likelihood(bool validationLikelihood)"
             landmarkType = "5">
          </BreakpointContent>
@@ -420,13 +420,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462955012.025153"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1770"
-            endingLineNumber = "1770"
-            landmarkName = "HGAPRec::compute_precision(bool save_ranking_file)"
-            landmarkType = "5">
+            startingLineNumber = "1803"
+            endingLineNumber = "1803">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -436,12 +434,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462955012.025153"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1768"
-            endingLineNumber = "1768"
-            landmarkName = "HGAPRec::compute_precision(bool save_ranking_file)"
+            startingLineNumber = "1801"
+            endingLineNumber = "1801"
+            landmarkName = "HGAPRec::compute_itemrank(bool final)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -468,7 +466,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "264"
@@ -500,11 +498,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "gpbase.hh"
-            timestampString = "462735995.289086"
+            timestampString = "463023486.613021"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "213"
-            endingLineNumber = "213">
+            startingLineNumber = "214"
+            endingLineNumber = "214"
+            landmarkName = "GPMatrix::set_to_prior_curr()"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -524,7 +524,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "286"
@@ -540,11 +540,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1073"
-            endingLineNumber = "1073"
+            startingLineNumber = "1081"
+            endingLineNumber = "1081"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -556,11 +556,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1083"
-            endingLineNumber = "1083"
+            startingLineNumber = "1091"
+            endingLineNumber = "1091"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -572,11 +572,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1095"
-            endingLineNumber = "1095"
+            startingLineNumber = "1103"
+            endingLineNumber = "1103"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -588,11 +588,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1094"
-            endingLineNumber = "1094"
+            startingLineNumber = "1102"
+            endingLineNumber = "1102"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -604,11 +604,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1089"
-            endingLineNumber = "1089"
+            startingLineNumber = "1097"
+            endingLineNumber = "1097"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -620,11 +620,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1084"
-            endingLineNumber = "1084"
+            startingLineNumber = "1092"
+            endingLineNumber = "1092"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -636,11 +636,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1082"
-            endingLineNumber = "1082"
+            startingLineNumber = "1090"
+            endingLineNumber = "1090"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -652,11 +652,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1136"
-            endingLineNumber = "1136"
+            startingLineNumber = "1144"
+            endingLineNumber = "1144"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -668,23 +668,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1180"
-            endingLineNumber = "1180"
-            landmarkName = "HGAPRec::vb_hier()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1188"
@@ -700,11 +684,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1267"
-            endingLineNumber = "1267"
+            startingLineNumber = "1196"
+            endingLineNumber = "1196"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -716,11 +700,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1243"
-            endingLineNumber = "1243"
+            startingLineNumber = "1275"
+            endingLineNumber = "1275"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -732,11 +716,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1314"
-            endingLineNumber = "1314"
+            startingLineNumber = "1251"
+            endingLineNumber = "1251"
+            landmarkName = "HGAPRec::vb_hier()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "hgaprec.cc"
+            timestampString = "463022203.656195"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1322"
+            endingLineNumber = "1322"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -764,11 +764,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "main.cc"
-            timestampString = "462844938.791058"
+            timestampString = "463021612.41338"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "727"
-            endingLineNumber = "727"
+            startingLineNumber = "731"
+            endingLineNumber = "731"
             landmarkName = "mainOnce(int argc, char **argv)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1084,11 +1084,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1126"
-            endingLineNumber = "1126"
+            startingLineNumber = "1134"
+            endingLineNumber = "1134"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -1100,11 +1100,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1127"
-            endingLineNumber = "1127"
+            startingLineNumber = "1135"
+            endingLineNumber = "1135"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -1116,11 +1116,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1125"
-            endingLineNumber = "1125"
+            startingLineNumber = "1133"
+            endingLineNumber = "1133"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -1132,11 +1132,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1312"
-            endingLineNumber = "1312"
+            startingLineNumber = "1320"
+            endingLineNumber = "1320"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -1148,11 +1148,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1033"
-            endingLineNumber = "1033"
+            startingLineNumber = "1041"
+            endingLineNumber = "1041"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -1164,11 +1164,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1040"
-            endingLineNumber = "1040"
+            startingLineNumber = "1048"
+            endingLineNumber = "1048"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -1180,11 +1180,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1044"
-            endingLineNumber = "1044"
+            startingLineNumber = "1052"
+            endingLineNumber = "1052"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -1196,11 +1196,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1047"
-            endingLineNumber = "1047"
+            startingLineNumber = "1055"
+            endingLineNumber = "1055"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -1212,11 +1212,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1063"
-            endingLineNumber = "1063"
+            startingLineNumber = "1071"
+            endingLineNumber = "1071"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -1228,11 +1228,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1106"
-            endingLineNumber = "1106"
+            startingLineNumber = "1114"
+            endingLineNumber = "1114"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -1244,39 +1244,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1110"
-            endingLineNumber = "1110"
-            landmarkName = "HGAPRec::vb_hier()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1113"
-            endingLineNumber = "1113"
-            landmarkName = "HGAPRec::vb_hier()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1118"
@@ -1292,11 +1260,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1119"
-            endingLineNumber = "1119"
+            startingLineNumber = "1121"
+            endingLineNumber = "1121"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -1308,11 +1276,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462945955.193189"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1317"
-            endingLineNumber = "1317"
+            startingLineNumber = "1126"
+            endingLineNumber = "1126"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -1324,11 +1292,43 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462955012.025153"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1445"
-            endingLineNumber = "1445"
+            startingLineNumber = "1127"
+            endingLineNumber = "1127"
+            landmarkName = "HGAPRec::vb_hier()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "hgaprec.cc"
+            timestampString = "463022203.656195"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1325"
+            endingLineNumber = "1325"
+            landmarkName = "HGAPRec::vb_hier()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "hgaprec.cc"
+            timestampString = "463022203.656195"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1478"
+            endingLineNumber = "1478"
             landmarkName = "HGAPRec::compute_likelihood(bool validationLikelihood)"
             landmarkType = "5">
          </BreakpointContent>
@@ -1340,11 +1340,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462955012.025153"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1440"
-            endingLineNumber = "1440"
+            startingLineNumber = "1473"
+            endingLineNumber = "1473"
             landmarkName = "HGAPRec::compute_likelihood(bool validationLikelihood)"
             landmarkType = "5">
          </BreakpointContent>
@@ -1356,11 +1356,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "main.cc"
-            timestampString = "462844938.791058"
+            timestampString = "463021612.41338"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "701"
-            endingLineNumber = "701"
+            startingLineNumber = "705"
+            endingLineNumber = "705"
             landmarkName = "mainOnce(int argc, char **argv)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1372,7 +1372,23 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "main.cc"
-            timestampString = "462844938.791058"
+            timestampString = "463021612.41338"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "710"
+            endingLineNumber = "710"
+            landmarkName = "mainOnce(int argc, char **argv)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "main.cc"
+            timestampString = "463021612.41338"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "706"
@@ -1387,61 +1403,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "main.cc"
-            timestampString = "462844938.791058"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "702"
-            endingLineNumber = "702"
-            landmarkName = "mainOnce(int argc, char **argv)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "env.hh"
-            timestampString = "462759366.229851"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "423"
-            endingLineNumber = "423"
-            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string Noutfname, bool nmival, string gfname, uint32_t rfreq, bool sid, string lbl, bool alogl, double rseed, uint32_t maxitr, bool load, string loc, bool gen_hout, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf, Env::Dataset datasetv, bool batchv, bool binary_datav, bool biasv, bool hierv, bool explore, bool vbv, bool nmfv, bool nmfloadv, bool ldav, bool vwldav, bool write_trainingv, uint32_t rating_thresholdv, bool graphchiv, bool walsv, double l, uint32_t C, bool alsv, bool chinmfv, bool climfv, bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, int pOffset, int nScale, double nScaleFactor)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "env.hh"
-            timestampString = "462759366.229851"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "424"
-            endingLineNumber = "424"
-            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string Noutfname, bool nmival, string gfname, uint32_t rfreq, bool sid, string lbl, bool alogl, double rseed, uint32_t maxitr, bool load, string loc, bool gen_hout, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf, Env::Dataset datasetv, bool batchv, bool binary_datav, bool biasv, bool hierv, bool explore, bool vbv, bool nmfv, bool nmfloadv, bool ldav, bool vwldav, bool write_trainingv, uint32_t rating_thresholdv, bool graphchiv, bool walsv, double l, uint32_t C, bool alsv, bool chinmfv, bool climfv, bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, int pOffset, int nScale, double nScaleFactor)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "env.hh"
-            timestampString = "462759366.229851"
+            timestampString = "463025270.598762"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "427"
             endingLineNumber = "427"
-            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string Noutfname, bool nmival, string gfname, uint32_t rfreq, bool sid, string lbl, bool alogl, double rseed, uint32_t maxitr, bool load, string loc, bool gen_hout, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf, Env::Dataset datasetv, bool batchv, bool binary_datav, bool biasv, bool hierv, bool explore, bool vbv, bool nmfv, bool nmfloadv, bool ldav, bool vwldav, bool write_trainingv, uint32_t rating_thresholdv, bool graphchiv, bool walsv, double l, uint32_t C, bool alsv, bool chinmfv, bool climfv, bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, int pOffset, int nScale, double nScaleFactor)"
+            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string Noutfname, bool nmival, string gfname, uint32_t rfreq, bool sid, string lbl, bool alogl, double rseed, uint32_t maxitr, bool load, string loc, bool gen_hout, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf, Env::Dataset datasetv, bool batchv, bool binary_datav, bool biasv, bool hierv, bool explore, bool vbv, bool nmfv, bool nmfloadv, bool ldav, bool vwldav, bool write_trainingv, uint32_t rating_thresholdv, bool graphchiv, bool walsv, double l, uint32_t C, bool alsv, bool chinmfv, bool climfv, bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, double pOffset, int nScale, double nScaleFactor)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1452,12 +1420,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "env.hh"
-            timestampString = "462759366.229851"
+            timestampString = "463025270.598762"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "419"
-            endingLineNumber = "419"
-            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string Noutfname, bool nmival, string gfname, uint32_t rfreq, bool sid, string lbl, bool alogl, double rseed, uint32_t maxitr, bool load, string loc, bool gen_hout, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf, Env::Dataset datasetv, bool batchv, bool binary_datav, bool biasv, bool hierv, bool explore, bool vbv, bool nmfv, bool nmfloadv, bool ldav, bool vwldav, bool write_trainingv, uint32_t rating_thresholdv, bool graphchiv, bool walsv, double l, uint32_t C, bool alsv, bool chinmfv, bool climfv, bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, int pOffset, int nScale, double nScaleFactor)"
+            startingLineNumber = "428"
+            endingLineNumber = "428"
+            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string Noutfname, bool nmival, string gfname, uint32_t rfreq, bool sid, string lbl, bool alogl, double rseed, uint32_t maxitr, bool load, string loc, bool gen_hout, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf, Env::Dataset datasetv, bool batchv, bool binary_datav, bool biasv, bool hierv, bool explore, bool vbv, bool nmfv, bool nmfloadv, bool ldav, bool vwldav, bool write_trainingv, uint32_t rating_thresholdv, bool graphchiv, bool walsv, double l, uint32_t C, bool alsv, bool chinmfv, bool climfv, bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, double pOffset, int nScale, double nScaleFactor)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1468,12 +1436,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "env.hh"
-            timestampString = "462759366.229851"
+            timestampString = "463025270.598762"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "422"
-            endingLineNumber = "422"
-            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string Noutfname, bool nmival, string gfname, uint32_t rfreq, bool sid, string lbl, bool alogl, double rseed, uint32_t maxitr, bool load, string loc, bool gen_hout, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf, Env::Dataset datasetv, bool batchv, bool binary_datav, bool biasv, bool hierv, bool explore, bool vbv, bool nmfv, bool nmfloadv, bool ldav, bool vwldav, bool write_trainingv, uint32_t rating_thresholdv, bool graphchiv, bool walsv, double l, uint32_t C, bool alsv, bool chinmfv, bool climfv, bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, int pOffset, int nScale, double nScaleFactor)"
+            startingLineNumber = "431"
+            endingLineNumber = "431"
+            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string Noutfname, bool nmival, string gfname, uint32_t rfreq, bool sid, string lbl, bool alogl, double rseed, uint32_t maxitr, bool load, string loc, bool gen_hout, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf, Env::Dataset datasetv, bool batchv, bool binary_datav, bool biasv, bool hierv, bool explore, bool vbv, bool nmfv, bool nmfloadv, bool ldav, bool vwldav, bool write_trainingv, uint32_t rating_thresholdv, bool graphchiv, bool walsv, double l, uint32_t C, bool alsv, bool chinmfv, bool climfv, bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, double pOffset, int nScale, double nScaleFactor)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1484,12 +1452,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "env.hh"
-            timestampString = "462759366.229851"
+            timestampString = "463025270.598762"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "420"
-            endingLineNumber = "420"
-            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string Noutfname, bool nmival, string gfname, uint32_t rfreq, bool sid, string lbl, bool alogl, double rseed, uint32_t maxitr, bool load, string loc, bool gen_hout, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf, Env::Dataset datasetv, bool batchv, bool binary_datav, bool biasv, bool hierv, bool explore, bool vbv, bool nmfv, bool nmfloadv, bool ldav, bool vwldav, bool write_trainingv, uint32_t rating_thresholdv, bool graphchiv, bool walsv, double l, uint32_t C, bool alsv, bool chinmfv, bool climfv, bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, int pOffset, int nScale, double nScaleFactor)"
+            startingLineNumber = "423"
+            endingLineNumber = "423"
+            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string Noutfname, bool nmival, string gfname, uint32_t rfreq, bool sid, string lbl, bool alogl, double rseed, uint32_t maxitr, bool load, string loc, bool gen_hout, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf, Env::Dataset datasetv, bool batchv, bool binary_datav, bool biasv, bool hierv, bool explore, bool vbv, bool nmfv, bool nmfloadv, bool ldav, bool vwldav, bool write_trainingv, uint32_t rating_thresholdv, bool graphchiv, bool walsv, double l, uint32_t C, bool alsv, bool chinmfv, bool climfv, bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, double pOffset, int nScale, double nScaleFactor)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "env.hh"
+            timestampString = "463025270.598762"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "426"
+            endingLineNumber = "426"
+            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string Noutfname, bool nmival, string gfname, uint32_t rfreq, bool sid, string lbl, bool alogl, double rseed, uint32_t maxitr, bool load, string loc, bool gen_hout, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf, Env::Dataset datasetv, bool batchv, bool binary_datav, bool biasv, bool hierv, bool explore, bool vbv, bool nmfv, bool nmfloadv, bool ldav, bool vwldav, bool write_trainingv, uint32_t rating_thresholdv, bool graphchiv, bool walsv, double l, uint32_t C, bool alsv, bool chinmfv, bool climfv, bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, double pOffset, int nScale, double nScaleFactor)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "env.hh"
+            timestampString = "463025270.598762"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "424"
+            endingLineNumber = "424"
+            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string Noutfname, bool nmival, string gfname, uint32_t rfreq, bool sid, string lbl, bool alogl, double rseed, uint32_t maxitr, bool load, string loc, bool gen_hout, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf, Env::Dataset datasetv, bool batchv, bool binary_datav, bool biasv, bool hierv, bool explore, bool vbv, bool nmfv, bool nmfloadv, bool ldav, bool vwldav, bool write_trainingv, uint32_t rating_thresholdv, bool graphchiv, bool walsv, double l, uint32_t C, bool alsv, bool chinmfv, bool climfv, bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, double pOffset, int nScale, double nScaleFactor)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1500,7 +1500,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "matrix.hh"
-            timestampString = "462951510.035356"
+            timestampString = "462999340.775839"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1311"
@@ -1516,11 +1516,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462955012.025153"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2207"
-            endingLineNumber = "2207"
+            startingLineNumber = "2240"
+            endingLineNumber = "2240"
             landmarkName = "HGAPRec::gen_ranking_for_users(bool load)"
             landmarkType = "5">
          </BreakpointContent>
@@ -1532,7 +1532,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "matrix.hh"
-            timestampString = "462951510.035356"
+            timestampString = "462999340.775839"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1309"
@@ -1580,11 +1580,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1035"
-            endingLineNumber = "1035"
+            startingLineNumber = "1043"
+            endingLineNumber = "1043"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -1612,11 +1612,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "gpbase.hh"
-            timestampString = "462735995.289086"
+            timestampString = "463023486.613021"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "229"
-            endingLineNumber = "229">
+            startingLineNumber = "230"
+            endingLineNumber = "230">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1626,11 +1626,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "gpbase.hh"
-            timestampString = "462735995.289086"
+            timestampString = "463023486.613021"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "234"
-            endingLineNumber = "234">
+            startingLineNumber = "235"
+            endingLineNumber = "235"
+            landmarkName = "GPMatrix::set_prior_rate_scaled(const Array &amp;ev, const Array &amp;elogv, Array &amp;scale)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1640,12 +1642,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "matrix.hh"
-            timestampString = "462951510.035356"
+            timestampString = "462999340.775839"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1359"
             endingLineNumber = "1359"
-            landmarkName = "save_transpose(string name, const IDMap &amp;m)"
+            landmarkName = "save(string name)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1656,13 +1658,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "matrix.hh"
-            timestampString = "462951510.035356"
+            timestampString = "462999340.775839"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1360"
-            endingLineNumber = "1360"
-            landmarkName = "save_transpose(string name, const IDMap &amp;m)"
-            landmarkType = "7">
+            endingLineNumber = "1360">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1672,11 +1672,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "gpbase.hh"
-            timestampString = "462735995.289086"
+            timestampString = "463023486.613021"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "211"
-            endingLineNumber = "211">
+            startingLineNumber = "212"
+            endingLineNumber = "212"
+            landmarkName = "GPMatrix::set_to_prior_curr()"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1690,9 +1692,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1079"
-            endingLineNumber = "1079"
-            landmarkName = "set_row(uint32_t row, const D1Array&lt;T&gt; &amp;value )"
-            landmarkType = "7">
+            endingLineNumber = "1079">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1734,7 +1734,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "994"
@@ -1750,7 +1750,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "193"
@@ -1766,7 +1766,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "196"
@@ -1782,7 +1782,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "198"
@@ -1798,7 +1798,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "201"
@@ -1814,7 +1814,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "204"
@@ -1830,7 +1830,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "209"
@@ -1846,7 +1846,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "210"
@@ -1862,7 +1862,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "214"
@@ -1878,7 +1878,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "215"
@@ -1894,7 +1894,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "219"
@@ -1910,7 +1910,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "220"
@@ -1942,11 +1942,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "gpbase.hh"
-            timestampString = "462735995.289086"
+            timestampString = "463023486.613021"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "393"
-            endingLineNumber = "393">
+            startingLineNumber = "394"
+            endingLineNumber = "394"
+            landmarkName = "GPMatrix::initialize(double offset)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1956,11 +1958,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "gpbase.hh"
-            timestampString = "462735995.289086"
+            timestampString = "463023486.613021"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "397"
-            endingLineNumber = "397">
+            startingLineNumber = "398"
+            endingLineNumber = "398"
+            landmarkName = "GPMatrix::initialize(double offset)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1970,11 +1974,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "gpbase.hh"
-            timestampString = "462735995.289086"
+            timestampString = "463023486.613021"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "402"
-            endingLineNumber = "402">
+            startingLineNumber = "403"
+            endingLineNumber = "403"
+            landmarkName = "GPMatrix::initialize(double offset)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1984,25 +1990,29 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "gpbase.hh"
-            timestampString = "462735995.289086"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "203"
-            endingLineNumber = "203">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "gpbase.hh"
-            timestampString = "462735995.289086"
+            timestampString = "463023486.613021"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "204"
-            endingLineNumber = "204">
+            endingLineNumber = "204"
+            landmarkName = "GPMatrix::set_to_prior()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "gpbase.hh"
+            timestampString = "463023486.613021"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "205"
+            endingLineNumber = "205"
+            landmarkName = "GPMatrix::set_to_prior()"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2017,7 +2027,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1066"
             endingLineNumber = "1066"
-            landmarkName = "set_rows(D1Array&lt;T&gt; &amp;rowV)"
+            landmarkName = "set_rows(const D1Array&lt;T&gt; &amp;rowV)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2033,7 +2043,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1065"
             endingLineNumber = "1065"
-            landmarkName = "set_rows(D1Array&lt;T&gt; &amp;rowV)"
+            landmarkName = "set_rows(const D1Array&lt;T&gt; &amp;rowV)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2044,7 +2054,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "213"
@@ -2060,11 +2070,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1088"
-            endingLineNumber = "1088"
+            startingLineNumber = "1096"
+            endingLineNumber = "1096"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2076,11 +2086,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1097"
-            endingLineNumber = "1097"
+            startingLineNumber = "1105"
+            endingLineNumber = "1105"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2092,11 +2102,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1237"
-            endingLineNumber = "1237"
+            startingLineNumber = "1245"
+            endingLineNumber = "1245"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2108,12 +2118,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "matrix.hh"
-            timestampString = "462951510.035356"
+            timestampString = "462999340.775839"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1896"
             endingLineNumber = "1896"
-            landmarkName = "elem_product(const D2Array&lt;T&gt; &amp; mat1, const D2Array&lt;T&gt; &amp; mat2, D2Array&lt;T&gt; &amp; dest)"
+            landmarkName = "colstds(D1Array&lt;T&gt; &amp; s)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2124,11 +2134,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1157"
-            endingLineNumber = "1157"
+            startingLineNumber = "1165"
+            endingLineNumber = "1165"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2140,11 +2150,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1167"
-            endingLineNumber = "1167"
+            startingLineNumber = "1175"
+            endingLineNumber = "1175"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2156,11 +2166,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1196"
-            endingLineNumber = "1196"
+            startingLineNumber = "1204"
+            endingLineNumber = "1204"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2172,11 +2182,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1213"
-            endingLineNumber = "1213"
+            startingLineNumber = "1221"
+            endingLineNumber = "1221"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2188,11 +2198,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1124"
-            endingLineNumber = "1124"
+            startingLineNumber = "1132"
+            endingLineNumber = "1132"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2204,11 +2214,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1242"
-            endingLineNumber = "1242"
+            startingLineNumber = "1250"
+            endingLineNumber = "1250"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2220,11 +2230,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1248"
-            endingLineNumber = "1248"
+            startingLineNumber = "1256"
+            endingLineNumber = "1256"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2236,11 +2246,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1249"
-            endingLineNumber = "1249"
+            startingLineNumber = "1257"
+            endingLineNumber = "1257"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2252,11 +2262,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1251"
-            endingLineNumber = "1251"
+            startingLineNumber = "1259"
+            endingLineNumber = "1259"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2268,11 +2278,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1253"
-            endingLineNumber = "1253"
+            startingLineNumber = "1261"
+            endingLineNumber = "1261"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2284,11 +2294,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1260"
-            endingLineNumber = "1260"
+            startingLineNumber = "1268"
+            endingLineNumber = "1268"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2300,11 +2310,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462914437.528914"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1262"
-            endingLineNumber = "1262"
+            startingLineNumber = "1270"
+            endingLineNumber = "1270"
             landmarkName = "HGAPRec::vb_hier()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2364,7 +2374,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462843892.266067"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1008"
@@ -2642,12 +2652,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "matrix.hh"
-            timestampString = "462951510.035356"
+            timestampString = "462999340.775839"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1871"
             endingLineNumber = "1871"
-            landmarkName = "colstds(D1Array&lt;T&gt; &amp; s)"
+            landmarkName = "colmeans(D1Array&lt;T&gt; &amp; s)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2658,11 +2668,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462955012.025153"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1397"
-            endingLineNumber = "1397"
+            startingLineNumber = "1430"
+            endingLineNumber = "1430"
             landmarkName = "HGAPRec::compute_likelihood(bool validationLikelihood)"
             landmarkType = "5">
          </BreakpointContent>
@@ -2674,11 +2684,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462955012.025153"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1415"
-            endingLineNumber = "1415"
+            startingLineNumber = "1448"
+            endingLineNumber = "1448"
             landmarkName = "HGAPRec::compute_likelihood(bool validationLikelihood)"
             landmarkType = "5">
          </BreakpointContent>
@@ -2690,13 +2700,61 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "hgaprec.cc"
-            timestampString = "462953972.030043"
+            timestampString = "463022203.656195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1372"
-            endingLineNumber = "1372"
+            startingLineNumber = "1405"
+            endingLineNumber = "1405"
             landmarkName = "HGAPRec::compute_likelihood(bool validationLikelihood)"
             landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ratings.hh"
+            timestampString = "462995989.789946"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
+            landmarkName = "class Ratings"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ratings.hh"
+            timestampString = "462995992.773289"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
+            landmarkName = "class Ratings"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "matrix.hh"
+            timestampString = "462997165.946379"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "418"
+            endingLineNumber = "418"
+            landmarkName = "normalize()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

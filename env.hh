@@ -66,7 +66,7 @@ public:
       bool write_training, uint32_t rating_threshold,
       bool graphchi, bool wals, double wals_l, uint32_t wals_C,
       bool als, bool chinmf, bool climf,
-      bool mle_item, bool mle_user, bool canny, bool ctr, int pOffset, int scale, double scaleFactor);
+      bool mle_item, bool mle_user, bool canny, bool ctr, double pOffset, int scale, double scaleFactor);
   ~Env() { fclose(_plogf); }
   
   static string prefix;
@@ -84,7 +84,7 @@ public:
   uint32_t ic;  // Number of item characteristics
   uint32_t t;
   uint32_t mini_batch_size;
-  int offset;
+  double offset;
   
   // Hyperparameters
   double a, ap, bp, c, cp, dp, e, f;
@@ -248,7 +248,7 @@ Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fn
          bool write_trainingv, uint32_t rating_thresholdv,
          bool graphchiv, bool walsv, double l, uint32_t C,
          bool alsv, bool chinmfv, bool climfv,
-         bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, int pOffset, int nScale, double nScaleFactor)
+         bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, double pOffset, int nScale, double nScaleFactor)
 : dataset(datasetv),
 n(N),
 m(M),
@@ -369,7 +369,7 @@ scaleFactor(nScaleFactor)
   if (ctr)
     sa << "-ctr";
   
-  if (seed)
+  if (seed != 0)
     sa << "-seed" << seed;
   
   if (write_training)
@@ -407,6 +407,10 @@ scaleFactor(nScaleFactor)
   
   if (scaleFactor != 1) {
     sa << "-scfact" << scaleFactor;
+  }
+  
+  if (offset != 1) {
+    sa << "-offset" << offset;
   }
   
   prefix = sa.str();

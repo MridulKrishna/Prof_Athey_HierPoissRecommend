@@ -44,7 +44,7 @@ _topN_by_user(100),
 _maxval(0), _minval(65536)
 {
   
-  cout << "Offset: " << _offset << endl;
+//  cout << "Offset: " << _offset << endl;
   // Initializes the random number generator
   gsl_rng_env_setup();
   const gsl_rng_type *T = gsl_rng_default;
@@ -1008,6 +1008,27 @@ HGAPRec::vb_hier()
   cout << "Initialized" << endl;
 //  cout << _env.reportfreq << endl;
   
+  // Matrices that save the means of variables
+  Matrix betaMeans(_k,_env.max_iterations+1);
+  Matrix thetaMeans(_k,_env.max_iterations+1);
+  Matrix sigmaMeans(_ic,_env.max_iterations+1);
+  Matrix rhoMeans(_uc,_env.max_iterations+1);
+  
+  Array betaMean(_k);
+  Array thetaMean(_k);
+  Array sigmaMean(_ic);
+  Array rhoMean(_uc);
+  
+  _hbeta.expected_means(betaMean);
+  _htheta.expected_means(thetaMean);
+  _hsigma.expected_means(sigmaMean);
+  _hrho.expected_means(rhoMean);
+  
+  betaMeans.set_col(0, betaMean);
+  thetaMeans.set_col(0, thetaMean);
+  sigmaMeans.set_col(0, sigmaMean);
+  rhoMeans.set_col(0, rhoMean);
+  
   //lerr("htheta = %s", _htheta.rate_next().s().c_str());
 
   ///////////
@@ -1311,6 +1332,21 @@ HGAPRec::vb_hier()
     
     printf("iteration %d\n", _iter);
     
+    Array betaMean(_k);
+    Array thetaMean(_k);
+    Array sigmaMean(_ic);
+    Array rhoMean(_uc);
+    
+    _hbeta.expected_means(betaMean);
+    _htheta.expected_means(thetaMean);
+    _hsigma.expected_means(sigmaMean);
+    _hrho.expected_means(rhoMean);
+    
+    betaMeans.set_col(_iter+1, betaMean);
+    thetaMeans.set_col(_iter+1, thetaMean);
+    sigmaMeans.set_col(_iter+1, sigmaMean);
+    rhoMeans.set_col(_iter+1, rhoMean);
+    
     fflush(stdout);
     if (_iter % _env.reportfreq == 0) {
       compute_likelihood(false);
@@ -1324,6 +1360,16 @@ HGAPRec::vb_hier()
       //gen_ranking_for_users(false);
       if (_env.logl)
         logl();
+      
+      string nameBeta = string("/betaMeans.tsv");
+      string nameTheta = string("/thetaMeans.tsv");
+      string nameSigma = string("/sigmaMeans.tsv");
+      string nameRho = string("/rhoMeans.tsv");
+      
+      betaMeans.save(_env.outfname+"/"+Env::outfile_str(nameBeta));
+      thetaMeans.save(_env.outfname+"/"+Env::outfile_str(nameTheta));
+      sigmaMeans.save(_env.outfname+"/"+Env::outfile_str(nameSigma));
+      rhoMeans.save(_env.outfname+"/"+Env::outfile_str(nameRho));
     }
     
     if (stop) {
@@ -1383,9 +1429,9 @@ HGAPRec::compute_likelihood(bool validationLikelihood)
 //    cout << k << endl;
     double u = _env.hier ? rating_likelihood_hier(n,m,r) : rating_likelihood(n,m,r);
   
-    double rate;
-    double likelihood;
-    rating_likelihood_hier_return(n,m,r,rate,likelihood);
+//    double rate;
+//    double likelihood;
+//    rating_likelihood_hier_return(n,m,r,rate,likelihood);
     
 //    cout << "r: " << r << " rate: " << rate << " likelihood: " << likelihood << endl;
 //    IDMap userMap = _ratings.seq2user();
@@ -1544,48 +1590,48 @@ HGAPRec::rating_likelihood_hier(uint32_t p, uint32_t q, yval_t y) const
   return y * log(s) - s - log_factorial(y);
 }
 
-// Computes the log likelihood for the rating of user p for item q
-double
-HGAPRec::rating_likelihood_hier_return(uint32_t p, uint32_t q, yval_t y, double & rate, double & likelihood) const
-{
-  // Gets the current expected values of theta, beta, sigma, and rho
-  const double **etheta = _htheta.expected_v().const_data();
-  const double **ebeta = _hbeta.expected_v().const_data();
-  const double **esigma = _hsigma.expected_v().const_data();
-  const double **erho = _hrho.expected_v().const_data();
-  double **itemChar = _ratings._itemObs.data();
-  double **userChar = _ratings._userObs.data();
-  
-  // Finds the sum of dot products \theta_u\beta_i+\sigma_u\x_i+\w_u\rho_i
-  double s = .0;
-  for (uint32_t k = 0; k < _k; ++k)
-    s += etheta[p][k] * ebeta[q][k];
-  for (uint32_t l = 0; l < _ic; ++l)
-    s += esigma[p][l] * itemChar[q][l];
-  for (uint32_t m = 0; m < _uc; ++m)
-    s += userChar[p][m] * erho[q][m];
-  
-  
-  if (_env.bias) {
-    const double **ethetabias = _thetabias.expected_v().const_data();
-    const double **ebetabias = _betabias.expected_v().const_data();
-    s += ethetabias[p][0] + ebetabias[q][0];
-  }
-  
-  if (s < 1e-30)
-    s = 1e-30;
-  
-  int y2 = y;
-//  cout << "y: " << y2 << " s: " << s << " ll: " << (y * log(s) - s - log_factorial(y)) << endl;
-  
-  rate = s;
-  likelihood = y * log(s) - s - log_factorial(y);
-  
-  // Returns log of Poisson pmf
-  if (_env.binary_data)
-    return y == 0 ? -s : log(1 - exp(-s));
-  return y * log(s) - s - log_factorial(y);
-}
+// Computes the log likelihood for the rating of user p for item q, stores the rate and likelihood in parameters
+//double
+//HGAPRec::rating_likelihood_hier_return(uint32_t p, uint32_t q, yval_t y, double & rate, double & likelihood) const
+//{
+//  // Gets the current expected values of theta, beta, sigma, and rho
+//  const double **etheta = _htheta.expected_v().const_data();
+//  const double **ebeta = _hbeta.expected_v().const_data();
+//  const double **esigma = _hsigma.expected_v().const_data();
+//  const double **erho = _hrho.expected_v().const_data();
+//  double **itemChar = _ratings._itemObs.data();
+//  double **userChar = _ratings._userObs.data();
+//  
+//  // Finds the sum of dot products \theta_u\beta_i+\sigma_u\x_i+\w_u\rho_i
+//  double s = .0;
+//  for (uint32_t k = 0; k < _k; ++k)
+//    s += etheta[p][k] * ebeta[q][k];
+//  for (uint32_t l = 0; l < _ic; ++l)
+//    s += esigma[p][l] * itemChar[q][l];
+//  for (uint32_t m = 0; m < _uc; ++m)
+//    s += userChar[p][m] * erho[q][m];
+//  
+//  
+//  if (_env.bias) {
+//    const double **ethetabias = _thetabias.expected_v().const_data();
+//    const double **ebetabias = _betabias.expected_v().const_data();
+//    s += ethetabias[p][0] + ebetabias[q][0];
+//  }
+//  
+//  if (s < 1e-30)
+//    s = 1e-30;
+//  
+//  int y2 = y;
+////  cout << "y: " << y2 << " s: " << s << " ll: " << (y * log(s) - s - log_factorial(y)) << endl;
+//  
+//  rate = s;
+//  likelihood = y * log(s) - s - log_factorial(y);
+//  
+//  // Returns log of Poisson pmf
+//  if (_env.binary_data)
+//    return y == 0 ? -s : log(1 - exp(-s));
+//  return y * log(s) - s - log_factorial(y);
+//}
 
 double
 HGAPRec::log_factorial(uint32_t n)  const
