@@ -159,6 +159,8 @@ int mainRepeatedScale(int argc, char **argv) {
   int scale = Env::MEAN;
   double scaleFactor = 1;
   
+  int cycles = 0;
+  
   // Parse parameters
   while (i <= argc - 1) {
     if (strcmp(argv[i], "-dir") == 0) {
@@ -314,6 +316,10 @@ int mainRepeatedScale(int argc, char **argv) {
       scale = Env::ONES;
     } else if (strcmp(argv[i], "-scfact") == 0) {
       scaleFactor = atof(argv[++i]);
+    } else if (strcmp(argv[i], "-cycles") == 0) {
+      cycles = 1;
+    } else if (strcmp(argv[i], "-cycles2") == 0) {
+      cycles = 2;
     } else if (i > 0) {
       fprintf(stdout,  "error: unknown option %s\n", argv[i]);
       assert(0);
@@ -339,7 +345,7 @@ int mainRepeatedScale(int argc, char **argv) {
             write_training, rating_threshold,
             chi, wals, wals_l, wals_C,
             als, chinmf, climf,
-            mle_item, mle_user, canny, ctr, offset, scale, scaleFactor);
+            mle_item, mle_user, canny, ctr, offset, scale, scaleFactor, cycles);
     env_global = &env;
     
     // Reads the input files
@@ -386,7 +392,7 @@ int mainRepeatedScale(int argc, char **argv) {
             write_training, rating_threshold,
             chi, wals, wals_l, wals_C,
             als, chinmf, climf,
-            mle_item, mle_user, canny, ctr, offset, scale, scaleFactor);
+            mle_item, mle_user, canny, ctr, offset, scale, scaleFactor, cycles);
     env_global = &env;
     
     // Reads the input files
@@ -433,7 +439,7 @@ int mainRepeatedScale(int argc, char **argv) {
             write_training, rating_threshold,
             chi, wals, wals_l, wals_C,
             als, chinmf, climf,
-            mle_item, mle_user, canny, ctr, offset, scale, scaleFactor);
+            mle_item, mle_user, canny, ctr, offset, scale, scaleFactor, cycles);
     env_global = &env;
     
     // Reads the input files
@@ -537,6 +543,8 @@ int mainOnce(int argc, char **argv) {
   
   int scale = Env::MEAN;
   double scaleFactor = 1;
+  
+  int cycles = 0;
   
   uint32_t i = 0;
   
@@ -695,6 +703,10 @@ int mainOnce(int argc, char **argv) {
       scale = Env::ONES;
     } else if (strcmp(argv[i], "-scfact") == 0) {
       scaleFactor = atof(argv[++i]);
+    } else if (strcmp(argv[i], "-cycles") == 0) {
+      cycles = 1;
+    } else if (strcmp(argv[i], "-cycles2") == 0) {
+      cycles = 2;
     } else if (i > 0) {
       fprintf(stdout,  "error: unknown option %s\n", argv[i]);
       assert(0);
@@ -716,7 +728,7 @@ int mainOnce(int argc, char **argv) {
           write_training, rating_threshold,
           chi, wals, wals_l, wals_C,
           als, chinmf, climf,
-          mle_item, mle_user, canny, ctr, offset, scale, scaleFactor);
+          mle_item, mle_user, canny, ctr, offset, scale, scaleFactor, cycles);
   env_global = &env;
   
   // Reads the input files
@@ -737,9 +749,15 @@ int mainOnce(int argc, char **argv) {
   
   moment t1 = now();
   
-  cout << "Running vb_hier()" << endl;
-  hgaprec.vb_hier();
-  cout << "\n" << endl;
+  if (cycles == 0) {
+    cout << "Running vb_hier()" << endl;
+    hgaprec.vb_hier();
+    cout << "\n" << endl;
+  } else if (cycles == 1) {
+    hgaprec.vb_hier_cycles();
+  } else if (cycles == 2) {
+    hgaprec.vb_hier_cycles2();
+  }
   moment t2 = now();
   
   timing(t1,t2);

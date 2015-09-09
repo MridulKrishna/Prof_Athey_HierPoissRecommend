@@ -66,7 +66,7 @@ public:
       bool write_training, uint32_t rating_threshold,
       bool graphchi, bool wals, double wals_l, uint32_t wals_C,
       bool als, bool chinmf, bool climf,
-      bool mle_item, bool mle_user, bool canny, bool ctr, double pOffset, int scale, double scaleFactor);
+      bool mle_item, bool mle_user, bool canny, bool ctr, double pOffset, int scale, double scaleFactor, int cycles);
   ~Env() { fclose(_plogf); }
   
   static string prefix;
@@ -141,6 +141,8 @@ public:
   
   int scale;
   double scaleFactor;
+  
+  int cycles;
   
   static const int ONES = 1;
   static const int MEAN = 2;
@@ -248,7 +250,7 @@ Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fn
          bool write_trainingv, uint32_t rating_thresholdv,
          bool graphchiv, bool walsv, double l, uint32_t C,
          bool alsv, bool chinmfv, bool climfv,
-         bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, double pOffset, int nScale, double nScaleFactor)
+         bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, double pOffset, int nScale, double nScaleFactor, int nCycles)
 : dataset(datasetv),
 n(N),
 m(M),
@@ -306,7 +308,8 @@ canny(cannyv),
 ctr(ctrv),
 offset(pOffset),
 scale(nScale),
-scaleFactor(nScaleFactor)
+scaleFactor(nScaleFactor),
+cycles(nCycles)
 {
   ostringstream sa;
   sa << "n" << n << "-";
@@ -411,6 +414,14 @@ scaleFactor(nScaleFactor)
   
   if (offset != 1) {
     sa << "-offset" << offset;
+  }
+  
+  if (cycles == 1) {
+    sa << "-cycles";
+  }
+  
+  if (cycles == 2) {
+    sa << "-cycles2";
   }
   
   prefix = sa.str();

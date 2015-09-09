@@ -389,7 +389,7 @@ GPMatrix::initialize(double offset)
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k)
       // Initial shape values: hyperparameter plus a small random shock
-       ad[i][k] = _sprior + offset * 0.01 * gsl_rng_uniform(*_r);
+       ad[i][k] = _sprior * (1 + offset * 0.1 * gsl_rng_uniform(*_r));
 
   for (uint32_t k = 0; k < _k; ++k) {
     // Initial rate values are also hyperparameters plus a small shock
@@ -1084,7 +1084,7 @@ GPArray::initialize2(double v, double offset)
     // -----------------------------------------
     
     ad[i] = _sprior + v;
-    bd[i] = _rprior + offset * 0.1 * gsl_rng_uniform(*_r);
+    bd[i] = _rprior * (1 + offset * 0.1 * gsl_rng_uniform(*_r));
   }
   set_to_prior();
 }

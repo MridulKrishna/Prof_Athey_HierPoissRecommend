@@ -13,6 +13,8 @@ public:
 //    void vb();
 //    void vb_bias();
     void vb_hier();
+    void vb_hier_cycles();
+    void vb_hier_cycles2();
 //    void vb_mle_user();
 //    void vb_mle_item();
 //    void vb_canny();
