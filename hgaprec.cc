@@ -292,7 +292,7 @@ HGAPRec::get_phi(GPBase<Matrix> &theta, uint32_t u, GPBase<Matrix> &beta, uint32
   phi.lognormalize();
 }
 
-// Calculates the vector of probabilites for the multinomial distribution and saves it in argument phi
+// Calculates the vector of probabilites for the multinomial distribution and saves it in argument phi. Takes into account that the item and user observables have to be scaled down by popularity and activity.
 void
 HGAPRec::get_phi(GPMatrix &theta, uint32_t u, GPMatrix &beta, uint32_t i, GPMatrix &sigma, GPMatrix &rho, GPArray &xi, GPArray &eta, uint32_t ic, uint32_t uc, Array &phi)
 {
@@ -332,6 +332,36 @@ HGAPRec::get_phi(GPMatrix &theta, uint32_t u, GPMatrix &beta, uint32_t i, GPMatr
     phi[_k+_ic+m] =  elogrho[i][m] -elogxi[u] + log(userChar->get(u,m));
 //        cout << "phim " << phi[_k+_ic+m] << endl;
 //        cout << _k+_ic+m << " " << log(userChar->get(u,m)) << " " << elogrho[i][m] << " " << elogxi[u] << endl;
+  }
+  
+  // Normalizes phi so it adds up to one
+  phi.lognormalize();
+}
+
+// Calculates the vector of probabilites for the multinomial distribution and saves it in argument phi. Only takes into account factors that are purely latent.
+void
+HGAPRec::get_phi(GPMatrix &theta, uint32_t u, GPMatrix &beta, uint32_t i, Array &phi)
+{
+  // Checks that the sizes of beta, theta, and phi agree
+  assert (phi.size() == theta.k() &&
+          phi.size() == beta.k() );
+  // Checks that the position does not exceed the array dimensions
+  assert (u < theta.n() && i < beta.n());
+  
+  // Gets the expected log of theta, beta, sigma, and rho
+  const double  **elogtheta = theta.expected_logv().const_data();
+  const double  **elogbeta = beta.expected_logv().const_data();
+  
+  // Makes phi a zero vector
+  phi.zero();
+  
+  //  _hsigma.shape_curr().print();
+  //  _hsigma.rate_curr().print();
+  
+  // Adds each one of the elements of phi
+  for (uint32_t k = 0; k < _k; ++k) {
+    phi[k] = elogtheta[u][k] + elogbeta[i][k];
+    //        cout << "phik " << phi[k] << endl;
   }
   
   // Normalizes phi so it adds up to one
@@ -1551,24 +1581,10 @@ HGAPRec::vb_hier_latents_first()
   //  _thetarate.shape_curr().print();
   //  _thetarate.rate_curr().print();
   
-  //lerr("htheta = %s", _htheta.rate_next().s().c_str());
-  
-  ///////////
-  // Original code
-  //  // What is bias?
-  //  uint32_t x;
-  //  if (_env.bias)
-  //    x = _k+2;
-  //  else
-  //    x = _k;
-  ///////////
-  
-  uint32_t x = _k+_uc+_ic;
-  //
   // Constructs the array for the parameters of the multinomial distribution
-  Array phi(x);
+  Array phiLatents(_k);
   
-  while (_iter < 150) {
+  while (_iter < 100) {
     // Stop if the max number of iterations is reached
     if (_iter > _env.max_iterations) {
       exit(0);
@@ -1587,28 +1603,11 @@ HGAPRec::vb_hier_latents_first()
         // Gets the code of the movie
         uint32_t m = (*movies)[j];
         
-        //        //////// JCC: Tests
-        //        IDMap seq2m = _ratings.seq2movie();
-        //        IDMap seq2u = _ratings.seq2user();
-        //
-        //        uint32_t username = seq2u.at(n);
-        //        uint32_t moviename = seq2m.at(j);
-        //        cout << "User: " << n << " " << username << endl;
-        //        cout << "Movie: " << j << " " << m << " " << moviename << endl;
-        //        ////////
-        
         // Get the movie rating
         yval_t y = _ratings.r(n,m);
-        
-        //        //////// JCC: Tests
-        //        uint32_t y2 = _ratings.r(n,m);
-        //        cout << _ratings.r(n,m) << endl;
-        //        cout << "Rating: " << y << endl;
-        //        cout << "Rating: " << y2 << endl;
-        //        ////////
-        
-        // Finds phi from the current parameters of hbeta, htheta, hsigma, and hrho (the equation in step 1 of the algorithm in the paper)
-        get_phi(_htheta, n, _hbeta, m, _hsigma, _hrho, _thetarate, _betarate, _ic, _uc, phi);
+       
+        // Finds phi from the current parameters of hbeta, htheta (the equation in step 1 of the algorithm in the paper)
+        get_phi(_htheta, n, _hbeta, m, phiLatents);
         
         //        get_phi(_htheta, n, _hbeta, m, _hsigma, _hrho, _ic, _uc, phi);
         
@@ -1622,7 +1621,7 @@ HGAPRec::vb_hier_latents_first()
         
         // Makes phi sum up to y to get y_{ui} phi_{uik}
         if (y > 1) {
-          phi.scale(y);
+          phiLatents.scale(y);
         }
         
         
@@ -1634,15 +1633,9 @@ HGAPRec::vb_hier_latents_first()
         //        phi.print();
         
         // Defines the subarrays of phi for latent variables, user observables, and item observables and updates the next shape parameter of theta and beta (gamma and kappa) by adding y_{ui} phi_{uik} to the nth row of gamma and the mth row of kappa (the first equation in steps 2 and 3 of the algorithm in the paper)
-        Array phik(_k);
-        Array phil(_ic);
-        Array phim(_uc);
-        
-        if (_k>0) {
-          phik.copy_from(phi.subarray(0,_k-1));
-          _htheta.update_shape_next1(n, phik);
-          _hbeta.update_shape_next1(m, phik);
-        }
+        _htheta.update_shape_next1(n, phiLatents);
+        _hbeta.update_shape_next1(m, phiLatents);
+
                 //        phi.print();
       }
     } // End of loop over users/movies
@@ -1683,6 +1676,11 @@ HGAPRec::vb_hier_latents_first()
   _iter = 0;
   
   bool stop = false;
+  
+  uint32_t x = _k+_uc+_ic;
+  //
+  // Constructs the array for the parameters of the multinomial distribution
+  Array phi(x);
   
   while (!stop) {
     // Stop if the max number of iterations is reached
@@ -2958,7 +2956,7 @@ HGAPRec::compute_likelihood(bool validationLikelihood)
       else if (a > _prev_h)
         _nh = 0;
       
-      if (_nh > 2) { // be robust to small fluctuations in predictive likelihood
+      if (_nh > 5) { // be robust to small fluctuations in predictive likelihood
         why = 1;
         stop = true;
       }

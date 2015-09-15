@@ -62,6 +62,8 @@ private:
     
     void get_phi(GPMatrix &theta, uint32_t ai, GPMatrix &beta, uint32_t bi, GPMatrix &sigma, GPMatrix &rho, GPArray &xi, GPArray &eta, uint32_t ic, uint32_t uc, Array &phi);
     
+    void get_phi(GPMatrix &theta, uint32_t u, GPMatrix &beta, uint32_t i, Array &phi);
+    
     void get_phi(GPBase<Matrix> &a, uint32_t ai,
                  GPBase<Matrix> &b, uint32_t bi,
                  double biasa, double biasb,

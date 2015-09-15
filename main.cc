@@ -160,6 +160,7 @@ int mainRepeatedScale(int argc, char **argv) {
   double scaleFactor = 1;
   
   int cycles = 0;
+  bool lfirst = false;
   
   // Parse parameters
   while (i <= argc - 1) {
@@ -316,6 +317,8 @@ int mainRepeatedScale(int argc, char **argv) {
       scale = Env::ONES;
     } else if (strcmp(argv[i], "-scfact") == 0) {
       scaleFactor = atof(argv[++i]);
+    } else if (strcmp(argv[i], "-lfirst") == 0) {
+      lfirst = 1;
     } else if (strcmp(argv[i], "-cycles") == 0) {
       cycles = 1;
     } else if (strcmp(argv[i], "-cycles2") == 0) {
@@ -345,7 +348,7 @@ int mainRepeatedScale(int argc, char **argv) {
             write_training, rating_threshold,
             chi, wals, wals_l, wals_C,
             als, chinmf, climf,
-            mle_item, mle_user, canny, ctr, offset, scale, scaleFactor, cycles);
+            mle_item, mle_user, canny, ctr, offset, scale, scaleFactor, cycles, lfirst);
     env_global = &env;
     
     // Reads the input files
@@ -392,7 +395,7 @@ int mainRepeatedScale(int argc, char **argv) {
             write_training, rating_threshold,
             chi, wals, wals_l, wals_C,
             als, chinmf, climf,
-            mle_item, mle_user, canny, ctr, offset, scale, scaleFactor, cycles);
+            mle_item, mle_user, canny, ctr, offset, scale, scaleFactor, cycles, lfirst);
     env_global = &env;
     
     // Reads the input files
@@ -439,7 +442,7 @@ int mainRepeatedScale(int argc, char **argv) {
             write_training, rating_threshold,
             chi, wals, wals_l, wals_C,
             als, chinmf, climf,
-            mle_item, mle_user, canny, ctr, offset, scale, scaleFactor, cycles);
+            mle_item, mle_user, canny, ctr, offset, scale, scaleFactor, cycles, lfirst);
     env_global = &env;
     
     // Reads the input files

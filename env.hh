@@ -66,7 +66,7 @@ public:
       bool write_training, uint32_t rating_threshold,
       bool graphchi, bool wals, double wals_l, uint32_t wals_C,
       bool als, bool chinmf, bool climf,
-      bool mle_item, bool mle_user, bool canny, bool ctr, double pOffset, int scale, double scaleFactor, int cycles);
+      bool mle_item, bool mle_user, bool canny, bool ctr, double pOffset, int scale, double scaleFactor, int cycles, bool lfirst);
   ~Env() { fclose(_plogf); }
   
   static string prefix;
@@ -417,6 +417,10 @@ lfirst(nLfirst)
   
   if (offset != 1) {
     sa << "-offset" << offset;
+  }
+  
+  if (lfirst) {
+    sa << "-lfirst";
   }
   
   if (cycles == 1) {
