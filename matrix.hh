@@ -199,8 +199,10 @@ D1Array<uint64_t>::D1Array(uint32_t n, bool zero)
 
 
 template<class T> inline
-D1Array<T>::D1Array(const D1Array<T> &a)
+D1Array<T>::D1Array(const D1Array<T> &a):
+_n(a.size())
 {
+    _data = new T[_n];
     copy_from(a);
 }
 
@@ -890,9 +892,18 @@ D1Array<T>::set(uint32_t p, T val)
     _data[p] = val;
 }
 
+//template<class T> inline T
+//D1Array<T>::mean() const {
+//    T mean = 0;
+//    for ( int i = 0; i<size(), i++) {
+//        mean += _data[i];
+//    }
+//    return mean;
+//}
+
 // Saves the element-by-element product of vec1 and vec2 in dest
 template<class T> inline void
-elem_product(const D1Array<T> & vec1, const D1Array<T> & vec2, D1Array<T> & dest) {
+D1Array<T>::elem_product(const D1Array<T> & vec1, const D1Array<T> & vec2, D1Array<T> & dest) {
     assert(vec1.size() == vec2.size())
     assert(vec1.size() == dest.size());
     
@@ -956,6 +967,8 @@ public:
     bool dim_equal(const D2Array<T> &a) const;
     T sum(uint32_t p) const;
     T colsum(uint32_t p) const;
+    T weighted_colsum(D1Array<T> & w, uint32_t p) const;
+    T inv_weighted_colsum(D1Array<T> & invw, uint32_t p) const;
     
     void set_elements(T v);
     void set_rows(const D1Array<T> &v);
@@ -970,6 +983,7 @@ public:
     int copy_from(const D2Array<T> &a);
     int add_to(const D2Array<T> &a);
     void add_slice(uint32_t p, const D1Array<T> &u);
+    void add_slice(uint32_t p, const D1Array<T> &u, double scale);
     void add_slice(uint32_t p, const D1Array<uint32_t> &u);
     void sub_slice(uint32_t p, const D1Array<T> &u);
     
@@ -990,6 +1004,9 @@ public:
     void rowsum(D1Array<T> & s) const;
     void colsum(D1Array<T> & s) const;
     void colstds(D1Array<T> & s) const;
+    
+    void weighted_colsum(D1Array<T> & w, D1Array<T> & s) const;
+    void inv_weighted_colsum(D1Array<T> & w, D1Array<T> & s) const;
     
     void elem_product(const D2Array<T> & mat1, const D2Array<T> & mat2, D2Array<T> & dest);
     
@@ -1222,6 +1239,28 @@ D2Array<T>::colsum(uint32_t p) const
     return s;
 }
 
+// Returns the sum of the p-th column, with weights passed as parameter
+template<class T> inline T
+D2Array<T>::weighted_colsum(D1Array<T> & w, uint32_t p) const
+{
+    T s = .0;
+    for (uint32_t j = 0; j < _m; ++j)
+        s += _data[j][p] * w.get(j);
+    return s;
+}
+
+// Returns the sum of the p-th column, with inverse weights passed as parameter
+template<class T> inline T
+D2Array<T>::inv_weighted_colsum(D1Array<T> & invw, uint32_t p) const
+{
+    T s = .0;
+    for (uint32_t j = 0; j < _m; ++j) {
+//        cout << _data[j][p] << " "<< 1/invw.get(j)<< " "<< _data[j][p] / invw.get(j) << endl;
+        s += _data[j][p] / invw.get(j);
+    }
+    return s;
+}
+
 // Adds array u to pth row of this
 template<class T> inline void
 D2Array<T>::add_slice(uint32_t p, const D1Array<T> &u)
@@ -1230,6 +1269,16 @@ D2Array<T>::add_slice(uint32_t p, const D1Array<T> &u)
     const T * const ud = u.data();
     for (uint32_t i = 0; i < _n; ++i)
         _data[p][i] += ud[i];
+}
+
+// Adds array u multiplied by scale to pth row of this
+template<class T> inline void
+D2Array<T>::add_slice(uint32_t p, const D1Array<T> &u, double scale)
+{
+    assert (_n <= u.n());
+    const T * const ud = u.data();
+    for (uint32_t i = 0; i < _n; ++i)
+        _data[p][i] += scale*ud[i];
 }
 
 // Adds array u to pth row of this
@@ -1849,6 +1898,30 @@ D2Array<T>::colsum(D1Array<T> & s) const {
     
     for (uint32_t i = 0; i<_n;++i) {
         s.set(i,colsum(i));
+    }
+}
+
+// Sums by columns (with weights passed as a parameter) and saves them in s
+template<class T> inline void
+D2Array<T>::weighted_colsum(D1Array<T> & w, D1Array<T> & s) const {
+    
+    assert(s.size() == _n);
+    assert(w.size() == _m);
+    
+    for (uint32_t i = 0; i<_n;++i) {
+        s.set(i,weighted_colsum(w,i));
+    }
+}
+
+// Sums by columns (with inverse weights passed as a parameter) and saves them in s
+template<class T> inline void
+D2Array<T>::inv_weighted_colsum(D1Array<T> & invw, D1Array<T> & s) const {
+    
+    assert(s.size() == _n);
+    assert(invw.size() == _m);
+    
+    for (uint32_t i = 0; i<_n;++i) {
+        s.set(i,inv_weighted_colsum(invw,i));
     }
 }
 

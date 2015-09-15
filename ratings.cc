@@ -215,6 +215,7 @@ Ratings::readObserved(string dir)
     if (_env.scale == Env::MEAN) {
       _itemObs.colmeans(_itemObsScale);
       _itemObsScale.scale(_env.scaleFactor);
+//      _itemObsScale.print();
     } else if (_env.scale == Env::ONES) {
       _itemObsScale.set_elements(1);
       _itemObsScale.scale(_env.scaleFactor);
@@ -229,7 +230,7 @@ Ratings::readObserved(string dir)
   }
 //  _userObsScale.print();
 //  _itemObsScale.print();
-//  _userObsScale.print();
+
 }
 
 // Reads a generic train data file
@@ -273,6 +274,10 @@ Ratings::read_generic(FILE *f, CountMap *cmap)
   uint64_t mid = 0, uid = 0;
   uint32_t rating;
   
+  if ( cmap == NULL) {
+    totRating = 0;
+  }
+  
   // Loop that reads each line in the file
 //  int  num = 0;
   while (!feof(f)) {
@@ -289,6 +294,11 @@ Ratings::read_generic(FILE *f, CountMap *cmap)
    
 //    if ( uid == 2169292)
 //      cout << uid << endl;
+    
+    if ( cmap == NULL) {
+      totRating += rating;
+//      cout << totRating << endl;
+    }
     
     IDMap::iterator it = _user2seq.find(uid);
     IDMap::iterator mt = _movie2seq.find(mid);

@@ -119,6 +119,35 @@ public:
 //     cout << mat[k][n] << endl;
     
   }
+  
+//  //Constructor with an array of rate parameters and a variable for popularity/activity
+//  GPMatrix(string name, double a, double b, Array & rateScale, double popAct,
+//           uint32_t n, uint32_t k,
+//           gsl_rng **r):
+//  GPBase<Matrix>(name),
+//  _n(n), _k(k),
+//  _sprior(a), // shape
+//  _rprior(rateScale.size()), // rate
+//  _hier(false),
+//  _hier_rprior(n),
+//  _hier_log_rprior(n),
+//  _scurr(n,k),
+//  _snext(n,k),
+//  _rnext(n,k),
+//  _rcurr(n,k),
+//  _Ev(n,k),
+//  _Elogv(n,k),
+//  _r(r) {
+//    _rprior.copy_from(rateScale);
+//    _rprior.scale(b);
+//    _rprior.scale(1/popAct);
+//    
+//    //     cout << "here" << endl;
+//    //     double** mat = _scurr.data();
+//    //     cout << mat[k][n] << endl;
+//    
+//  }
+  
   virtual ~GPMatrix() { }
 
   uint32_t n() const { return _n;}
@@ -156,6 +185,7 @@ public:
 
   void update_rate_next(const Array &u, const Array &scale);
   void update_rate_next(const Array &u);
+  void update_rate_next(const Array &u, double scale);
   void update_rate_curr(const Array &u);
   void update_rate_next_all(uint32_t k, double v);
   void update_rate_next(uint32_t n, const Array &u);
@@ -175,6 +205,7 @@ public:
   void load_from_lda(string dir, double alpha, uint32_t K);
   void set_prior_rate(const Array &ev, const Array &elogv);
   void set_prior_rate_scaled(const Array &ev, const Array &elogv, Array &scale);
+  void set_prior_rate_scaled(const Array &ev, double factor, Array &scale);
 
 
   double compute_elbo_term_helper() const;
@@ -244,6 +275,23 @@ GPMatrix::set_prior_rate_scaled(const Array &ev, const Array &elogv, Array &scal
   _hier = true;
 }
 
+// Saves
+inline void
+GPMatrix::set_prior_rate_scaled(const Array &ev, double factor, Array &scale)
+{
+  assert (ev.size() == _n);
+  assert(scale.size() == _k);
+  for (uint32_t n = 0; n < _n; ++n) {
+    for ( uint32_t k = 0; k < _k; ++k) {
+      _rnext.set(n,k, factor * ev[n] * scale[k]);
+      //Not sure what the next two lines do
+      //    _hier_rprior[n] = ev[n];
+      //    _hier_log_rprior[n] = elogv[n];
+    }
+  }
+  _hier = true;
+}
+
 // Adds sphi to the nth row of this
 inline void
 GPMatrix::update_shape_next1(uint32_t n, const Array &sphi)
@@ -271,6 +319,18 @@ GPMatrix::update_shape_curr(uint32_t n, const uArray &sphi)
   _scurr.add_slice(n, sphi);
 }
 
+//inline void
+//GPMatrix::update_rate_next(const Array &u, const Array &scale)
+//{
+//  Array t(_k);
+//  for (uint32_t i = 0; i < _n; ++i) {
+//    for (uint32_t k = 0; k < _k; ++k)
+//      t[k] = u[k] * scale[i];
+//    _rnext.add_slice(i, t);
+//  }
+//}
+
+// Updates the next rate with a scaled array,
 inline void
 GPMatrix::update_rate_next(const Array &u, const Array &scale)
 {
@@ -293,6 +353,13 @@ GPMatrix::update_rate_next(const Array &u)
 {
   for (uint32_t i = 0; i < _n; ++i)
     _rnext.add_slice(i, u);
+}
+
+inline void
+GPMatrix::update_rate_next(const Array &u, double scale)
+{
+  for (uint32_t i = 0; i < _n; ++i)
+    _rnext.add_slice(i, u, scale);
 }
 
 inline void
@@ -389,11 +456,11 @@ GPMatrix::initialize(double offset)
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k)
       // Initial shape values: hyperparameter plus a small random shock
-       ad[i][k] = _sprior * (1 + offset * 0.1 * gsl_rng_uniform(*_r));
+       ad[i][k] = _sprior * (1 + offset * 0.1 * gsl_ran_ugaussian(*_r));
 
   for (uint32_t k = 0; k < _k; ++k) {
     // Initial rate values are also hyperparameters plus a small shock
-    bd[0][k] = _rprior[k]*(1+offset* 0.1 * gsl_rng_uniform(*_r));
+    bd[0][k] = _rprior[k]*(1+offset* 0.1 * gsl_ran_ugaussian(*_r));
   }
   
   // Copy the values along user/item
@@ -415,7 +482,7 @@ GPMatrix::initialize2(double v, double offset)
   for (uint32_t i = 0; i < _n; ++i) {
     for (uint32_t k = 0; k < _k; ++k) {
       // Initial values: hyperparameter plus a small random shock
-      ad[i][k] = _sprior + offset*0.01 * gsl_rng_uniform(*_r);
+      ad[i][k] = _sprior + offset*0.1 * gsl_ran_ugaussian(*_r);
       // Prior plus argument v, which in the paper is Ka or Kc
       bd[i][k] = _rprior[k] + v;
     }
@@ -439,7 +506,7 @@ GPMatrix::initialize_exp(double offset)
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k) {
       // Initial value: prior plus random shock (why do it again?)
-      b[k] = _rprior[k]*(1+offset * 0.1 * gsl_rng_uniform(*_r));
+      b[k] = _rprior[k]*(1+offset * 0.1 * gsl_ran_ugaussian(*_r));
       assert(b[k]);
       
       // Means: shape/rate parameter
@@ -460,7 +527,7 @@ GPMatrix::initialize_exp(double v, double offset)
   Array b(_k);  
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k) {
-      b[k] = v + offset * 0.1 * gsl_rng_uniform(*_r);
+      b[k] = v + offset * 0.1 * gsl_ran_ugaussian(*_r);
       assert(b[k]);
       vd1[i][k] = ad[i][k] / b[k];
       vd2[i][k] = gsl_sf_psi(ad[i][k]) - log(b[k]);
@@ -755,10 +822,10 @@ GPMatrixGR::initialize(double offset)
   double *bd = _rcurr.data();
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k) 
-      ad[i][k] = _sprior + 0.01 * gsl_rng_uniform(*_r);
+      ad[i][k] = _sprior + 0.1 * gsl_ran_ugaussian(*_r);
 
   for (uint32_t k = 0; k < _k; ++k)   
-    bd[k] = _rprior + 0.1 * gsl_rng_uniform(*_r);
+    bd[k] = _rprior + 0.1 * gsl_ran_ugaussian(*_r);
   
   double **vd1 = _Ev.data();
   double **vd2 = _Elogv.data();
@@ -777,12 +844,12 @@ GPMatrixGR::initialize(double offset)
   
   for (uint32_t i = 0; i < _n; ++i) {
     for (uint32_t k = 0; k < _k; ++k) {
-            ad[i][k] = _sprior + offset * 0.01 * gsl_rng_uniform(*_r);
+            ad[i][k] = _sprior + offset * 0.1 * gsl_ran_ugaussian(*_r);
     }
   }
   
   for (uint32_t k = 0; k < _k; ++k) {
-    bd[k] = _rprior + offset * 0.1 * gsl_rng_uniform(*_r);
+    bd[k] = _rprior + offset * 0.1 * gsl_ran_ugaussian(*_r);
   }
   set_to_prior();
 }
@@ -794,7 +861,7 @@ GPMatrixGR::initialize2(double v, double offset)
   double *bd = _rcurr.data();
   for (uint32_t i = 0; i < _n; ++i) {
     for (uint32_t k = 0; k < _k; ++k) {
-      ad[i][k] = _sprior + offset * 0.01 * gsl_rng_uniform(*_r);
+      ad[i][k] = _sprior + offset * 0.1 * gsl_ran_ugaussian(*_r);
     }
   }
   for (uint32_t k = 0; k < _k; ++k)
@@ -813,7 +880,7 @@ GPMatrixGR::initialize_exp(double v, double offset)
   Array b(_k);  
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k) {
-      b[k] = v + offset * 0.1 * gsl_rng_uniform(*_r);
+      b[k] = v + offset * 0.1 * gsl_ran_ugaussian(*_r);
       vd1[i][k] = ad[i][k] / b[k];
       vd2[i][k] = gsl_sf_psi(ad[i][k]) - log(b[k]);
     }
@@ -831,7 +898,7 @@ GPMatrixGR::initialize_exp(double offset)
   Array b(_k);  
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k) {
-      b[k] = _rprior + offset * 0.1 * gsl_rng_uniform(*_r);
+      b[k] = _rprior + offset * 0.1 * gsl_ran_ugaussian(*_r);
       vd1[i][k] = ad[i][k] / b[k];
       vd2[i][k] = gsl_sf_psi(ad[i][k]) - log(b[k]);
     }
@@ -954,6 +1021,7 @@ public:
   void update_shape_next(uint32_t n, double v);
   void update_shape_next(double v);
   void update_rate_next(const Array &v);
+  void update_rate_next(const Array &v, double scale);
   void update_rate_next(uint32_t n, double v);
   void swap();
   void compute_expectations();
@@ -964,6 +1032,8 @@ public:
   double compute_elbo_term_helper() const;
   void save_state(const IDMap &m, string filename) const;
   void load();
+  
+  double expected_mean() const;
 
 private:
   uint32_t _n;
@@ -1011,6 +1081,16 @@ GPArray::update_rate_next(const Array &v)
 {
   assert (v.size() == _n);
   _rnext += v;
+}
+
+inline void
+GPArray::update_rate_next(const Array &v, double scale)
+{
+  assert (v.size() == _n);
+  
+  Array update(v);
+  
+  _rnext += update.scale(scale);
 }
 
 inline void
@@ -1064,8 +1144,8 @@ GPArray::initialize(double offset)
   double *ad = _scurr.data();
   double *bd = _rcurr.data();
   for (uint32_t i = 0; i < _n; ++i) {
-    ad[i] = _sprior + offset * 0.01 * gsl_rng_uniform(*_r);
-    bd[i] = _rprior + offset * 0.1 * gsl_rng_uniform(*_r);
+    ad[i] = _sprior + offset * 0.1 * gsl_ran_ugaussian(*_r);
+    bd[i] = _rprior + offset * 0.1 * gsl_ran_ugaussian(*_r);
   }
   set_to_prior();
 }
@@ -1079,12 +1159,12 @@ GPArray::initialize2(double v, double offset)
     
     // -----------------------------------------
     // Error?????
-//    ad[i] = _sprior + 0.01 * gsl_rng_uniform(*_r);
+//    ad[i] = _sprior + 0.1 * gsl_ran_ugaussian(*_r);
 //    bd[i] = _rprior + v;
     // -----------------------------------------
     
     ad[i] = _sprior + v;
-    bd[i] = _rprior * (1 + offset * 0.1 * gsl_rng_uniform(*_r));
+    bd[i] = _rprior * (1 + offset * 0.1 * gsl_ran_ugaussian(*_r));
   }
   set_to_prior();
 }
@@ -1128,6 +1208,14 @@ GPArray::load()
   _scurr.load(shape_fname);
   _rcurr.load(rate_fname);
   compute_expectations();
+}
+
+// Saves the means of the expected values over users/items
+inline double
+GPArray::expected_mean() const {
+  //  cout << means.size() << endl;
+  //  cout << _k << endl;
+  return _Ev.mean();
 }
 
 typedef D1Array<GPMatrix *> ItemMap;

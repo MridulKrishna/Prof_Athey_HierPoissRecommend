@@ -89,6 +89,8 @@ public:
   CountMap _validation_map;
   CountMap _test_map;
   
+  uint32_t totRating;
+  
 private:
   void read_generic_train(string dir);
   int read_movielens(string dir);

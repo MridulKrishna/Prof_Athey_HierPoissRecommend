@@ -742,6 +742,19 @@ int mainOnce(int argc, char **argv) {
   ratings.readValidationAndTest(fname.c_str());
   ratings.readObserved(fname.c_str());
   
+  bp = sqrt(ap*cp*a*c/(ap-1)/(cp-1)*(k+uc+ic)*n*m/ratings.totRating);
+  dp = bp;
+
+  env.bp = bp;
+  env.dp = dp;
+  
+//  cout << ratings.totRating << endl;
+//  cout << bp << " " << dp << endl;
+  
+  
+//  ratings._userObsScale.print();
+//  ratings._itemObsScale.print();
+  
   cout << "Constructing hgaprec" << endl;
   HGAPRec hgaprec(env, ratings);
   
