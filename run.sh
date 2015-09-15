@@ -1,0 +1,1 @@
+./hgaprec -dir /users/casta2k/Dropbox/2015_Summer/Athey/Matlab_AtheyCastillo/Yogurt/observables -outdir /users/casta2k/Dropbox/2015_Summer/Athey/Matlab_AtheyCastillo/Yogurt/observables/outputb -n 2599 -m 275 -k 25 -uc 36 -ic 50 -ap 1.5 -cp 1.5 -lfirst

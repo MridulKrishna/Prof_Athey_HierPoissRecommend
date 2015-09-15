@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7973CC801BA8DFD4002D1FF9 /* makefile in Sources */ = {isa = PBXBuildFile; fileRef = 7973CC7F1BA8DFD4002D1FF9 /* makefile */; };
 		79C74CAA1B73087D0082D884 /* ratings.cc in Sources */ = {isa = PBXBuildFile; fileRef = 79CE5D771B706D4B00744AA7 /* ratings.cc */; };
 		79CE5D7B1B706D4B00744AA7 /* main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 79CE5D6D1B706D4B00744AA7 /* main.cc */; };
 		79FF118B1B98109400B33000 /* hgaprec.cc in Sources */ = {isa = PBXBuildFile; fileRef = 79CE5D721B706D4B00744AA7 /* hgaprec.cc */; };
@@ -26,6 +27,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7973CC7E1BA8DFD4002D1FF9 /* run.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = run.sh; sourceTree = SOURCE_ROOT; };
+		7973CC7F1BA8DFD4002D1FF9 /* makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = makefile; sourceTree = SOURCE_ROOT; };
 		79CE5D4A1B70678500744AA7 /* hgaprec */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hgaprec; sourceTree = BUILT_PRODUCTS_DIR; };
 		79CE5D6D1B706D4B00744AA7 /* main.cc */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; path = main.cc; sourceTree = SOURCE_ROOT; tabWidth = 2; };
 		79CE5D701B706D4B00744AA7 /* env.hh */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.h; path = env.hh; sourceTree = SOURCE_ROOT; tabWidth = 2; };
@@ -69,6 +72,8 @@
 		79CE5D4C1B70678500744AA7 /* hgaprec */ = {
 			isa = PBXGroup;
 			children = (
+				7973CC7E1BA8DFD4002D1FF9 /* run.sh */,
+				7973CC7F1BA8DFD4002D1FF9 /* makefile */,
 				79FF7F501B82F74E0022899F /* log.hh */,
 				79FF7F511B82F74E0022899F /* log.cc */,
 				79CE5D6D1B706D4B00744AA7 /* main.cc */,
@@ -143,6 +148,7 @@
 				79FF7F521B82F74E0022899F /* log.cc in Sources */,
 				79CE5D7B1B706D4B00744AA7 /* main.cc in Sources */,
 				79C74CAA1B73087D0082D884 /* ratings.cc in Sources */,
+				7973CC801BA8DFD4002D1FF9 /* makefile in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
