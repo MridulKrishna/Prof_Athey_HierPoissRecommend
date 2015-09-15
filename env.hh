@@ -54,23 +54,11 @@ class Env {
 public:
   typedef enum { NETFLIX, MOVIELENS, MENDELEY, ECHONEST, NYT } Dataset;
   typedef enum { CREATE_TRAIN_TEST_SETS, TRAINING } Mode;
-  Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string outfname,
-      /*bool nmi, string ground_truth_fname,*/ uint32_t rfreq,
-      /*bool strid, string label, bool alogl,*/ double rseed,
-      uint32_t max_iterations, /*bool load, string loc,
-      bool gen_hout,*/
-      double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf,
-      /*Env::Dataset d, bool batch, bool binary_data,
-      bool bias, bool hier, bool explore, bool vb,
-      bool nmf, bool nmfload, bool lda, bool vwlda,
-      bool write_training, uint32_t rating_threshold,
-      bool graphchi, bool wals, double wals_l, uint32_t wals_C,
-      bool als, bool chinmf, bool climf,
-      bool mle_item, bool mle_user, bool canny, bool ctr,*/ double pOffset, int scale, double scaleFactor, int cycles, bool nLfirst, bool nOfirst);
+  Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string outfname, uint32_t rfreq, double rseed,
+      uint32_t max_iterations, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf,double pOffset, int scale, double scaleFactor, int cycles, bool nLfirst, bool nOfirst);
   ~Env() { fclose(_plogf); }
   
   static string prefix;
-  //  static string outprefix;
   
   static Logger::Level level;
   
@@ -240,21 +228,9 @@ Env::outfile_str(string fname)
 }
 
 inline
-Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string Nfname, string Noutfname,
-         /*bool nmi, string ground_truth_fname,*/ uint32_t rfreq,
-         /*bool strid, string label, bool alogl,*/ double rseed,
-         uint32_t max_iterations, /*bool load, string loc,
-                                   bool gen_hout,*/
-         double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf,
-         /*Env::Dataset d, bool batch, bool binary_data,
-          bool bias, bool hier, bool explore, bool vb,
-          bool nmf, bool nmfload, bool lda, bool vwlda,
-          bool write_training, uint32_t rating_threshold,
-          bool graphchi, bool wals, double wals_l, uint32_t wals_C,
-          bool als, bool chinmf, bool climf,
-          bool mle_item, bool mle_user, bool canny, bool ctr,*/ double pOffset, int nScale, double nScaleFactor, int nCycles, bool nLfirst, bool nOfirst)
-: /*dataset(datasetv),*/
-n(N),
+Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string Nfname, string Noutfname, uint32_t rfreq,double rseed,
+         uint32_t max_iterations, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf,double pOffset, int nScale, double nScaleFactor, int nCycles, bool nLfirst, bool nOfirst)
+: n(N),
 m(M),
 k(K),
 uc(UC),
@@ -270,44 +246,14 @@ reportfreq(rfreq),
 epsilon(0.001),
 logepsilon(log(epsilon)),
 nolambda(true),
-/*strid(sid),
-logl(alogl),*/
 max_iterations(max_iterations),
 seed(rseed),
 save_state_now(false),
 datfname(Nfname),
 outfname(Noutfname),
-//label(lbl),
-//nmi(nmival),
-//ground_truth_fname(gfname),
-//model_load(load),
-//model_location(loc),
-//gen_heldout(gen_hout),
 online_iterations(1),
 meanchangethresh(0.001),
-//batch(batchv),
 mode(TRAINING),
-//binary_data(binary_datav),
-//bias(biasv),
-//hier(hierv),
-//vb(vbv),
-//nmf(nmfv),
-//nmfload(nmfloadv),
-//lda(ldav),
-//vwlda(vwldav),
-//write_training(write_trainingv),
-//rating_threshold(rating_thresholdv),
-//graphchi(graphchiv),
-//wals(walsv),
-//wals_l(l),
-//wals_C(C),
-//als(alsv),
-//chinmf(chinmfv),
-//climf(climfv),
-//mle_user(mle_userv),
-//mle_item(mle_itemv),
-//canny(cannyv),
-//ctr(ctrv),
 offset(pOffset),
 scale(nScale),
 scaleFactor(nScaleFactor),
@@ -328,81 +274,6 @@ ofirst(nOfirst)
     if (isalpha(q[0]))
       sa << "-" << q;
   }
-  
-//  if (a != 0.3)
-//    sa << "-a" << a;
-//  
-//  if (b != 0.3)
-//    sa << "-b" << b;
-//  
-//  if (c != 0.3)
-//    sa << "-c" << c;
-//  
-//  if (d != 0.3)
-//    sa << "-d" << d;
-  
-//  if (batch)
-//    sa << "-batch";
-//  else
-//    sa << "-online";
-//  
-//  if (binary_data)
-//    sa << "-bin";
-//  
-//  if (bias)
-//    sa << "-bias";
-//  
-//  if (hier)
-//    sa << "-hier";
-//  
-//  if (explore)
-//    sa << "-explore";
-//  
-//  if (vb)
-//    sa << "-vb";
-//  
-//  if (nmf || nmfload)
-//    sa << "-nmf";
-//  
-//  if (lda)
-//    sa << "-lda";
-//  
-//  if (vwlda)
-//    sa << "-vwlda";
-//  
-//  if (graphchi)
-//    sa << "-chi";
-//  
-//  if (ctr)
-//    sa << "-ctr";
-//  
-//  if (seed != 0)
-//    sa << "-seed" << seed;
-//  
-//  if (write_training)
-//    sa << "-write-training";
-//  
-//  if (graphchi) {
-//    if (chinmf)
-//      sa << "-nmf";
-//    else if (als)
-//      sa << "-als";
-//    else if (wals) {
-//      sa << "-wals";
-//      sa << "-wl-" << wals_l;
-//      sa << "-wC-" << wals_C;
-//    } else if (climf) {
-//      sa << "-climf";
-//    }
-//  }
-//  
-//  if (mle_userv)
-//    sa << "-mle-user";
-//  else if (mle_itemv)
-//    sa << "-mle-item";
-//  else if (canny)
-//    sa << "-canny";
-  
   if (scale != MEAN) {
     if (scale == STD) {
       sa << "-std";

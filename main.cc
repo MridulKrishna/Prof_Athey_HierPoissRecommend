@@ -171,8 +171,6 @@ int main(int argc, char **argv) {
     } else if (strcmp(argv[i], "-n") == 0) {
       n = atoi(argv[++i]);
       fprintf(stdout, "+ n = %d\n", n);
-//    } else if (strcmp(argv[i], "-p") == 0) {
-//      p = true;
     } else if (strcmp(argv[i], "-m") == 0) {
       m = atoi(argv[++i]);
       fprintf(stdout, "+ m = %d\n", m);
@@ -185,60 +183,15 @@ int main(int argc, char **argv) {
     } else if (strcmp(argv[i], "-ic") == 0) {
       ic = atoi(argv[++i]);
       fprintf(stdout, "+ ic = %d\n", ic);
-//    } else if (strcmp(argv[i], "-nmi") == 0) {
-//      ground_truth_fname = string(argv[++i]);
-//      fprintf(stdout, "+ ground truth fname = %s\n",
-//              ground_truth_fname.c_str());
-//      nmi = true;
     } else if (strcmp(argv[i], "-rfreq") == 0) {
       rfreq = atoi(argv[++i]);
       fprintf(stdout, "+ rfreq = %d\n", rfreq);
-//    } else if (strcmp(argv[i], "-strid") == 0) {
-//      strid = true;
-//      fprintf(stdout, "+ strid mode\n");
-//    } else if (strcmp(argv[i], "-label") == 0) {
-//      label = string(argv[++i]);
-//    } else if (strcmp(argv[i], "-logl") == 0) {
-//      logl = true;
-//      fprintf(stdout, "+ logl mode\n");
     } else if (strcmp(argv[i], "-max-iterations") == 0) {
       max_iterations = atoi(argv[++i]);
       fprintf(stdout, "+ max iterations %d\n", max_iterations);
     } else if (strcmp(argv[i], "-seed") == 0) {
       rand_seed = atof(argv[++i]);
       fprintf(stdout, "+ random seed set to %.5f\n", rand_seed);
-//    } else if (strcmp(argv[i], "-load") == 0) {
-//      model_load = true;
-//      model_location = string(argv[++i]);
-//      fprintf(stdout, "+ loading theta from %s\n", model_location.c_str());
-//    } else if (strcmp(argv[i], "-test") == 0) {
-//      test = true;
-//      fprintf(stdout, "+ test mode\n");
-//    } else if (strcmp(argv[i], "-batch") == 0) {
-//      batch = true;
-//      fprintf(stdout, "+ batch inference\n");
-//    } else if (strcmp(argv[i], "-online") == 0) {
-//      batch = false;
-//      fprintf(stdout, "+ online inference\n");
-//    } else if (strcmp(argv[i], "-gen-heldout") == 0) {
-//      gen_heldout = true;
-//      fprintf(stdout, "+ generate held-out files from dataset\n");
-//    } else if (strcmp(argv[i], "-pred-accuracy") == 0) {
-//      pred_accuracy = true;
-//      fprintf(stdout, "+ compute predictive accuracy\n");
-//    } else if (strcmp(argv[i], "-gt-accuracy") == 0) {
-//      gt_accuracy = true;
-//      fprintf(stdout, "+ compute  accuracy to ground truth\n");
-//    } else if (strcmp(argv[i], "-netflix") == 0) {
-//      dataset = Env::NETFLIX;
-//    } else if (strcmp(argv[i], "-mendeley") == 0) {
-//      dataset = Env::MENDELEY;
-//    } else if (strcmp(argv[i], "-movielens") == 0) {
-//      dataset = Env::MOVIELENS;
-//    } else if (strcmp(argv[i], "-echonest") == 0) {
-//      dataset = Env::ECHONEST;
-//    } else if (strcmp(argv[i], "-nyt") == 0) {
-//      dataset = Env::NYT;
     } else if (strcmp(argv[i], "-a") == 0) {
       a = atof(argv[++i]);
     } else if (strcmp(argv[i], "-ap") == 0) {
@@ -255,56 +208,6 @@ int main(int argc, char **argv) {
       e = atof(argv[++i]);
     } else if (strcmp(argv[i], "-f") == 0) {
       f = atof(argv[++i]);
-//    } else if (strcmp(argv[i], "-binary-data") == 0) {
-//      binary_data = true;
-//    } else if (strcmp(argv[i], "-bias") == 0) {
-//      bias = true;
-//    } else if (strcmp(argv[i], "-hier") == 0) {
-//      hier = true;
-//    } else if (strcmp(argv[i], "-mle-user") == 0) {
-//      mle_user = true;
-//    } else if (strcmp(argv[i], "-mle-item") == 0) {
-//      mle_item = true;
-//    } else if (strcmp(argv[i], "-canny") == 0) {
-//      canny = true;
-//    } else if (strcmp(argv[i], "-gen-ranking") == 0) {
-//      gen_ranking_for_users = true;
-//    } else if (strcmp(argv[i], "-rmse") == 0) {
-//      rmse = true;
-//    } else if (strcmp(argv[i], "-novb") == 0) {
-//      vb = false;
-//    } else if (strcmp(argv[i], "-msr") == 0) {
-//      msr = true;
-//    } else if (strcmp(argv[i], "-nmf") == 0) {
-//      nmf = true;
-//    } else if (strcmp(argv[i], "-nmfload") == 0) {
-//      nmfload = true;
-//    } else if (strcmp(argv[i], "-vwload") == 0) {
-//      vwload = true;
-//    } else if (strcmp(argv[i], "-lda") == 0) {
-//      lda = true;
-//    } else if (strcmp(argv[i], "-vwlda") == 0) {
-//      vwlda = true;
-//    } else if (strcmp(argv[i], "-write-training") == 0) {
-//      write_training = true;
-//    } else if (strcmp(argv[i], "-chi") == 0) {
-//      chi = true;
-//    } else if (strcmp(argv[i], "-chinmf") == 0) {
-//      chinmf = true;
-//    } else if (strcmp(argv[i], "-als") == 0) {
-//      als = true;
-//    } else if (strcmp(argv[i], "-wals") == 0) {
-//      wals = true;
-//    } else if (strcmp(argv[i], "-wals_l") == 0) {
-//      wals_l = atof(argv[++i]);
-//    } else if (strcmp(argv[i], "-wals_C") == 0) {
-//      wals_C = atoi(argv[++i]);
-//    } else if (strcmp(argv[i], "-climf") == 0) {
-//      climf = true;
-//    } else if (strcmp(argv[i], "-ctr") == 0) {
-//      ctr = true;
-//    } else if (strcmp(argv[i], "-rating-threshold") == 0) {
-//      rating_threshold = atoi(argv[++i]);
     } else if (strcmp(argv[i], "-nooffset") == 0) {
       offset = 0;
     } else if (strcmp(argv[i], "-offset") == 0) {
@@ -338,16 +241,7 @@ int main(int argc, char **argv) {
   }
     
   // Initializes the environment: variables to run the code
-  Env env(n, m, k, uc, ic, fname, outfname, /*nmi, ground_truth_fname,*/ rfreq,
-          /*strid, label, logl,*/ rand_seed, max_iterations,
-          /*model_load, model_location,
-          gen_heldout,*/ a, ap, bp, c, cp, dp, e, f,/* dataset,
-          batch, binary_data, bias, hier,
-          explore, vb, nmf, nmfload, lda, vwlda,
-          write_training, rating_threshold,
-          chi, wals, wals_l, wals_C,
-          als, chinmf, climf,
-          mle_item, mle_user, canny, ctr,*/ offset, scale, scaleFactor, cycles, lfirst, ofirst);
+  Env env(n, m, k, uc, ic, fname, outfname, rfreq, rand_seed, max_iterations, a, ap, bp, c, cp, dp, e, f, offset, scale, scaleFactor, cycles, lfirst, ofirst);
   env_global = &env;
   
   // Reads the input files
@@ -366,10 +260,6 @@ int main(int argc, char **argv) {
 
   env.bp = bp;
   env.dp = dp;
-  
-//  cout << ratings.totRating << endl;
-//  cout << bp << " " << dp << endl;
-  
   
 //  ratings._userObsScale.print();
 //  ratings._itemObsScale.print();
