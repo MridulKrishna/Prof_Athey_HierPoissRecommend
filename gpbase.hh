@@ -641,6 +641,7 @@ public:
     _rcurr(k),
     _Ev(n,k),
     _Elogv(n,k),
+    _Einv(n,k),
     _r(r) { } 
   virtual ~GPMatrixGR() {} 
 
@@ -653,6 +654,7 @@ public:
   const Array  &rate_next() const          { return _rnext; }
   const Matrix &expected_v() const         { return _Ev;    }
   const Matrix &expected_logv() const      { return _Elogv; }
+  const Matrix &expected_inv() const      { return _Einv; }
   
   Matrix &shape_curr()       { return _scurr; }
   Array  &rate_curr()        { return _rcurr; }
@@ -702,7 +704,8 @@ private:
   Array _rcurr;       
   Array _rnext;       
   Matrix _Ev;         
-  Matrix _Elogv;      
+  Matrix _Elogv;
+  Matrix _Einv;
 };
 
 inline void
@@ -989,7 +992,7 @@ public:
     _rprior(b), // rate
     _scurr(n), _snext(n),
     _rnext(n), _rcurr(n),
-    _Ev(n), _Elogv(n),
+    _Ev(n), _Elogv(n), _Einv(n),
     _r(r) { }
   ~GPArray() {}
 
@@ -1002,6 +1005,7 @@ public:
   const Array &rate_next() const          { return _rnext; }
   const Array &expected_v() const         { return _Ev;    }
   const Array &expected_logv() const      { return _Elogv; }
+  const Array &expected_inv() const      { return _Einv; }
   
   Array &shape_curr()       { return _scurr; }
   Array &rate_curr()        { return _rcurr; }
@@ -1009,6 +1013,7 @@ public:
   Array &rate_next()        { return _rnext; }
   Array &expected_v()       { return _Ev;    }
   Array &expected_logv()    { return _Elogv; }
+  Array &expected_inv()    { return _Einv; }
 
   const double sprior() const { return _sprior; }
   const double rprior() const { return _rprior; }
@@ -1045,7 +1050,8 @@ private:
   Array _rnext;      // help compute gradient update
   Array _Ev;         // expected weights under variational
 		     // distribution
-  Array _Elogv;      // expected log weights 
+  Array _Elogv;      // expected log weights
+  Array _Einv;      // expected inverse weights
   gsl_rng **_r;
 };
 
@@ -1123,9 +1129,10 @@ GPArray::compute_expectations()
   const double * const ad = _scurr.const_data();
   const double * const bd = _rcurr.const_data();
   
-  // Gets the matrices of means and log means to modify them
+  // Gets the matrices of means, log means, and inverse means to modify them
   double *vd1 = _Ev.data();
   double *vd2 = _Elogv.data();
+  double *inv = _Einv.data();
   double a = .0, b = .0;
   for (uint32_t i = 0; i < _n; ++i) {
     
@@ -1135,6 +1142,8 @@ GPArray::compute_expectations()
     vd1[i] = a / b;
     // Log mean: From expectation of a Gamma r.v.
     vd2[i] = gsl_sf_psi(a) - log(b);
+    // Mean of inverse: From expectation of an inverse Gamma r.v.
+    inv[i] = b/(a-1);
   }
 }
 

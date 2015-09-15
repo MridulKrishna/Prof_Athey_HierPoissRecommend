@@ -1244,7 +1244,7 @@ HGAPRec::vb_hier()
     if (_ic > 0) {
       // Computes the sums of user characteristics (second term for \mu_{ul}^{rte}
       Array itemSum(_ic);
-      _ratings._itemObs.inv_weighted_colsum(_betarate.expected_v(),itemSum);
+      _ratings._itemObs.weighted_colsum(_betarate.expected_inv(),itemSum);
 //      _ratings._itemObs.colsum(itemSum);
     
       // Sets the prior rate based on weighted expectations with current parameters, i.e.,x_l * e/(ca) * \frac{\kappa^{shp}}{\kappa^{rte}}
@@ -1294,7 +1294,7 @@ HGAPRec::vb_hier()
     if (_ic > 0) {
       // Computes the sums of user characteristics (second term for \mu_{ul}^{rte}
       Array userSum(_uc);
-      _ratings._userObs.inv_weighted_colsum(_thetarate.expected_v(),userSum);
+      _ratings._userObs.weighted_colsum(_thetarate.expected_inv(),userSum);
 //      _ratings._userObs.colsum(userSum);
       
       // Sets the prior rate based on expectations with current parameters, i.e.,\frac{\tau^{shp}}{\tau^{rte}}
