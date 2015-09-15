@@ -9,16 +9,9 @@ class HGAPRec {
 public:
     HGAPRec(Env &env, Ratings &ratings);
     ~HGAPRec();
-    
-//    void vb();
-//    void vb_bias();
+
     void vb_hier();
-    void vb_hier_latents_first();
-    void vb_hier_cycles();
-    void vb_hier_cycles2();
-//    void vb_mle_user();
-//    void vb_mle_item();
-//    void vb_canny();
+    void vb_hier_ori();
     
 #ifdef HAVE_NMFLIB
     void nmf();
@@ -63,6 +56,8 @@ private:
     void get_phi(GPMatrix &theta, uint32_t ai, GPMatrix &beta, uint32_t bi, GPMatrix &sigma, GPMatrix &rho, GPArray &xi, GPArray &eta, uint32_t ic, uint32_t uc, Array &phi);
     
     void get_phi(GPMatrix &theta, uint32_t u, GPMatrix &beta, uint32_t i, Array &phi);
+    
+    void get_phi(uint32_t u, uint32_t i, GPMatrix &sigma, GPMatrix &rho, GPArray &xi, GPArray &eta, uint32_t ic, uint32_t uc, Array &phi);
     
     void get_phi(GPBase<Matrix> &a, uint32_t ai,
                  GPBase<Matrix> &b, uint32_t bi,

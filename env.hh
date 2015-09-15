@@ -66,7 +66,7 @@ public:
       bool write_training, uint32_t rating_threshold,
       bool graphchi, bool wals, double wals_l, uint32_t wals_C,
       bool als, bool chinmf, bool climf,
-      bool mle_item, bool mle_user, bool canny, bool ctr, double pOffset, int scale, double scaleFactor, int cycles, bool lfirst);
+      bool mle_item, bool mle_user, bool canny, bool ctr, double pOffset, int scale, double scaleFactor, int cycles, bool lfirst, bool ofirst);
   ~Env() { fclose(_plogf); }
   
   static string prefix;
@@ -145,6 +145,7 @@ public:
   int cycles;
   
   bool lfirst;
+  bool ofirst;
   
   static const int ONES = 1;
   static const int MEAN = 2;
@@ -252,7 +253,7 @@ Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fn
          bool write_trainingv, uint32_t rating_thresholdv,
          bool graphchiv, bool walsv, double l, uint32_t C,
          bool alsv, bool chinmfv, bool climfv,
-         bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, double pOffset, int nScale, double nScaleFactor, int nCycles, bool nLfirst)
+         bool mle_itemv, bool mle_userv, bool cannyv, bool ctrv, double pOffset, int nScale, double nScaleFactor, int nCycles, bool nLfirst, bool nOfirst)
 : dataset(datasetv),
 n(N),
 m(M),
@@ -312,7 +313,8 @@ offset(pOffset),
 scale(nScale),
 scaleFactor(nScaleFactor),
 cycles(nCycles),
-lfirst(nLfirst)
+lfirst(nLfirst),
+ofirst(nOfirst)
 {
   ostringstream sa;
   sa << "n" << n << "-";
@@ -421,6 +423,10 @@ lfirst(nLfirst)
   
   if (lfirst) {
     sa << "-lfirst";
+  }
+  
+  if (ofirst) {
+    sa << "-ofirst";
   }
   
   if (cycles == 1) {
