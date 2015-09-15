@@ -548,6 +548,8 @@ int mainOnce(int argc, char **argv) {
   
   uint32_t i = 0;
   
+  bool lfirst = false;
+  
   // Parse parameters
   while (i <= argc - 1) {
     if (strcmp(argv[i], "-dir") == 0) {
@@ -703,6 +705,8 @@ int mainOnce(int argc, char **argv) {
       scale = Env::ONES;
     } else if (strcmp(argv[i], "-scfact") == 0) {
       scaleFactor = atof(argv[++i]);
+    } else if (strcmp(argv[i], "-lfirst") == 0) {
+      lfirst = 1;
     } else if (strcmp(argv[i], "-cycles") == 0) {
       cycles = 1;
     } else if (strcmp(argv[i], "-cycles2") == 0) {
@@ -728,7 +732,7 @@ int mainOnce(int argc, char **argv) {
           write_training, rating_threshold,
           chi, wals, wals_l, wals_C,
           als, chinmf, climf,
-          mle_item, mle_user, canny, ctr, offset, scale, scaleFactor, cycles);
+          mle_item, mle_user, canny, ctr, offset, scale, scaleFactor, cycles, lfirst);
   env_global = &env;
   
   // Reads the input files
@@ -762,10 +766,12 @@ int mainOnce(int argc, char **argv) {
   
   moment t1 = now();
   
-  if (cycles == 0) {
+  if (cycles == 0 && !lfirst) {
     cout << "Running vb_hier()" << endl;
     hgaprec.vb_hier();
     cout << "\n" << endl;
+  } else if (lfirst) {
+    hgaprec.vb_hier_latents_first();
   } else if (cycles == 1) {
     hgaprec.vb_hier_cycles();
   } else if (cycles == 2) {

@@ -40,6 +40,7 @@ template<class T> inline  void
 GPBase<T>::make_nonzero(double av, double bv,
 			double &a, double &b) const
 {
+//  cout << av << " " << bv << endl;
   if (!(av >= 0 && bv >= 0)) {
     lerr("av = %f, bv = %f", av, bv);
     assert(0);
@@ -398,6 +399,7 @@ GPMatrix::compute_expectations()
   double a = .0, b = .0;
   for (uint32_t i = 0; i < _scurr.m(); ++i)
     for (uint32_t j = 0; j < _rcurr.n(); ++j) {
+//      cout << ad[i][j] << " " << bd[i][j] << endl;
       make_nonzero(ad[i][j], bd[i][j], a, b);
       vd1[i][j] = a / b;
       vd2[i][j] = gsl_sf_psi(a) - log(b);
@@ -456,11 +458,11 @@ GPMatrix::initialize(double offset)
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k)
       // Initial shape values: hyperparameter plus a small random shock
-       ad[i][k] = _sprior * (1 + offset * 0.1 * gsl_ran_ugaussian(*_r));
+       ad[i][k] = _sprior * (1 + offset * 0.01 * gsl_ran_ugaussian(*_r));
 
   for (uint32_t k = 0; k < _k; ++k) {
     // Initial rate values are also hyperparameters plus a small shock
-    bd[0][k] = _rprior[k]*(1+offset* 0.1 * gsl_ran_ugaussian(*_r));
+    bd[0][k] = _rprior[k]*(1+offset* 0.01 * gsl_ran_ugaussian(*_r));
   }
   
   // Copy the values along user/item
@@ -482,7 +484,7 @@ GPMatrix::initialize2(double v, double offset)
   for (uint32_t i = 0; i < _n; ++i) {
     for (uint32_t k = 0; k < _k; ++k) {
       // Initial values: hyperparameter plus a small random shock
-      ad[i][k] = _sprior + offset*0.1 * gsl_ran_ugaussian(*_r);
+      ad[i][k] = _sprior + offset*0.01 * gsl_ran_ugaussian(*_r);
       // Prior plus argument v, which in the paper is Ka or Kc
       bd[i][k] = _rprior[k] + v;
     }
@@ -506,7 +508,7 @@ GPMatrix::initialize_exp(double offset)
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k) {
       // Initial value: prior plus random shock (why do it again?)
-      b[k] = _rprior[k]*(1+offset * 0.1 * gsl_ran_ugaussian(*_r));
+      b[k] = _rprior[k]*(1+offset * 0.01 * gsl_ran_ugaussian(*_r));
       assert(b[k]);
       
       // Means: shape/rate parameter
@@ -527,7 +529,7 @@ GPMatrix::initialize_exp(double v, double offset)
   Array b(_k);  
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k) {
-      b[k] = v + offset * 0.1 * gsl_ran_ugaussian(*_r);
+      b[k] = v + offset * 0.01 * gsl_ran_ugaussian(*_r);
       assert(b[k]);
       vd1[i][k] = ad[i][k] / b[k];
       vd2[i][k] = gsl_sf_psi(ad[i][k]) - log(b[k]);
@@ -641,7 +643,6 @@ public:
     _rcurr(k),
     _Ev(n,k),
     _Elogv(n,k),
-    _Einv(n,k),
     _r(r) { } 
   virtual ~GPMatrixGR() {} 
 
@@ -654,7 +655,6 @@ public:
   const Array  &rate_next() const          { return _rnext; }
   const Matrix &expected_v() const         { return _Ev;    }
   const Matrix &expected_logv() const      { return _Elogv; }
-  const Matrix &expected_inv() const      { return _Einv; }
   
   Matrix &shape_curr()       { return _scurr; }
   Array  &rate_curr()        { return _rcurr; }
@@ -704,8 +704,7 @@ private:
   Array _rcurr;       
   Array _rnext;       
   Matrix _Ev;         
-  Matrix _Elogv;
-  Matrix _Einv;
+  Matrix _Elogv;      
 };
 
 inline void
@@ -825,10 +824,10 @@ GPMatrixGR::initialize(double offset)
   double *bd = _rcurr.data();
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k) 
-      ad[i][k] = _sprior + 0.1 * gsl_ran_ugaussian(*_r);
+      ad[i][k] = _sprior + 0.01 * gsl_ran_ugaussian(*_r);
 
   for (uint32_t k = 0; k < _k; ++k)   
-    bd[k] = _rprior + 0.1 * gsl_ran_ugaussian(*_r);
+    bd[k] = _rprior + 0.01 * gsl_ran_ugaussian(*_r);
   
   double **vd1 = _Ev.data();
   double **vd2 = _Elogv.data();
@@ -847,12 +846,12 @@ GPMatrixGR::initialize(double offset)
   
   for (uint32_t i = 0; i < _n; ++i) {
     for (uint32_t k = 0; k < _k; ++k) {
-            ad[i][k] = _sprior + offset * 0.1 * gsl_ran_ugaussian(*_r);
+            ad[i][k] = _sprior + offset * 0.01 * gsl_ran_ugaussian(*_r);
     }
   }
   
   for (uint32_t k = 0; k < _k; ++k) {
-    bd[k] = _rprior + offset * 0.1 * gsl_ran_ugaussian(*_r);
+    bd[k] = _rprior + offset * 0.01 * gsl_ran_ugaussian(*_r);
   }
   set_to_prior();
 }
@@ -864,7 +863,7 @@ GPMatrixGR::initialize2(double v, double offset)
   double *bd = _rcurr.data();
   for (uint32_t i = 0; i < _n; ++i) {
     for (uint32_t k = 0; k < _k; ++k) {
-      ad[i][k] = _sprior + offset * 0.1 * gsl_ran_ugaussian(*_r);
+      ad[i][k] = _sprior + offset * 0.01 * gsl_ran_ugaussian(*_r);
     }
   }
   for (uint32_t k = 0; k < _k; ++k)
@@ -883,7 +882,7 @@ GPMatrixGR::initialize_exp(double v, double offset)
   Array b(_k);  
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k) {
-      b[k] = v + offset * 0.1 * gsl_ran_ugaussian(*_r);
+      b[k] = v + offset * 0.01 * gsl_ran_ugaussian(*_r);
       vd1[i][k] = ad[i][k] / b[k];
       vd2[i][k] = gsl_sf_psi(ad[i][k]) - log(b[k]);
     }
@@ -901,7 +900,7 @@ GPMatrixGR::initialize_exp(double offset)
   Array b(_k);  
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k) {
-      b[k] = _rprior + offset * 0.1 * gsl_ran_ugaussian(*_r);
+      b[k] = _rprior + offset * 0.01 * gsl_ran_ugaussian(*_r);
       vd1[i][k] = ad[i][k] / b[k];
       vd2[i][k] = gsl_sf_psi(ad[i][k]) - log(b[k]);
     }
@@ -1153,8 +1152,8 @@ GPArray::initialize(double offset)
   double *ad = _scurr.data();
   double *bd = _rcurr.data();
   for (uint32_t i = 0; i < _n; ++i) {
-    ad[i] = _sprior + offset * 0.1 * gsl_ran_ugaussian(*_r);
-    bd[i] = _rprior + offset * 0.1 * gsl_ran_ugaussian(*_r);
+    ad[i] = _sprior + offset * 0.01 * gsl_ran_ugaussian(*_r);
+    bd[i] = _rprior + offset * 0.01 * gsl_ran_ugaussian(*_r);
   }
   set_to_prior();
 }
@@ -1168,12 +1167,12 @@ GPArray::initialize2(double v, double offset)
     
     // -----------------------------------------
     // Error?????
-//    ad[i] = _sprior + 0.1 * gsl_ran_ugaussian(*_r);
+//    ad[i] = _sprior + 0.01 * gsl_ran_ugaussian(*_r);
 //    bd[i] = _rprior + v;
     // -----------------------------------------
     
     ad[i] = _sprior + v;
-    bd[i] = _rprior * (1 + offset * 0.1 * gsl_ran_ugaussian(*_r));
+    bd[i] = _rprior * (1 + offset * 0.01 * gsl_ran_ugaussian(*_r));
   }
   set_to_prior();
 }

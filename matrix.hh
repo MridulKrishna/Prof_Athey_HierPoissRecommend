@@ -756,7 +756,7 @@ D1Array<double>::save(string name) const
     const double *cd = const_data();
     
     for (uint32_t i = 0; i < _n; ++i) {
-        fprintf(tf,"%.8f\n", cd[i]);
+        fprintf(tf,"%.12f\n", cd[i]);
     }
     fclose(tf);
 }
@@ -791,7 +791,7 @@ D1Array<double>::save(string name, const IDMap &m) const
         
         fprintf(tf,"%d\t", i);
         fprintf(tf,"%llu\t", id);
-        fprintf(tf,"%.8f\n", cd[i]);
+        fprintf(tf,"%.12f\n", cd[i]);
     }
     fclose(tf);
 }
@@ -1376,9 +1376,9 @@ D2Array<double>::save(string name, const IDMap &m) const
         
         for (uint32_t k = 0; k < _n; ++k) {
             if (k == _n - 1)
-                fprintf(tf,"%.8f\n", cd[i][k]);
+                fprintf(tf,"%.12f\n", cd[i][k]);
             else
-                fprintf(tf,"%.8f\t", cd[i][k]);
+                fprintf(tf,"%.12f\t", cd[i][k]);
         }
     }
     fclose(tf);
@@ -1399,9 +1399,9 @@ D2Array<double>::save(string name) const
     for (uint32_t i = 0; i < _m; ++i){
         for (uint32_t k = 0; k < _n; ++k) {
             if (k == _n - 1)
-                fprintf(tf,"%.8f\n", cd[i][k]);
+                fprintf(tf,"%.12f\n", cd[i][k]);
             else
-                fprintf(tf,"%.8f\t", cd[i][k]);
+                fprintf(tf,"%.12f\t", cd[i][k]);
         }
     }
     fclose(tf);
@@ -1428,9 +1428,9 @@ D2Array<double>::save_transpose(string name, const IDMap &m) const
         fprintf(tf,"%llu\t", id);
         for (uint32_t k = 0; k < _m; ++k) {
             if (k == _m - 1)
-                fprintf(tf,"%.8f\n", cd[k][i]);
+                fprintf(tf,"%.12f\n", cd[k][i]);
             else
-                fprintf(tf,"%.8f\t", cd[k][i]);
+                fprintf(tf,"%.12f\t", cd[k][i]);
         }
     }
     fclose(tf);
