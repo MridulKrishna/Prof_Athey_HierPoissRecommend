@@ -2510,13 +2510,13 @@ HGAPRec::compute_itemrank(bool final)
       
       // Saves the predicted score in u
       double u = .0;
-      if (_env.nmf)
-        u = prediction_score_nmf(n, m);
-      else if (_env.lda || _env.vwlda)
-        u = prediction_score_lda(n, m);
-      else if (_env.graphchi) {
-        u = prediction_score_chi(n, m);
-      } else
+//      if (_env.nmf)
+//        u = prediction_score_nmf(n, m);
+//      else if (_env.lda || _env.vwlda)
+//        u = prediction_score_lda(n, m);
+//      else if (_env.graphchi) {
+//        u = prediction_score_chi(n, m);
+//      } else
         u = _env.hier ? prediction_score_hier(n, m) : prediction_score(n, m);
       
       // Saves the predicted rating in mlist. If the rating is in the test set, saves the observed rating in ndcglist
@@ -2638,22 +2638,22 @@ HGAPRec::compute_precision(bool save_ranking_file)
       
       // Saves the predicted score in u
       double u = .0;
-      if (_env.nmf) {
-//        cout << "nmf" << endl;
-        u = prediction_score_nmf(n, m);
-      } else if (_env.lda || _env.vwlda) {
-//                cout << "lda vwlda" << endl;
-        u = prediction_score_lda(n, m);
-      } else if (_env.graphchi) {
-//                cout << "graphchi" << endl;
-        u = prediction_score_chi(n, m);
-      } else if (_env.ctr) {
-//                cout << "ctr" << endl;
-        u = prediction_score_ctr(n, m);
-      } else {
-//                cout << "else" << endl;
+//      if (_env.nmf) {
+////        cout << "nmf" << endl;
+//        u = prediction_score_nmf(n, m);
+//      } else if (_env.lda || _env.vwlda) {
+////                cout << "lda vwlda" << endl;
+//        u = prediction_score_lda(n, m);
+//      } else if (_env.graphchi) {
+////                cout << "graphchi" << endl;
+//        u = prediction_score_chi(n, m);
+//      } else if (_env.ctr) {
+////                cout << "ctr" << endl;
+//        u = prediction_score_ctr(n, m);
+//      } else {
+////                cout << "else" << endl;
         u = _env.hier ? prediction_score_hier(n, m) : prediction_score(n, m);
-      }
+//      }
       
       // Saves the predicted rating in mlist. If the rating is in the test set, saves the observed rating in ndcglist
       mlist[m].first = m;
