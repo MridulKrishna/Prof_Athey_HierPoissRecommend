@@ -65,8 +65,44 @@ yogurt data inclued in the Yogurt/observables folder. Make sure to modify the pa
 so they lead to the actual addresses of the folder.
 
 
+Input
+-----
+
+The model needs five input files, all in tsv format. The train.tsv, validation.tsv,
+and test.tsv files give the ratings users gave to items. The first column is the
+user id, the second column is the item id, and the third column is the rating. They
+can also be in the format for the files to include session numbers in the second
+column. In that case, use the option -session.
+
+The obsUser.tsv and obsItem.tsv files give the observable characteristics of users
+and items. The first column is the user or item id, and the rest of the columns are
+the values of the observable characteristics. For categorical variables, they should
+be rewritten as various indicator variables.
+
+
+Output
+------
+
+The main output of the model are the parameters for all the latent variables. The
+following list has the names according to the latex document, followed by the name
+in the code: beta (hbeta), rho (hrho), eta (betarate), theta (htheta), sigma
+(hsigma), and xi (thetarate). For each variable, the output includes one file with
+the shape parameters, one with the rate parameters, and one with the means.
+
+The model also writes two files, validation.txt and test.txt, which give a summary
+of the evolution of the likelihood of both sets.
+
+Finally, the model also outputs some files that are useful to understand how the
+code runs, but which won't be necessary in the final version. They are the files
+with names like betaMeans.tsv. For each iteration, they show the mean value of
+variable across users or items.'
+
+
 Yogurt data
 -----------
+
+The Yogurt directory contains some consumer yogurt data that can be used to test the
+code.
 
 The original data are in file bigpurchfile.dat, with the variable names and codes
 deeply hidden in the fortran code in Yogurt/yogurt. An easier version of the code is
@@ -78,6 +114,31 @@ rest of the files are some descriptive statistics of the data, as well as some
 conversions to the format required to run the data through other programs.
 
 
+Test files
+----------
 
+The Test directory contains various matlab and mathematica files that are useful to
+analyze the output of the code.
 
+TestHPFC.m runs a matlab version of the algorithm. It extremely slow, but it is
+useful to test changes to the code using a toy database, such as the one in
+testFiles.
 
+compareLikelihood.m takes the output of the model and calculates the likelihood. It
+is also useful to check that it is calculated correctly. It is fast so it can be ran
+with real data.
+
+plotPhis.m takes the output of the model and plots the average values of the phi
+vector, i.e, the probabilities that rating was due to each factor. It gives a rough
+idea of which factors are responsible for the behavior.
+
+PhiEvolution.nb is similar to plotPhis.m, but it also analyzes how the values change
+with the iterations of the model.
+
+mostFrequent.m gives the highest rated items.
+
+highestItems.m takes the output of the model to give the items that have the
+greatest variable for one of the factors.
+
+highestHh.m takes the output of the model to give the users that have the greatest
+variable for one of the factors.
