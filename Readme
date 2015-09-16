@@ -1,0 +1,61 @@
+Hierarchical Poisson factorization with observed characteristics
+----------------------------------------------------------------
+
+**hgaprec** [OPTIONS]
+
+-dir <string>       path to dataset directory with 5 files: train.tsv, test.tsv,
+                    validation.tsv, itemObs.tsv, userObs.tsv.
+
+-outdir <string>    path to directory where output files will be written
+
+-m <int>	  number of items
+-n <int>	  number of users
+-k <int>	  number of factors
+-uc <int>       number of user characteristics
+-ic <int>       number of item characteristics
+
+-seed <int>     Set random seed. Default: 0
+
+-a
+-ap
+-bp         set hyperparameters
+-c          default: ap = cp = 1.5
+-cp         a = bp = c = dp = e = f = 0.3
+-dp
+-e
+-f
+
+-rfreq <int>    Frequency for evaluating convergence and producing output.
+                Default: 10
+
+-max-iterations <int> Maximum number of iterations. Default: 1000
+
+-nooffset       Run the code with no offset for the priors. Useful when testing and
+                comparing with matlab code
+
+-offset<double> Factor to multiply the random offset.
+
+-std            Scale down observables by their standard deviation, instead of by
+                their mean
+
+-ones           Do not scale down observables by their standard deviation (i.e.,
+                scale them down by a vector of ones)
+
+-scfact<double> Artificially scale down observables by an additional factor
+
+-lfirst         Run 100 iterations in which only the purely latent variables are
+                updated (i.e., theta and beta)
+
+-ofirst         Run 100 iterations in which only the variables that multiply
+                observables are updated (i.e., sigma and rho)
+
+
+Example script
+--------------
+
+The file run.sh is an example of a script use to run the code. It runs with the
+yogurt data inclued in the Yogurt/observables folder. Make sure to modify the paths
+so they lead to the actual addresses of the folder.
+
+
+

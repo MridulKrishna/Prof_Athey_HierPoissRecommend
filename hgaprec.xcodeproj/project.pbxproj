@@ -27,6 +27,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		790EE7A61BA8F63E000CE6CF /* Install */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Install; sourceTree = SOURCE_ROOT; };
+		790EE7A71BA8F7DE000CE6CF /* Readme */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme; sourceTree = SOURCE_ROOT; };
+		790EE7A81BA92CAD000CE6CF /* Yogurt */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Yogurt; sourceTree = SOURCE_ROOT; };
 		7973CC7E1BA8DFD4002D1FF9 /* run.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = run.sh; sourceTree = SOURCE_ROOT; };
 		7973CC7F1BA8DFD4002D1FF9 /* makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = makefile; sourceTree = SOURCE_ROOT; };
 		79CE5D4A1B70678500744AA7 /* hgaprec */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hgaprec; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -72,6 +75,7 @@
 		79CE5D4C1B70678500744AA7 /* hgaprec */ = {
 			isa = PBXGroup;
 			children = (
+				790EE7A81BA92CAD000CE6CF /* Yogurt */,
 				7973CC7E1BA8DFD4002D1FF9 /* run.sh */,
 				7973CC7F1BA8DFD4002D1FF9 /* makefile */,
 				79FF7F501B82F74E0022899F /* log.hh */,
@@ -84,6 +88,8 @@
 				79CE5D761B706D4B00744AA7 /* matrix.hh */,
 				79CE5D771B706D4B00744AA7 /* ratings.cc */,
 				79CE5D781B706D4B00744AA7 /* ratings.hh */,
+				790EE7A61BA8F63E000CE6CF /* Install */,
+				790EE7A71BA8F7DE000CE6CF /* Readme */,
 			);
 			path = hgaprec;
 			sourceTree = "<group>";

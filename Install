@@ -1,0 +1,9 @@
+There is an example makefile to compile the code. It should run by just typing make.
+
+The libraries gsl and gslblas needed. In order to run the makefile, check the paths
+to the include and lib directories.
+
+For Windows users: classes Env and Log use the function mkdir(), which only works in
+Unix systems. I don't have a PC, so I could not test an alternative code that would
+run those lines. In order to run on Windows, find an equivalent function that
+creates a folder.

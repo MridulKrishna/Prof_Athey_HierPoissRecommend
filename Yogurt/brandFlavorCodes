@@ -1,0 +1,126 @@
+
+flavkeys(1) = 'ST'
+flavnames(1) = 'Strawberry'
+
+flavkeys(2) = 'RBY'
+flavnames(2) = 'Raspberry'
+
+flavkeys(3) = 'BBY'
+flavnames(3) = 'Blueberry'
+
+flavkeys(4) = 'CH'
+flavnames(4) = 'Cherry'
+
+flavkeys(5) = 'LMN'
+flavnames(5) = 'Lemon'
+
+flavkeys(6) = 'MX BY'
+flavnames(6) = 'Mixed Berry'
+
+flavkeys(7) = 'HNY'
+flavnames(7) = 'Honey'
+
+flavkeys(8) = 'VAN'
+flavnames(8) = 'Vanilla'
+
+flavkeys(9) = 'BN'
+flavnames(9) = 'Banana'
+
+flavkeys(10) = 'APL'
+flavnames(10) = 'Apple'
+
+flavkeys(11) = 'ORG'
+flavnames(11) = 'Orange'
+
+flavkeys(12) = 'PCH'
+flavnames(12) = 'Peach'
+
+flavkeys(13) = 'PNAPL'
+flavnames(13) = 'Pineapple'
+
+flavkeys(14) = 'BYSBY'
+flavnames(14) = 'Boysenberry'
+
+flavkeys(15) = 'PLAIN'
+flavnames(15) = 'Plain'
+
+flavkeys(16) = 'PN-CLD'
+flavnames(16) = 'Pina Colada'
+
+flavkeys(17) = 'YGT BY'
+flavnames(17) = 'Berry'
+
+flavkeys(18) = 'ORD FRT'
+flavnames(18) = 'Ord. Fruit'
+
+flavkeys(19) = 'CITRUS FRT'
+flavnames(19) = 'Citrus Fruit'
+
+flavkeys(20) = 'CITRUS FRT'
+flavnames(20) = 'Citrus Fruit'
+
+flavkeys(21) = 'CINN'
+flavnames(21) = 'Cinnamon'
+
+flavkeys(22) = 'TRP FRT'
+flavnames(22) = 'Trop. Fruit'
+
+flavkeys(23) = 'PEAR'
+flavnames(23) = 'Pear'
+
+flavkeys(24) = 'COF'
+flavnames(24) = 'Coffee'
+
+flavkeys(25) = 'OC'
+flavnames(25) = 'Chocolate'
+
+flavkeys(26) = 'P-FRT'
+flavnames(26) = 'Passchenfruit'
+
+flavkeys(27) = 'F-C'
+flavnames(27) = 'F-C??'
+
+flavkeys(28) = 'GRNL'
+flavnames(28) = 'Granola'
+
+flavkeys(29) = 'ALM'
+flavnames(29) = 'Almond'
+
+flavkeys(30) = 'WILD BY'
+flavnames(30) = 'Wild Berry'
+
+flavkeys(31) = 'FRT YGT ASST'
+flavnames(31) = 'FRT YGT ASST'
+
+flavkeys(32) = 'MAND'
+flavnames(32) = 'Mandarin'
+
+flavkeys(33) = 'MPL'
+flavnames(33) = 'Maple'
+
+flavkeys(34) = 'RHB'
+flavnames(34) = 'Rhubarb'
+
+
+bnamemat(1) = 'Yoplait'
+bnamemat(2) = 'Wght Wtch'
+bnamemat(3) = 'Old Mill'
+bnamemat(4) = 'Dannon'
+bnamemat(5) = 'Elm Grove'
+bnamemat(6) = 'YAMI'
+bnamemat(7) = 'HWT MDY'
+bnamemat(8) = 'HILAND'
+bnamemat(9) = 'LA YOGURT'
+bnamemat(10) = 'Whitneys'
+bnamemat(11) = 'Breyers'
+bnamemat(12) = 'LNL'
+bnamemat(13) = 'KEMPS'
+bnamemat(14) = 'SW VAL FRM'
+bnamemat(15) = 'SWTN'
+bnamemat(16) = 'MTN HIGH'
+bnamemat(17) = 'Nordica'
+bnamemat(18) = 'NTRL LE'
+bnamemat(19) = 'Q CH'
+bnamemat(20) = 'NW CNTY'
+bnamemat(21) = 'W-B-B'
+bnamemat(22) = 'CTL BR'

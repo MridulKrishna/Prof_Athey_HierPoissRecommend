@@ -99,64 +99,14 @@ int main(int argc, char **argv) {
   uint32_t n = 0, m = 0;
   uint32_t k = 0;
   uint32_t uc = 0, ic = 0;
-//  string ground_truth_fname;
   uint32_t rfreq = 10;
-//  string label;
-//  bool logl = false;
   uint32_t max_iterations = 1000;
-//  bool nmi = false;
-//  bool strid = false;
   double rand_seed = 0;
   
-//  bool test = false;
-//  bool batch = true;
-//  bool online = false;
-//  bool gen_heldout = false;
-  
-//  bool model_load = false;
-//  string model_location = "";
-  
-//  bool hol_load = false;
-//  string hol_location = "";
-//  bool vb = true;
-  
-//  bool pred_accuracy = false;
-//  bool gt_accuracy = false;
-//  bool p = false;
-  double a=0.3, ap=0.3, bp=0.3, c=0.3, cp=0.3, dp=0.3, e=0.3, f=0.3;
-//  Env::Dataset dataset = Env::MENDELEY;
-//  bool binary_data = false;
-//  bool bias = false;
-//  bool hier = false;
-//  bool explore = false;
-//  bool gen_ranking_for_users = false;
-//  bool rmse = false;
-//  bool nmf = false;
-//  bool nmfload = false;
-//  bool vwload = false;
-//  bool lda = false;
-//  bool vwlda = false;
-//  bool msr = false;
-//  bool write_training = false;
-//  uint32_t rating_threshold = 1;
-//  bool chi = false;
-//  bool wals = false;
-//  double wals_l = 0.1;
-//  uint32_t wals_C = 10;
-  
-//  bool als = false;
-//  bool chinmf = false;
-//  bool climf = false;
-//  
-//  bool mle_item = false;
-//  bool mle_user = false;
-//  bool canny = false;
-//  bool ctr = false;
+  double a=0.3, ap=1.5, bp=0.3, c=0.3, cp=1.5, dp=0.3, e=0.3, f=0.3;
   
   int scale = Env::MEAN;
   double scaleFactor = 1;
-  
-  int cycles = 0;
   
   uint32_t i = 0;
   
@@ -225,10 +175,6 @@ int main(int argc, char **argv) {
       lfirst = 1;
     } else if (strcmp(argv[i], "-ofirst") == 0) {
       ofirst = 1;
-    } else if (strcmp(argv[i], "-cycles") == 0) {
-      cycles = 1;
-    } else if (strcmp(argv[i], "-cycles2") == 0) {
-      cycles = 2;
     } else if (i > 0) {
       fprintf(stdout,  "error: unknown option %s\n", argv[i]);
       assert(0);
@@ -241,7 +187,7 @@ int main(int argc, char **argv) {
   }
     
   // Initializes the environment: variables to run the code
-  Env env(n, m, k, uc, ic, fname, outfname, rfreq, rand_seed, max_iterations, a, ap, bp, c, cp, dp, e, f, offset, scale, scaleFactor, cycles, lfirst, ofirst);
+  Env env(n, m, k, uc, ic, fname, outfname, rfreq, rand_seed, max_iterations, a, ap, bp, c, cp, dp, e, f, offset, scale, scaleFactor, lfirst, ofirst);
   env_global = &env;
   
   // Reads the input files
