@@ -110,8 +110,10 @@ int main(int argc, char **argv) {
   
   uint32_t i = 0;
   
-  bool lfirst = false;
-  bool ofirst = false;
+  bool lfirst = false;  // Run first 100 iterations only with latents
+  bool ofirst = false;  // Run first 100 iterations only with observables
+  bool session = false;   // If the train, validation, and test set contain a column for the session
+  bool fitpriors = false; // Fit the prior values of bp and dp so that under the priors the rate of the Poisson r.v. fits the average rating
   
   // Parse parameters
   while (i <= argc - 1) {
@@ -175,6 +177,10 @@ int main(int argc, char **argv) {
       lfirst = 1;
     } else if (strcmp(argv[i], "-ofirst") == 0) {
       ofirst = 1;
+    } else if (strcmp(argv[i], "-session") == 0) {
+      session = true;
+    } else if (strcmp(argv[i], "-fpriors") == 0) {
+      fitpriors = true;
     } else if (i > 0) {
       fprintf(stdout,  "error: unknown option %s\n", argv[i]);
       assert(0);
@@ -187,7 +193,7 @@ int main(int argc, char **argv) {
   }
     
   // Initializes the environment: variables to run the code
-  Env env(n, m, k, uc, ic, fname, outfname, rfreq, rand_seed, max_iterations, a, ap, bp, c, cp, dp, e, f, offset, scale, scaleFactor, lfirst, ofirst);
+  Env env(n, m, k, uc, ic, fname, outfname, rfreq, rand_seed, max_iterations, a, ap, bp, c, cp, dp, e, f, offset, scale, scaleFactor, lfirst, ofirst, session, fitpriors);
   env_global = &env;
   
   // Reads the input files
@@ -200,12 +206,14 @@ int main(int argc, char **argv) {
 
   ratings.readValidationAndTest(fname.c_str());
   ratings.readObserved(fname.c_str());
-  
-  bp = sqrt(ap*cp*a*c/(ap-1)/(cp-1)*(k+uc+ic)*n*m/ratings.totRating);
-  dp = bp;
 
-  env.bp = bp;
-  env.dp = dp;
+  if (fitpriors) {
+    bp = sqrt(ap*cp*a*c/(ap-1)/(cp-1)*(k+uc+ic)*n*m/ratings.totRating);
+    dp = bp;
+    
+    env.bp = bp;
+    env.dp = dp;
+  }
   
 //  ratings._userObsScale.print();
 //  ratings._itemObsScale.print();

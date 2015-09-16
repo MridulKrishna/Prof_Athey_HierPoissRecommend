@@ -18,8 +18,8 @@ Hierarchical Poisson factorization with observed characteristics
 
 -a
 -ap
--bp         set hyperparameters
--c          default: ap = cp = 1.5
+-bp         Set hyperparameters
+-c          Default: ap = cp = 1.5
 -cp         a = bp = c = dp = e = f = 0.3
 -dp
 -e
@@ -49,6 +49,13 @@ Hierarchical Poisson factorization with observed characteristics
 -ofirst         Run 100 iterations in which only the variables that multiply
                 observables are updated (i.e., sigma and rho)
 
+-session        If the train, validation, and test sets include a session id in the
+                second column. In that case, the code just ignores that column and
+                reads the rest of the file.
+
+-fitpriors      Fit the prior values of bp and dp so that under those priors the
+                rate of the Poisson r.v. is the average rating
+
 
 Example script
 --------------
@@ -56,6 +63,21 @@ Example script
 The file run.sh is an example of a script use to run the code. It runs with the
 yogurt data inclued in the Yogurt/observables folder. Make sure to modify the paths
 so they lead to the actual addresses of the folder.
+
+
+Yogurt data
+-----------
+
+The original data are in file bigpurchfile.dat, with the variable names and codes
+deeply hidden in the fortran code in Yogurt/yogurt. An easier version of the code is
+purchases.dta, in stata format, with brand and flavor codes in flavors.tsv and
+brands.tsv.
+
+toHPFOformat.do converts purchases.dta into the format required by the c++ code. The
+rest of the files are some descriptive statistics of the data, as well as some
+conversions to the format required to run the data through other programs.
+
+
 
 
 

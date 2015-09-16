@@ -55,7 +55,7 @@ public:
   typedef enum { NETFLIX, MOVIELENS, MENDELEY, ECHONEST, NYT } Dataset;
   typedef enum { CREATE_TRAIN_TEST_SETS, TRAINING } Mode;
   Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string fname, string outfname, uint32_t rfreq, double rseed,
-      uint32_t max_iterations, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf,double pOffset, int scale, double scaleFactor, bool nLfirst, bool nOfirst);
+      uint32_t max_iterations, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf,double pOffset, int scale, double scaleFactor, bool nLfirst, bool nOfirst, bool nSession, bool nFitpriors);
   ~Env() { fclose(_plogf); }
   
   static string prefix;
@@ -132,6 +132,10 @@ public:
  
   bool lfirst;
   bool ofirst;
+  
+  bool session;
+  
+  bool fitpriors;
   
   static const int ONES = 1;
   static const int MEAN = 2;
@@ -227,7 +231,7 @@ Env::outfile_str(string fname)
 
 inline
 Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string Nfname, string Noutfname, uint32_t rfreq,double rseed,
-         uint32_t max_iterations, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf,double pOffset, int nScale, double nScaleFactor, bool nLfirst, bool nOfirst)
+         uint32_t max_iterations, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf,double pOffset, int nScale, double nScaleFactor, bool nLfirst, bool nOfirst, bool nSession, bool nFitpriors)
 : n(N),
 m(M),
 k(K),
@@ -256,7 +260,9 @@ offset(pOffset),
 scale(nScale),
 scaleFactor(nScaleFactor),
 lfirst(nLfirst),
-ofirst(nOfirst)
+ofirst(nOfirst),
+session(nSession),
+fitpriors(nFitpriors)
 {
   ostringstream sa;
   sa << "n" << n << "-";
@@ -296,14 +302,14 @@ ofirst(nOfirst)
     sa << "-ofirst";
   }
   
-  if (cycles == 1) {
-    sa << "-cycles";
+  if (session) {
+    sa << "-session";
   }
   
-  if (cycles == 2) {
-    sa << "-cycles2";
+  if (fitpriors) {
+    sa << "-fpriors";
   }
-  
+
   prefix = sa.str();
   level = Logger::TEST;
   

@@ -54,11 +54,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "463900937.145053"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "334"
-            endingLineNumber = "334"
+            startingLineNumber = "298"
+            endingLineNumber = "298"
             landmarkName = "Ratings::read_generic(FILE *f, CountMap *cmap)"
             landmarkType = "5">
          </BreakpointContent>
@@ -70,11 +70,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "463900937.145053"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "338"
-            endingLineNumber = "338"
+            startingLineNumber = "302"
+            endingLineNumber = "302"
             landmarkName = "Ratings::read_generic(FILE *f, CountMap *cmap)"
             landmarkType = "5">
          </BreakpointContent>
@@ -86,11 +86,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "462940839.233103"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "113"
-            endingLineNumber = "113"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
             landmarkName = "Ratings::readObserved(string dir)"
             landmarkType = "5">
          </BreakpointContent>
@@ -144,11 +144,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "463900937.145053"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1083"
-            endingLineNumber = "1083"
+            startingLineNumber = "1047"
+            endingLineNumber = "1047"
             landmarkName = "Ratings::validation_users_of_movie()"
             landmarkType = "5">
          </BreakpointContent>
@@ -160,11 +160,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "main.cc"
-            timestampString = "464051006.754094"
+            timestampString = "464074370.157589"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "263"
-            endingLineNumber = "263"
+            startingLineNumber = "217"
+            endingLineNumber = "217"
             landmarkName = "main(int argc, char **argv)"
             landmarkType = "7">
          </BreakpointContent>
@@ -176,11 +176,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "463900937.145053"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "303"
-            endingLineNumber = "303"
+            startingLineNumber = "274"
+            endingLineNumber = "274"
             landmarkName = "Ratings::read_generic(FILE *f, CountMap *cmap)"
             landmarkType = "5">
          </BreakpointContent>
@@ -192,11 +192,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "463900937.145053"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "304"
-            endingLineNumber = "304"
+            startingLineNumber = "275"
+            endingLineNumber = "275"
             landmarkName = "Ratings::read_generic(FILE *f, CountMap *cmap)"
             landmarkType = "5">
          </BreakpointContent>
@@ -208,11 +208,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "463900937.145053"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "313"
-            endingLineNumber = "313"
+            startingLineNumber = "279"
+            endingLineNumber = "279"
             landmarkName = "Ratings::read_generic(FILE *f, CountMap *cmap)"
             landmarkType = "5">
          </BreakpointContent>
@@ -224,11 +224,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "463900937.145053"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "314"
-            endingLineNumber = "314"
+            startingLineNumber = "280"
+            endingLineNumber = "280"
             landmarkName = "Ratings::read_generic(FILE *f, CountMap *cmap)"
             landmarkType = "5">
          </BreakpointContent>
@@ -240,11 +240,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "463900937.145053"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "316"
-            endingLineNumber = "316"
+            startingLineNumber = "281"
+            endingLineNumber = "281"
             landmarkName = "Ratings::read_generic(FILE *f, CountMap *cmap)"
             landmarkType = "5">
          </BreakpointContent>
@@ -256,11 +256,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "463900937.145053"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "320"
-            endingLineNumber = "320"
+            startingLineNumber = "285"
+            endingLineNumber = "285"
             landmarkName = "Ratings::read_generic(FILE *f, CountMap *cmap)"
             landmarkType = "5">
          </BreakpointContent>
@@ -272,11 +272,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "463900937.145053"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "321"
-            endingLineNumber = "321"
+            startingLineNumber = "291"
+            endingLineNumber = "291"
             landmarkName = "Ratings::read_generic(FILE *f, CountMap *cmap)"
             landmarkType = "5">
          </BreakpointContent>
@@ -288,11 +288,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "463900937.145053"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "327"
-            endingLineNumber = "327"
+            startingLineNumber = "289"
+            endingLineNumber = "289"
             landmarkName = "Ratings::read_generic(FILE *f, CountMap *cmap)"
             landmarkType = "5">
          </BreakpointContent>
@@ -304,11 +304,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "463900937.145053"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "325"
-            endingLineNumber = "325"
+            startingLineNumber = "294"
+            endingLineNumber = "294"
             landmarkName = "Ratings::read_generic(FILE *f, CountMap *cmap)"
             landmarkType = "5">
          </BreakpointContent>
@@ -320,11 +320,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "463900937.145053"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "330"
-            endingLineNumber = "330"
+            startingLineNumber = "296"
+            endingLineNumber = "296"
             landmarkName = "Ratings::read_generic(FILE *f, CountMap *cmap)"
             landmarkType = "5">
          </BreakpointContent>
@@ -336,27 +336,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "463900937.145053"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "332"
-            endingLineNumber = "332"
-            landmarkName = "Ratings::read_generic(FILE *f, CountMap *cmap)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ratings.cc"
-            timestampString = "463900937.145053"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "302"
-            endingLineNumber = "302"
+            startingLineNumber = "273"
+            endingLineNumber = "273"
             landmarkName = "Ratings::read_generic(FILE *f, CountMap *cmap)"
             landmarkType = "5">
          </BreakpointContent>
@@ -432,11 +416,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "463900937.145053"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "336"
-            endingLineNumber = "336"
+            startingLineNumber = "300"
+            endingLineNumber = "300"
             landmarkName = "Ratings::read_generic(FILE *f, CountMap *cmap)"
             landmarkType = "5">
          </BreakpointContent>
@@ -448,11 +432,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "463900937.145053"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "328"
-            endingLineNumber = "328"
+            startingLineNumber = "292"
+            endingLineNumber = "292"
             landmarkName = "Ratings::read_generic(FILE *f, CountMap *cmap)"
             landmarkType = "5">
          </BreakpointContent>
@@ -464,11 +448,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "462940839.233103"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "194"
-            endingLineNumber = "194"
+            startingLineNumber = "168"
+            endingLineNumber = "168"
             landmarkName = "Ratings::readObserved(string dir)"
             landmarkType = "5">
          </BreakpointContent>
@@ -480,11 +464,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "main.cc"
-            timestampString = "464051006.754094"
+            timestampString = "464074370.157589"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "239"
-            endingLineNumber = "239"
+            startingLineNumber = "191"
+            endingLineNumber = "191"
             landmarkName = "main(int argc, char **argv)"
             landmarkType = "7">
          </BreakpointContent>
@@ -496,11 +480,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "main.cc"
-            timestampString = "464051006.754094"
+            timestampString = "464074370.157589"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "244"
-            endingLineNumber = "244"
+            startingLineNumber = "196"
+            endingLineNumber = "196"
             landmarkName = "main(int argc, char **argv)"
             landmarkType = "7">
          </BreakpointContent>
@@ -512,11 +496,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "main.cc"
-            timestampString = "464051006.754094"
+            timestampString = "464074370.157589"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "240"
-            endingLineNumber = "240"
+            startingLineNumber = "192"
+            endingLineNumber = "192"
             landmarkName = "main(int argc, char **argv)"
             landmarkType = "7">
          </BreakpointContent>
@@ -528,12 +512,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "env.hh"
-            timestampString = "464051006.754094"
+            timestampString = "464074215.492658"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "321"
-            endingLineNumber = "321"
-            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string Nfname, string Noutfname, uint32_t rfreq,double rseed, uint32_t max_iterations, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf,double pOffset, int nScale, double nScaleFactor, int nCycles, bool nLfirst, bool nOfirst)"
+            startingLineNumber = "324"
+            endingLineNumber = "324"
+            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string Nfname, string Noutfname, uint32_t rfreq,double rseed, uint32_t max_iterations, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf,double pOffset, int nScale, double nScaleFactor, bool nLfirst, bool nOfirst, bool nSession, bool nFitpriors)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -544,28 +528,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "env.hh"
-            timestampString = "464051006.754094"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "322"
-            endingLineNumber = "322"
-            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string Nfname, string Noutfname, uint32_t rfreq,double rseed, uint32_t max_iterations, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf,double pOffset, int nScale, double nScaleFactor, int nCycles, bool nLfirst, bool nOfirst)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "env.hh"
-            timestampString = "464051006.754094"
+            timestampString = "464074215.492658"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "325"
             endingLineNumber = "325"
-            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string Nfname, string Noutfname, uint32_t rfreq,double rseed, uint32_t max_iterations, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf,double pOffset, int nScale, double nScaleFactor, int nCycles, bool nLfirst, bool nOfirst)"
+            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string Nfname, string Noutfname, uint32_t rfreq,double rseed, uint32_t max_iterations, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf,double pOffset, int nScale, double nScaleFactor, bool nLfirst, bool nOfirst, bool nSession, bool nFitpriors)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -576,12 +544,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "env.hh"
-            timestampString = "464051006.754094"
+            timestampString = "464074215.492658"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "317"
-            endingLineNumber = "317"
-            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string Nfname, string Noutfname, uint32_t rfreq,double rseed, uint32_t max_iterations, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf,double pOffset, int nScale, double nScaleFactor, int nCycles, bool nLfirst, bool nOfirst)"
+            startingLineNumber = "328"
+            endingLineNumber = "328"
+            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string Nfname, string Noutfname, uint32_t rfreq,double rseed, uint32_t max_iterations, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf,double pOffset, int nScale, double nScaleFactor, bool nLfirst, bool nOfirst, bool nSession, bool nFitpriors)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -592,12 +560,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "env.hh"
-            timestampString = "464051006.754094"
+            timestampString = "464074215.492658"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "320"
             endingLineNumber = "320"
-            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string Nfname, string Noutfname, uint32_t rfreq,double rseed, uint32_t max_iterations, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf,double pOffset, int nScale, double nScaleFactor, int nCycles, bool nLfirst, bool nOfirst)"
+            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string Nfname, string Noutfname, uint32_t rfreq,double rseed, uint32_t max_iterations, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf,double pOffset, int nScale, double nScaleFactor, bool nLfirst, bool nOfirst, bool nSession, bool nFitpriors)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -608,12 +576,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "env.hh"
-            timestampString = "464051006.754094"
+            timestampString = "464074215.492658"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "318"
-            endingLineNumber = "318"
-            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string Nfname, string Noutfname, uint32_t rfreq,double rseed, uint32_t max_iterations, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf,double pOffset, int nScale, double nScaleFactor, int nCycles, bool nLfirst, bool nOfirst)"
+            startingLineNumber = "323"
+            endingLineNumber = "323"
+            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string Nfname, string Noutfname, uint32_t rfreq,double rseed, uint32_t max_iterations, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf,double pOffset, int nScale, double nScaleFactor, bool nLfirst, bool nOfirst, bool nSession, bool nFitpriors)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "env.hh"
+            timestampString = "464074215.492658"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "321"
+            endingLineNumber = "321"
+            landmarkName = "Env::Env(uint32_t N, uint32_t M, uint32_t K, uint32_t UC, uint32_t IC, string Nfname, string Noutfname, uint32_t rfreq,double rseed, uint32_t max_iterations, double Na, double Nap, double Nbp, double Nc, double Ncp, double Ndp, double Ne, double Nf,double pOffset, int nScale, double nScaleFactor, bool nLfirst, bool nOfirst, bool nSession, bool nFitpriors)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -656,11 +640,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "463900937.145053"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "286"
-            endingLineNumber = "286"
+            startingLineNumber = "254"
+            endingLineNumber = "254"
             landmarkName = "Ratings::read_generic(FILE *f, CountMap *cmap)"
             landmarkType = "5">
          </BreakpointContent>
@@ -672,11 +656,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "463900937.145053"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "358"
-            endingLineNumber = "358"
+            startingLineNumber = "322"
+            endingLineNumber = "322"
             landmarkName = "Ratings::read_generic(FILE *f, CountMap *cmap)"
             landmarkType = "5">
          </BreakpointContent>
@@ -688,11 +672,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "462940839.233103"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "72"
-            endingLineNumber = "72"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
             landmarkName = "Ratings::readValidationAndTest(string dir)"
             landmarkType = "5">
          </BreakpointContent>
@@ -922,11 +906,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "462940839.233103"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "210"
-            endingLineNumber = "210"
+            startingLineNumber = "184"
+            endingLineNumber = "184"
             landmarkName = "Ratings::readObserved(string dir)"
             landmarkType = "5">
             <Locations>
@@ -1079,11 +1063,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "463644837.007416"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "233"
-            endingLineNumber = "233"
+            startingLineNumber = "207"
+            endingLineNumber = "207"
             landmarkName = "Ratings::readObserved(string dir)"
             landmarkType = "5">
             <Locations>
@@ -1296,11 +1280,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "463644828.607559"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "228"
-            endingLineNumber = "228"
+            startingLineNumber = "202"
+            endingLineNumber = "202"
             landmarkName = "Ratings::readObserved(string dir)"
             landmarkType = "5">
             <Locations>
@@ -1344,11 +1328,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ratings.cc"
-            timestampString = "463882762.291791"
+            timestampString = "464074771.738065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "176"
-            endingLineNumber = "176"
+            startingLineNumber = "150"
+            endingLineNumber = "150"
             landmarkName = "Ratings::readObserved(string dir)"
             landmarkType = "5">
          </BreakpointContent>
@@ -1360,11 +1344,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "main.cc"
-            timestampString = "464051006.754094"
+            timestampString = "464074370.157589"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "267"
-            endingLineNumber = "267"
+            startingLineNumber = "221"
+            endingLineNumber = "221"
             landmarkName = "main(int argc, char **argv)"
             landmarkType = "7">
          </BreakpointContent>

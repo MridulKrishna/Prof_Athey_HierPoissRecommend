@@ -17,27 +17,7 @@ Ratings::read(string s)
   fprintf(stdout, "+ reading ratings dataset from %s\n", s.c_str());
   fflush(stdout);
 
-    if (_env.mode == Env::CREATE_TRAIN_TEST_SETS) {
-        if (_env.dataset == Env::NETFLIX) {
-            for (uint32_t i = 0; i < _env.m; ++i) {
-                if (read_netflix_movie(s,i+1) < 0) {
-                    lerr("error adding movie %d\n", i);
-                    return -1;
-                }
-            }
-        } else if (_env.dataset == Env::MOVIELENS)
-            read_movielens(s);
-        else  if (_env.dataset == Env::MENDELEY)
-            read_mendeley(s);
-        else if (_env.dataset == Env::ECHONEST)
-            read_echonest(s);
-        else if (_env.dataset == Env::NYT)
-            read_nyt(s);
-    } else {
-        // Runs this line to read the file
-        read_generic_train(s);
-//        write_marginal_distributions();
-    }
+  read_generic_train(s);
     
   char st[1024];
   sprintf(st, "read %d users, %d movies, %d ratings", 
@@ -58,11 +38,8 @@ Ratings::readValidationAndTest(string dir)
   sprintf(buf, "%s/validation.tsv", _env.datfname.c_str());
   FILE *validf = fopen(buf, "r");
   assert(validf);
-  if (_env.dataset == Env::NYT)
-    read_nyt_train(validf, &_validation_map);
-  else
-    // Saves the ratings from the validation file in validation_map
-    read_generic(validf, &_validation_map);
+
+  read_generic(validf, &_validation_map);
   
   cout << "Validation size: " << _validation_map.size() << endl;
   fclose(validf);
@@ -79,11 +56,8 @@ Ratings::readValidationAndTest(string dir)
   sprintf(buf, "%s/test.tsv", _env.datfname.c_str());
   FILE *testf = fopen(buf, "r");
   assert(testf);
-  if (_env.dataset == Env::NYT)
-    read_nyt_train(testf, &_test_map);
-  else
-    // Saves the ratings from the validation file in test_map
-    read_generic(testf, &_test_map);
+
+  read_generic(testf, &_test_map);
   
   cout << "Test size: " << _test_map.size() << endl;
   fclose(testf);
@@ -240,24 +214,17 @@ Ratings::read_generic_train(string dir)
   char buf[1024];
   sprintf(buf, "%s/train.tsv", dir.c_str());
   
-  //cout << "buf" << endl;
-  //cout << buf << endl;
-  
   FILE *f = fopen(buf, "r");
   if (!f) {
-//    cout << "aqui" << endl;
         cout << buf << endl;
     fprintf(stderr, "error: cannot open file %s: %s", buf, strerror(errno));
     fclose(f);
     exit(-1);
   }
 
-  if (_env.dataset == Env::NYT) {
-    read_nyt_titles(dir);
-    read_nyt_train(f, NULL);
-  } else
-    // Sends the FILE object pointer to read_generic
-    read_generic(f, NULL);
+  // Sends the FILE object pointer to read_generic
+  read_generic(f, NULL);
+  
   fclose(f);
   Env::plog("training ratings", _nratings);
 }
@@ -282,43 +249,40 @@ Ratings::read_generic(FILE *f, CountMap *cmap)
 //  int  num = 0;
   while (!feof(f)) {
     
-    // Checks that the line has 3 numbers
-    if (fscanf(f, "%llu\t%llu\t%u\n", &uid, &mid, &rating) < 0) {
-      printf("error: unexpected lines in file\n");
-      fclose(f);
-      exit(-1);
+    if (!_env.session) {
+      // Checks that the line has 3 numbers
+      if (fscanf(f, "%llu\t%llu\t%u\n", &uid, &mid, &rating) < 0) {
+        printf("error: unexpected lines in file\n");
+        fclose(f);
+        exit(-1);
+      }
+    } else {
+      uint64_t sid = 0;
+      
+      // Checks that the line has 4 numbers
+      if (fscanf(f, "%llu\t%llu\t%llu\t%u\n", &uid, &sid, &mid, &rating) < 0) {
+        printf("error: unexpected lines in file\n");
+        fclose(f);
+        exit(-1);
+      }
     }
-    
-//    num++;
-//    cout << num << " " << uid << " " << mid << " " << rating << endl;
-   
-//    if ( uid == 2169292)
-//      cout << uid << endl;
     
     if ( cmap == NULL) {
       totRating += rating;
-//      cout << totRating << endl;
     }
     
     IDMap::iterator it = _user2seq.find(uid);
     IDMap::iterator mt = _movie2seq.find(mid);
     
-//    cout << "_curr_user_seq" << endl;
-//    cout << _curr_user_seq << endl;
-//    cout << "_env.n" << endl;
-//    cout << _env.n << endl;
-    
     // If all users and movies have been added, leave the loop
     // _curr_user_seq is the number of users added so far. Same for movies.
     if ((it == _user2seq.end() && _curr_user_seq >= _env.n) ||
         (mt == _movie2seq.end() && _curr_movie_seq >= _env.m)) {
-//      cout << "aqui" << endl;
       continue;
     }
     
     // If the rating is a zero, do nothing
     if (input_rating_class(rating) == 0) {
-//      cout << "aqui" << endl;
       continue;
     }
     
