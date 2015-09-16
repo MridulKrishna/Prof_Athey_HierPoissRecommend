@@ -86,8 +86,7 @@ void timing(high_resolution_clock::time_point tIni, high_resolution_clock::time_
 int main(int argc, char **argv) {
   signal(SIGTERM, term_handler);
   if (argc <= 1) {
-    printf("gaprec -dir <netflix-dataset-dir> -n <users>" \
-           "-m <movies> -k <dims> -label <out-dir-tag>\n");
+    printf("gaprec -dir <data-directory> -n <users>-m <items> -k <latent-factors> -uc <user-characteristics> -ic <item-characteristics> \n");
     exit(0);
   }
   

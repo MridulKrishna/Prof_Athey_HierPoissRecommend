@@ -95,7 +95,7 @@ of the evolution of the likelihood of both sets.
 Finally, the model also outputs some files that are useful to understand how the
 code runs, but which won't be necessary in the final version. They are the files
 with names like betaMeans.tsv. For each iteration, they show the mean value of
-variable across users or items.'
+variable across users or items.
 
 
 Yogurt data
@@ -142,3 +142,10 @@ greatest variable for one of the factors.
 
 highestHh.m takes the output of the model to give the users that have the greatest
 variable for one of the factors.
+
+
+Data generation
+---------------
+
+The Generation folder contains a matlab script that generates data according to the hierarchical
+data generating process.

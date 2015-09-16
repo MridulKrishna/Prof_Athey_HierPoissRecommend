@@ -32,6 +32,8 @@
 		790EE7A81BA92CAD000CE6CF /* Yogurt */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Yogurt; sourceTree = SOURCE_ROOT; };
 		790EE7A91BA939D8000CE6CF /* Test */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Test; sourceTree = SOURCE_ROOT; };
 		790EE7AA1BA93C24000CE6CF /* testFiles */ = {isa = PBXFileReference; lastKnownFileType = folder; name = testFiles; path = Test/testFiles; sourceTree = SOURCE_ROOT; };
+		790EE7AB1BA9E20B000CE6CF /* Generation */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Generation; sourceTree = SOURCE_ROOT; };
+		790EE7AC1BA9E6A0000CE6CF /* TODOsessions */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODOsessions; sourceTree = "<group>"; };
 		7973CC7E1BA8DFD4002D1FF9 /* run.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = run.sh; sourceTree = SOURCE_ROOT; };
 		7973CC7F1BA8DFD4002D1FF9 /* makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = makefile; sourceTree = SOURCE_ROOT; };
 		79CE5D4A1B70678500744AA7 /* hgaprec */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hgaprec; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +79,7 @@
 		79CE5D4C1B70678500744AA7 /* hgaprec */ = {
 			isa = PBXGroup;
 			children = (
+				790EE7AB1BA9E20B000CE6CF /* Generation */,
 				790EE7AA1BA93C24000CE6CF /* testFiles */,
 				790EE7A91BA939D8000CE6CF /* Test */,
 				790EE7A81BA92CAD000CE6CF /* Yogurt */,
@@ -94,6 +97,7 @@
 				79CE5D781B706D4B00744AA7 /* ratings.hh */,
 				790EE7A61BA8F63E000CE6CF /* Install */,
 				790EE7A71BA8F7DE000CE6CF /* Readme */,
+				790EE7AC1BA9E6A0000CE6CF /* TODOsessions */,
 			);
 			path = hgaprec;
 			sourceTree = "<group>";
