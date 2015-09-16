@@ -147,5 +147,5 @@ variable for one of the factors.
 Data generation
 ---------------
 
-The Generation folder contains a matlab script that generates data according to the hierarchical
-data generating process.
+The Generation folder contains a matlab script that generates data according to the
+hierarchical data generating process.

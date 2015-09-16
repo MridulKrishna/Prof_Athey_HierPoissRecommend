@@ -16,11 +16,11 @@ session.
     -Modify the Ratings class so that it reads the sessions data. This includes various changes:
 
         -First, define new data structures to use instead of _validation_map, _test_map, and, most
-        importantly, _users2ratings. They would now have to be three dimensional structures, that
+        importantly, _users2ratings. They would now have to be three dimensional structures that
         map (user,session,item) into the rating/number of clicks. They can be a mapping from three
         integers to an integer. Although this isn't too efficient, it won't be used in the main
         algorithm (see next bullet point). Then implement the method that reads this data
-        structure, and run it in the
+        from files into the data structure.
 
         -For efficiency purposes, there should be a method that converts the previous attributes
         to two dimensional structures that map (user,item) to the total rating/clicks for the
@@ -35,8 +35,9 @@ session.
         work fine (call it sessions). It is important to use this structure so that when updating
         the rate parameters of beta, theta, sigma, and rho the code only needs to loop through
         those user/item combinations that were available in each session and add them to the
-        prior. Then implement a new method that reads the sessions from the sessions file and
-        stores it in this new data structure.
+        prior. (A direct interpretation of the algorithm pdf would involve multiplying by zero in
+        almost all sessions). Then implement a new method that reads the sessions from the
+        sessions file and stores it in this new data structure.
 
     -Create a modified version of the vb_hier() method in hgaprec that runs the algorithm taking
     into account sessions. The main difference is in the way it updates the rate parameters, as it

@@ -343,12 +343,14 @@ GPMatrix::update_rate_next(const Array &u, const Array &scale)
   }
 }
 
+// Adds u to the nth row of this
 inline void
 GPMatrix::update_rate_next(uint32_t n, const Array &u)
 {
   _rnext.add_slice(n, u);
 }
 
+// Adds u to every row of this
 inline void
 GPMatrix::update_rate_next(const Array &u)
 {
@@ -576,16 +578,6 @@ GPMatrix::save_state(const IDMap &m, string filename) const
   _rcurr.save(filename+"/"+Env::outfile_str(rate_fname), m);
   _Ev.save(filename+"/"+Env::outfile_str(expv_fname), m);
 }
-
-// inline void
-// GPMatrix::load()
-// {
-//   string shape_fname = name() + "_shape.tsv";
-//   string rate_fname = name() + "_rate.tsv";
-//   _scurr.load(shape_fname);
-//   _rcurr.load(rate_fname);
-//   compute_expectations();
-// }
 
 inline void
 GPMatrix::load()
@@ -1074,6 +1066,7 @@ GPArray::update_shape_next(uint32_t n, double v)
   _snext[n] += v;
 }
 
+// Add v to the new shape parameter
 inline void
 GPArray::update_shape_next(double v)
 {
@@ -1081,6 +1074,7 @@ GPArray::update_shape_next(double v)
     _snext[n] += v;
 }
 
+// Adds v to _rnext
 inline void
 GPArray::update_rate_next(const Array &v)
 {
@@ -1088,6 +1082,7 @@ GPArray::update_rate_next(const Array &v)
   _rnext += v;
 }
 
+// Adds a scaled up version of v to _rnext
 inline void
 GPArray::update_rate_next(const Array &v, double scale)
 {
@@ -1119,7 +1114,6 @@ GPArray::set_to_prior_curr()
   _rcurr.set_elements(_rprior);
 }
 
-// Simpler version of initialize_exp(), for variables with fixed shape parameter
 // Sets the means of user and item attributes and the log means ( used for the vector of parameters for the multinomial distribution, phi in the paper) for the first iteration, at the computed values from previous parameters plus a small shock
 inline void
 GPArray::compute_expectations()
