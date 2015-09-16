@@ -1,0 +1,45 @@
+
+Steps in order to include sessions
+----------------------------------
+
+This file describes the next steps in order to include the availability of data, by taking into
+account the session in which users made a click/purchase, and which items were available in that
+session.
+
+    -The main function already includes a -session argument (although it only ignores the session
+    column in the train, validation, and test sets). Thus, no changes to the argument parsing
+    section are needed. Before running the main algorithm method, run the method to read the
+    session data when session==true, and run the method to convert validation, test and train sets
+    to two dimensional structures (see below). Also, run the new modified version of vb_hier()
+    when session==true.
+
+    -Modify the Ratings class so that it reads the sessions data. This includes various changes:
+
+        -First, define new data structures to use instead of _validation_map, _test_map, and, most
+        importantly, _users2ratings. They would now have to be three dimensional structures, that
+        map (user,session,item) into the rating/number of clicks. They can be a mapping from three
+        integers to an integer. Although this isn't too efficient, it won't be used in the main
+        algorithm (see next bullet point). Then implement the method that reads this data
+        structure, and run it in the
+
+        -For efficiency purposes, there should be a method that converts the previous attributes
+        to two dimensional structures that map (user,item) to the total rating/clicks for the
+        user/item combination. The reason this works is that they enter the same way in the
+        algorithm regardless of the session. The reasonable way to do this would be to store them
+        in _validation_map, _test_map, and _users2ratings. Warning: _users2ratings has to be of
+        type SparseMatrixR, which is more complicated to use than CountMap, but it is more
+        efficient. Since the main part of the algorithm uses _users2ratings, it is important to
+        use the efficient data structure.
+
+        -Create a new attribute to store the sessions data. A D1Array<vector<uint32_t> *> should
+        work fine (call it sessions). It is important to use this structure so that when updating
+        the rate parameters of beta, theta, sigma, and rho the code only needs to loop through
+        those user/item combinations that were available in each session and add them to the
+        prior. Then implement a new method that reads the sessions from the sessions file and
+        stores it in this new data structure.
+
+    -Create a modified version of the vb_hier() method in hgaprec that runs the algorithm taking
+    into account sessions. The main difference is in the way it updates the rate parameters, as it
+    only has to add those sessions that were available. Run a loop over sessions and add the
+    relevant means of the gamma random variables. In order to do this, slightly modified versions
+    of some methods in the matrix.hh file might be needed (in classes D1Array and D2Array).
