@@ -32,7 +32,7 @@ session.
         use the efficient data structure.
 
         -Create a new attribute to store the sessions data. A D1Array<vector<uint32_t> *> should
-        work fine (call it sessions). It is important to use this structure so that when updating
+        work fine (call it sessArrau). It is important to use this structure so that when updating
         the rate parameters of beta, theta, sigma, and rho the code only needs to loop through
         those user/item combinations that were available in each session and add them to the
         prior. (A direct interpretation of the algorithm pdf would involve multiplying by zero in
@@ -41,6 +41,6 @@ session.
 
     -Create a modified version of the vb_hier() method in hgaprec that runs the algorithm taking
     into account sessions. The main difference is in the way it updates the rate parameters, as it
-    only has to add those sessions that were available. Run a loop over sessions and add the
+    only has to add those sessions that were available. Run a loop over sessArray and add the
     relevant means of the gamma random variables. In order to do this, slightly modified versions
     of some methods in the matrix.hh file might be needed (in classes D1Array and D2Array).

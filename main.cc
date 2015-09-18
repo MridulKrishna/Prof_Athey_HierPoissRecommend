@@ -206,6 +206,7 @@ int main(int argc, char **argv) {
   ratings.readValidationAndTest(fname.c_str());
   ratings.readObserved(fname.c_str());
 
+  //
   if (fitpriors) {
     bp = sqrt(ap*cp*a*c/(ap-1)/(cp-1)*(k+uc+ic)*n*m/ratings.totRating);
     dp = bp;
