@@ -1,10 +1,10 @@
+%This file generates sessions data as well.
 clear all
 
 tic
 
 % Directory where files will be saved
-dir = '/Users/casta2k/Dropbox/2015_Summer/Athey/Matlab_AtheyCastillo/HPF/generatedData';
-
+dir = '/afs/.ir/users/m/r/mridulk/GSB_RA/RecommendSysHPF/PoissFactObsv3/generatedData';
 % Hyperparameters
 a = 0.3;
 c = 0.3;

@@ -193,7 +193,8 @@ public:
 
   void swap();
   void compute_expectations();
-  void sum_rows(Array &v);
+  void sum_rows(Array &v); 
+  void sum_available_rows(Array &avbl,Array &v);
   void scaled_sum_rows(Array &v, const Array &scale);
   void sum_cols(Array &v);
   void sum_cols_weight(const Array & weights,Array &v);
@@ -415,6 +416,18 @@ GPMatrix::sum_rows(Array &v)
   for (uint32_t i = 0; i < _n; ++i)
     for (uint32_t k = 0; k < _k; ++k)
       v[k] += ev[i][k];
+}
+
+//New function: sum_available_rows
+inline void
+GPMatrix::sum_available_rows(Array &avbl, Array &v)
+{
+  const double **ev = _Ev.const_data();
+  for (uint32_t i = 0; i < _n; ++i){
+    for (uint32_t k = 0; k < _k; ++k){
+      v[k] += avbl[i]*ev[i][k];
+    }
+  }
 }
 
 inline void

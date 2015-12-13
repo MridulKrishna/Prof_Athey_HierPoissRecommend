@@ -101,30 +101,31 @@ Ratings::readObserved(string dir)
     
     // Loops over the lines of the file and saves the variables
     while ( getline(infile,line)) {
-      nLines++;
-      assert(nLines <= _env.n);
-      vector<string> strs;
-      split(strs,line,is_any_of("\t"));
-      assert(size(strs)==_env.uc+1);
-      
-      // Gets the code of the user in that line
-      uint64_t uCode = stoi(strs.at(0));
-      // Checks that the user is in the list of users
-//      cout << uCode << endl;
-      assert(_user2seq.find(uCode) != _user2seq.end());
-      // Checks that this is the first line for that user
-      assert(users.insert(uCode).second);
-      uint64_t pos = _user2seq[uCode];
-      
-//      cout << uCode << " " << pos << endl;
-      
-      Array row(_env.uc,true);
+	    nLines++;
+	    assert(nLines <= _env.n);
+	    vector<string> strs;
+	    split(strs,line,is_any_of("\t"));
+	    assert(size(strs)==_env.uc+1);
 
-      // Loops over the variables in the line and saves each one in the matrix of observed characteristics
-      for ( int i = 0; i<_env.uc; i++) {
-//        _userObs.get(pos,i) = stod(strs.at(i+1));
-        _userObs.set(pos,i,stod(strs.at(i+1)));
-      }
+	    // Gets the code of the user in that line
+	    uint64_t uCode = stoi(strs.at(0));
+	    // Checks that the user is in the list of users
+	    cout << "uCode " << uCode << " " << (_user2seq.find(uCode) != _user2seq.end()) << endl;
+	    assert(_user2seq.find(uCode) != _user2seq.end());
+	    //    assert(_user2seq.find(uCode) != _user2seq.end() || !(std::cerr << "False: " << _user2seq.find(uCode) << "!=" << _user2seq.end()));
+	    // Checks that this is the first line for that user
+	    assert(users.insert(uCode).second);
+	    uint64_t pos = _user2seq[uCode];
+
+	    //      cout << uCode << " " << pos << endl;
+
+	    Array row(_env.uc,true);
+
+	    // Loops over the variables in the line and saves each one in the matrix of observed characteristics
+	    for ( int i = 0; i<_env.uc; i++) {
+		    //        _userObs.get(pos,i) = stod(strs.at(i+1));
+		    _userObs.set(pos,i,stod(strs.at(i+1)));
+	    }
     }
     assert(nLines==_env.n);
 //    _userObs.print();
@@ -172,15 +173,16 @@ Ratings::readObserved(string dir)
       // Checks that this is the first line for that user
       assert(items.insert(iCode).second);
       uint64_t pos = _movie2seq[iCode];
-      
-//      cout << iCode << " " << pos << endl;
-      
+
+      //      cout << iCode << " " << pos << endl;
+
       Array row(_env.ic,true);
-      
+
       // Loops over the variables in the line and saves each one in the matrix of observed characteristics
       for ( int i = 0; i<_env.ic; i++) {
-        _itemObs.get(pos,i) = stod(strs.at(i+1));
+	      _itemObs.get(pos,i) = stod(strs.at(i+1));
       }
+
     }
     assert(nLines==_env.m);
 //    _itemObs.print();
@@ -221,7 +223,6 @@ Ratings::read_generic_train(string dir)
     fclose(f);
     exit(-1);
   }
-
   // Sends the FILE object pointer to read_generic
   read_generic(f, NULL);
   
@@ -240,6 +241,8 @@ Ratings::read_generic(FILE *f, CountMap *cmap)
   // Integers that will store the values read from each line for the user, item, and rating (mid because of movie?)
   uint64_t mid = 0, uid = 0;
   uint32_t rating;
+  uint64_t sid = 0;
+
   
   if ( cmap == NULL) {
     totRating = 0;
@@ -256,14 +259,28 @@ Ratings::read_generic(FILE *f, CountMap *cmap)
         fclose(f);
         exit(-1);
       }
-    } else {
-      uint64_t sid = 0;
-      
+    } else {     
       // Checks that the line has 4 numbers
       if (fscanf(f, "%llu\t%llu\t%llu\t%u\n", &uid, &sid, &mid, &rating) < 0) {
         printf("error: unexpected lines in file\n");
         fclose(f);
         exit(-1);
+      }
+       Rating elem(uid,sid);
+       AvailabilityMap::iterator it2 = userSess2avblItems.find(elem); 
+      //Adding element to a map from (uid,sid)->list of available items only if it has not been done before
+      if(it2 == userSess2avblItems.end()){
+	uint32_t numItems = 0;
+	//Array of available item IDs for given uid, sid is computed. 
+	uint64_t *temporary = getAvailableItems(uid,sid,numItems);
+	D1Array<uint64_t> availableItems(numItems);
+	availableItems.copy_from(temporary);
+	userSess2avblItems[elem] = availableItems;
+	//Iterating through all available items and computing availability
+	for(uint32_t i = 0; i < numItems; ++i){
+		Rating avblElem(uid,availableItems[i]);
+		avblty[avblElem] += 1; //Here, the availability for user,item pair (currentUser, item_i) is 1 for this session.	
+	}	
       }
     }
     
@@ -278,6 +295,7 @@ Ratings::read_generic(FILE *f, CountMap *cmap)
     // _curr_user_seq is the number of users added so far. Same for movies.
     if ((it == _user2seq.end() && _curr_user_seq >= _env.n) ||
         (mt == _movie2seq.end() && _curr_movie_seq >= _env.m)) {
+      cout << "Uid = " << uid << "Mid = " << mid << endl;
       continue;
     }
     
@@ -312,16 +330,16 @@ Ratings::read_generic(FILE *f, CountMap *cmap)
         
         // Adds the new item to the user's rating
         if (_env.binary_data)
-          (*rm)[m] = 1;
+          (*rm)[m] += 1;
         else {
           assert (rating > 0);
-          (*rm)[m] = rating;
+          (*rm)[m] += rating;
         }
         
         // Adds the item to the list of items rated by the user, and the user to the list of users rating an item
         _users[n]->push_back(m);
         _movies[m]->push_back(n);
-      } else {
+       }else {
         // If cmap is not NULL, i.e., if the ratings should be saved to cmap
         debug("adding test or validation entry for user %d, item %d", n, m);
         // Creates the index for the rating of class Rating (a pair of integers)

@@ -1085,9 +1085,15 @@ HGAPRec::vb_hier_ori()
 //  _thetarate.rate_curr().print();
   
   uint32_t x = _k+_uc+_ic;
+  uint32_t max = (_n > _m)? _n : _m;
 //
   // Constructs the array for the parameters of the multinomial distribution
   Array phi(x);
+  Array availability(max);
+  // Availability array is initialized to 1. Availability function must be still coded.
+  for (uint32_t k = 0; k < max; ++k){
+	availability[k] = 1;
+  }   
   
   bool stop = false;
   
@@ -1179,16 +1185,15 @@ HGAPRec::vb_hier_ori()
     
     if (_k>0) {
       Array betarowsum(_k);
-      // Saves the sums over items of expected values for each factor ( the second part of \gamma^{rte}_{uk})
-      _hbeta.sum_rows(betarowsum);
-      
+      // Saves the sums over items of expected values for each factor ( the second part of \gamma^{rte}_{uk}) multiplied by availability of each factor
+      _hbeta.sum_available_rows(availability, betarowsum);
       // Sets the prior rate based on expectations with current parameters, i.e.,\frac{\kappa^{shp}}{\kappa^{rte}}
       _htheta.set_prior_rate(_thetarate.expected_v(),
                              _thetarate.expected_logv());
       debug("adding %s to theta rate", _thetarate.expected_v().s().c_str());
       debug("betarowsum %s", betarowsum.s().c_str());
       
-      // Adds the previous sum (betarowsum) to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
+      // Adds the previous sum (betarowsum) to \frac{\kappa^{shp}}{\kappa^{rte}} in the next rate
       _htheta.update_rate_next(betarowsum);
       // Swaps the current and the next values for the parameters
       _htheta.swap();
@@ -1231,8 +1236,8 @@ HGAPRec::vb_hier_ori()
     // If there are latent variables...
     if (_k>0) {
       Array thetarowsum(_k);
-      // Saves the sums of expected values over users for each factor (the second part of \lambda^{rte}_{ik})
-      _htheta.sum_rows(thetarowsum);
+      // Saves the sums of expected values over users for each factor (the second part of \lambda^{rte}_{ik}) times the availability of each factor.
+      _htheta.sum_available_rows(availability, thetarowsum);
       
       // Sets the prior rate based on expectations with current parameters, i.e., \frac{\tau^{shp}}{\tau^{rte}}
       _hbeta.set_prior_rate(_betarate.expected_v(),
@@ -1501,7 +1506,13 @@ HGAPRec::vb_hier()
   
   xiMeans.set(0,xiMean);
   etaMeans.set(0,etaMean);
-  
+
+//  uint32_t max = (_n > _m)? _n : _m;
+
+  // Availability array is initialized to 1. Availability function must be still coded.
+  Array availability_user(_m);
+  Array availability_item(_n);
+  bool setUserAvailability = false,setItemAvailability = false;
   //  cout << "Eta" << endl;
   //  _betarate.shape_curr().print();
   //  _betarate.rate_curr().print();
@@ -1516,70 +1527,84 @@ HGAPRec::vb_hier()
     
     while (_iter < 100) {
 
+    	    compute_likelihood(false);
+	    if (_k > 0){
+		    // Sets the prior rate based on expectations with current parameters, i.e.,\frac{\kappa^{shp}}{\kappa^{rte}}
+		    _htheta.set_prior_rate(_thetarate.expected_v(),
+				    _thetarate.expected_logv());
+		    debug("adding %s to theta rate", _thetarate.expected_v().s().c_str());
+		    debug("betarowsum %s", betarowsum.s().c_str());
+	    }
       // Loop over users
-      for (uint32_t n = 0; n < _n; ++n) {
-        //      cout << "Loop over users " << n << endl;
-        
-        // Gets the matrix of items for each user and stores it in movies
-        const vector<uint32_t> *movies = _ratings.get_movies(n);
-        
-        // Loop over each user's items
-        for (uint32_t j = 0; movies && j < movies->size(); ++j) {
-          //        cout << "Loop over items " << j <<endl;
-          // Gets the code of the movie
-          uint32_t m = (*movies)[j];
-          
-          // Get the movie rating
-          yval_t y = _ratings.r(n,m);
-          
-          // Finds phi from the current parameters of hbeta, htheta (the equation in step 1 of the algorithm in the paper)
-          get_phi(_htheta, n, _hbeta, m, phiLatents);
-          
-          // Makes phi sum up to y to get y_{ui} phi_{uik}
-          if (y > 1) {
-            phiLatents.scale(y);
-          }
+	    for (uint32_t n = 0; n < _n; ++n) {
+		    //      cout << "Loop over users " << n << endl;
 
-          _htheta.update_shape_next1(n, phiLatents);
-          _hbeta.update_shape_next1(m, phiLatents);
-          
-          //        phi.print();
-        }
-      } // End of loop over users/movies
-      
-      debug("htheta = %s", _htheta.expected_v().s().c_str());
-      debug("hbeta = %s", _hbeta.expected_v().s().c_str());
-      
-      //----------------------------------
-      // Updates for user parameters
-      //----------------------------------
-      
-      // If there are latent characteristics...
-      
-      if (_k>0) {
-        Array betarowsum(_k);
-        // Saves the sums over items of expected values for each factor ( the second part of \gamma^{rte}_{uk})
-        _hbeta.sum_rows(betarowsum);
-        
-        // Sets the prior rate based on expectations with current parameters, i.e.,\frac{\kappa^{shp}}{\kappa^{rte}}
-        _htheta.set_prior_rate(_thetarate.expected_v(),
-                               _thetarate.expected_logv());
-        debug("adding %s to theta rate", _thetarate.expected_v().s().c_str());
-        debug("betarowsum %s", betarowsum.s().c_str());
-        
-        // Adds the previous sum (betarowsum) to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
-        _htheta.update_rate_next(betarowsum);
-        // Swaps the current and the next values for the parameters
-        _htheta.swap();
-        
-        // Computes expectations and log expectations based on the new parameters
-        _htheta.compute_expectations();
-      }
-      printf("iteration %d\n", _iter);
-      
-      _iter++;
-    }
-  } // End of 100 latent variable iterations
+		    // Gets the matrix of items for each user and stores it in movies
+		    const vector<uint32_t> *movies = _ratings.get_movies(n);
+		    setUserAvailability = false;
+		    if(setUserAvailability == false){ // For each user, all available items are stored in the availability_user array
+			    for (uint32_t item = 0; item < _m; ++item){
+				    if(!_env.session){
+					    availability_user[item] = 1;
+				    }else{
+					    availability_user[item] = _ratings.getAvailability(n,item);
+				    }
+			    }
+		    }   
+		    // Loop over each user's items
+		    for (uint32_t j = 0; movies && j < movies->size(); ++j) {
+			    //        cout << "Loop over items " << j <<endl;
+			    // Gets the code of the movie
+			    uint32_t m = (*movies)[j];
+
+			    // Get the movie rating
+			    yval_t y = _ratings.r(n,m);
+
+			    // Finds phi from the current parameters of hbeta, htheta (the equation in step 1 of the algorithm in the paper)
+			    get_phi(_htheta, n, _hbeta, m, phiLatents);
+
+			    // Makes phi sum up to y to get y_{ui} phi_{uik}
+			    if (y > 1) {
+				    phiLatents.scale(y);
+			    }
+
+			    _htheta.update_shape_next1(n, phiLatents);
+			    _hbeta.update_shape_next1(m, phiLatents);
+
+			    //        phi.print();
+		    }
+		    //----------------------------------
+		    // Updates for user parameters
+		    //----------------------------------
+
+		    // If there are latent characteristics...
+
+		    if (_k>0) {
+  			    Array betarowsum(_k);
+			    if(setUserAvailability == false){ // Saves the sums over items of expected values for each factor ( the second part of \gamma^{rte}_{uk})
+				    _hbeta.sum_available_rows(availability_user,betarowsum);
+				    setUserAvailability = true;//So that the availability_user Array is only set once
+			    }
+			    // Adds the previous sum (betarowsum) to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
+			    _htheta.update_rate_next(n,betarowsum);
+		    }	
+	    } // End of loop over users/movies
+
+	    if (_k>0) {
+		    // Swaps the current and the next values for the parameters
+		    _htheta.swap();
+		    // Computes expectations and log expectations based on the new parameters
+		    _htheta.compute_expectations();
+	    }
+
+	    debug("htheta = %s", _htheta.expected_v().s().c_str());
+	    debug("hbeta = %s", _hbeta.expected_v().s().c_str());
+
+	    printf("iteration %d\n", _iter);
+
+	    _iter++;
+    }// End of 100 latent variable iterations
+  }
   
   // Runs this part of the code to run 100 iterations only with the observed variables before starting updating all other variables
   if ( _env.ofirst ) {
@@ -1588,81 +1613,99 @@ HGAPRec::vb_hier()
     
     while (_iter < 100) {
      
-      // Loop over users
-      for (uint32_t n = 0; n < _n; ++n) {
-        // Gets the matrix of items for each user and stores it in movies
-        const vector<uint32_t> *movies = _ratings.get_movies(n);
-        
-        // Loop over each user's items
-        for (uint32_t j = 0; movies && j < movies->size(); ++j) {
-          //        cout << "Loop over items " << j <<endl;
-          // Gets the code of the movie
-          //        cout << "Loop over items " << j <<endl;
-          // Gets the code of the movie
-          uint32_t m = (*movies)[j];
-          
-          // Get the movie rating
-          yval_t y = _ratings.r(n,m);
-          
-          // Finds phi from the current parameters of hsigma, and hrho (the equation in step 1 of the algorithm in the paper)
-          get_phi(n, m, _hsigma, _hrho, _thetarate, _betarate, _ic, _uc, phiObserved);
-          
-          // Makes phi sum up to y to get y_{ui} phi_{uik}
-          if (y > 1) {
-            phiObserved.scale(y);
-          }
-          
-          // Defines the subarrays of phi for user observables and item observables and updates the next shape parameter of theta and beta (gamma and kappa) by adding y_{ui} phi_{uik} to the nth row of gamma and the mth row of kappa (the first equation in steps 2 and 3 of the algorithm in the paper)
-          Array phil(_ic);
-          Array phim(_uc);
-          
-          if (_ic > 0) {
-            phil.copy_from(phiObserved.subarray(0,_ic-1));
-            _hsigma.update_shape_next1(n, phil);
-          }
-          
-          if ( _uc > 0) {
-            phim.copy_from(phiObserved.subarray(_ic,_ic+_uc-1));
-            _hrho.update_shape_next1(m, phim);
-          }
-          
-          //        phi.print();
-        }
-      } // End of loop over users/movies
-      
-      debug("htheta = %s", _htheta.expected_v().s().c_str());
-      debug("hbeta = %s", _hbeta.expected_v().s().c_str());
-      
-      //----------------------------------
-      // Updates for user parameters
-      //----------------------------------
-      
-      // If there are latent characteristics...
-      
-      if (_k>0) {
-        Array betarowsum(_k);
-        // Saves the sums over items of expected values for each factor ( the second part of \gamma^{rte}_{uk})
-        _hbeta.sum_rows(betarowsum);
-        
-        // Sets the prior rate based on expectations with current parameters, i.e.,\frac{\kappa^{shp}}{\kappa^{rte}}
-        _htheta.set_prior_rate(_thetarate.expected_v(),
-                               _thetarate.expected_logv());
-        debug("adding %s to theta rate", _thetarate.expected_v().s().c_str());
-        debug("betarowsum %s", betarowsum.s().c_str());
-        
-        // Adds the previous sum (betarowsum) to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
-        _htheta.update_rate_next(betarowsum);
-        // Swaps the current and the next values for the parameters
-        _htheta.swap();
-        
-        // Computes expectations and log expectations based on the new parameters
-        _htheta.compute_expectations();
-      }
-      printf("iteration %d\n", _iter);
-      
-      _iter++;
-    }
-  } // End of 100 latent variable iterations
+    	    compute_likelihood(false);
+	    if (_k > 0){
+		    // Sets the prior rate based on expectations with current parameters, i.e.,\frac{\kappa^{shp}}{\kappa^{rte}}
+		    _htheta.set_prior_rate(_thetarate.expected_v(),
+				    _thetarate.expected_logv());
+		    debug("adding %s to theta rate", _thetarate.expected_v().s().c_str());
+		    debug("betarowsum %s", betarowsum.s().c_str());
+	    }
+	    // Loop over users
+	    for (uint32_t n = 0; n < _n; ++n) {
+		    // Gets the matrix of items for each user and stores it in movies
+		    const vector<uint32_t> *movies = _ratings.get_movies(n);
+		    setUserAvailability = false;
+		    // For each user, all available items are stored in the availability_user array
+		    for (uint32_t item = 0; item < _m; ++item){
+			    if(!_env.session){
+				    availability_user[item] = 1;
+			    }else{
+				    availability_user[item] = _ratings.getAvailability(n,item);
+			    }
+		    }
+		       
+
+		    // Loop over each user's items
+		    for (uint32_t j = 0; movies && j < movies->size(); ++j) {
+			    //        cout << "Loop over items " << j <<endl;
+			    // Gets the code of the movie
+			    //        cout << "Loop over items " << j <<endl;
+			    // Gets the code of the movie
+			    uint32_t m = (*movies)[j];
+
+			    // Get the movie rating
+			    yval_t y = _ratings.r(n,m);
+
+			    // Finds phi from the current parameters of hsigma, and hrho (the equation in step 1 of the algorithm in the paper)
+			    get_phi(n, m, _hsigma, _hrho, _thetarate, _betarate, _ic, _uc, phiObserved);
+
+			    // Makes phi sum up to y to get y_{ui} phi_{uik}
+			    if (y > 1) {
+				    phiObserved.scale(y);
+			    }
+
+			    // Defines the subarrays of phi for user observables and item observables and updates the next shape parameter of theta and beta (gamma and kappa) by adding y_{ui} phi_{uik} to the nth row of gamma and the mth row of kappa (the first equation in steps 2 and 3 of the algorithm in the paper)
+			    Array phil(_ic);
+			    Array phim(_uc);
+
+			    if (_ic > 0) {
+				    phil.copy_from(phiObserved.subarray(0,_ic-1));
+				    _hsigma.update_shape_next1(n, phil);
+			    }
+
+			    if ( _uc > 0) {
+				    phim.copy_from(phiObserved.subarray(_ic,_ic+_uc-1));
+				    _hrho.update_shape_next1(m, phim);
+			    } 
+			    //        phi.print();
+		    }
+		    //----------------------------------
+		    // Updates for user parameters
+		    //----------------------------------
+
+		    // If there are latent characteristics...
+
+		    if (_k>0) {
+        		    Array betarowsum(_k);
+			    if(setUserAvailability == false){ // Saves the sums over items of expected values for each factor ( the second part of \gamma^{rte}_{uk})
+				    _hbeta.sum_available_rows(availability_user,betarowsum);
+				    setUserAvailability = true;//So that the availability_user Array is only set once
+			    }
+			    // betarowsum has been checked -> Correct;
+			    // Adds the previous sum (betarowsum) to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
+			    _htheta.update_rate_next(n,betarowsum);
+		    }	
+
+	    } // End of loop over users/movies
+
+	    // If there are latent characteristics...
+
+	    if (_k>0) {
+		    // Swaps the current and the next values for the parameters
+		    _htheta.swap();
+		    // Computes expectations and log expectations based on the new parameters
+		    _htheta.compute_expectations();
+	    }
+
+	    debug("htheta = %s", _htheta.expected_v().s().c_str());
+	    debug("hbeta = %s", _hbeta.expected_v().s().c_str());
+	    
+	    printf("iteration %d\n", _iter);
+
+	    _iter++;
+    } // End of 100 latent variable iterations
+  }
   
   _iter = 0;
   
@@ -1674,355 +1717,423 @@ HGAPRec::vb_hier()
   Array phi(x);
   
   while (!stop) {
-    // Stop if the max number of iterations is reached
-    if (_iter > _env.max_iterations) {
-      exit(0);
-    }
-    
-    // Loop over users
-    for (uint32_t n = 0; n < _n; ++n) {
-      //      cout << "Loop over users " << n << endl;
-      
-      // Gets the matrix of items for each user and stores it in movies
-      const vector<uint32_t> *movies = _ratings.get_movies(n);
-      
-      // Loop over each user's items
-      for (uint32_t j = 0; movies && j < movies->size(); ++j) {
-        //        cout << "Loop over items " << j <<endl;
-        // Gets the code of the movie
-        uint32_t m = (*movies)[j];
-        
-        // Get the movie rating
-        yval_t y = _ratings.r(n,m);
-        
-        // Finds phi from the current parameters of hbeta, htheta, hsigma, and hrho (the equation in step 1 of the algorithm in the paper)
-        get_phi(_htheta, n, _hbeta, m, _hsigma, _hrho, _thetarate, _betarate, _ic, _uc, phi);
-        
-        //        cout << phi.sum(0) << endl;
-        //        if (_iter < 2) {
-        //          cout << "Phi: " << endl;
-        //          phi.print();
-        //        }
-        
-        //        _phi.set_row( r, phi);
-        
-        // Makes phi sum up to y to get y_{ui} phi_{uik}
-        if (y > 1) {
-          phi.scale(y);
-        }
-        
-        
-        //        if (_iter == 0 && n == 0 && j == 1)
-        //        cout << n << " " << j << endl;
-        //          phi.print();
-        
-        //        cout << phi.sum(0) << endl;
-        //        phi.print();
-        
-        // Defines the subarrays of phi for latent variables, user observables, and item observables and updates the next shape parameter of theta and beta (gamma and kappa) by adding y_{ui} phi_{uik} to the nth row of gamma and the mth row of kappa (the first equation in steps 2 and 3 of the algorithm in the paper)
-        Array phik(_k);
-        Array phil(_ic);
-        Array phim(_uc);
-        
-        if (_k>0) {
-          phik.copy_from(phi.subarray(0,_k-1));
-          _htheta.update_shape_next1(n, phik);
-          _hbeta.update_shape_next1(m, phik);
-        }
-        
-        if (_ic > 0) {
-          phil.copy_from(phi.subarray(_k,_k+_ic-1));
-          _hsigma.update_shape_next1(n, phil);
-        }
-        
-        if ( _uc > 0) {
-          phim.copy_from(phi.subarray(_k+_ic,_k+_ic+_uc-1));
-          _hrho.update_shape_next1(m, phim);
-        }
-        
-        if (_env.bias) {
-          _thetabias.update_shape_next3(n, 0, phi[_k]);
-          _betabias.update_shape_next3(m, 0, phi[_k+1]);
-        }
-        //        phi.print();
-      }
-    } // End of loop over users/movies
-    
-    debug("htheta = %s", _htheta.expected_v().s().c_str());
-    debug("hbeta = %s", _hbeta.expected_v().s().c_str());
-    
-    //----------------------------------
-    // Updates for user parameters
-    //----------------------------------
-    
-    // If there are latent characteristics...
-    
-    if (_k>0) {
-      Array betarowsum(_k);
-      // Saves the sums over items of expected values for each factor ( the second part of \gamma^{rte}_{uk})
-      _hbeta.sum_rows(betarowsum);
-      
-      // Sets the prior rate based on expectations with current parameters, i.e.,\frac{\kappa^{shp}}{\kappa^{rte}}
-      _htheta.set_prior_rate(_thetarate.expected_v(),
-                             _thetarate.expected_logv());
-      debug("adding %s to theta rate", _thetarate.expected_v().s().c_str());
-      debug("betarowsum %s", betarowsum.s().c_str());
-      
-      // Adds the previous sum (betarowsum) to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
-      _htheta.update_rate_next(betarowsum);
-      // Swaps the current and the next values for the parameters
-      _htheta.swap();
-      
-      // Computes expectations and log expectations based on the new parameters
-      _htheta.compute_expectations();
-    }
-    
-    // If there are observed item characteristics...
-    if (_ic > 0) {
-      // Computes the sums of user characteristics (second term for \mu_{ul}^{rte}
-      Array itemSum(_ic);
-      _ratings._itemObs.weighted_colsum(_betarate.expected_inv(),itemSum);
-      //      _ratings._itemObs.colsum(itemSum);
-      
-      // Sets the prior rate based on weighted expectations with current parameters, i.e.,x_l * e/(ca) * \frac{\kappa^{shp}}{\kappa^{rte}}
-      _hsigma.set_prior_rate_scaled(_thetarate.expected_v(),_env.e/(_env.c*_env.a), _ratings._itemObsScale);
-      
-      // Adds the previous sum (itemSum) to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
-      _hsigma.update_rate_next(itemSum);
-      // Swaps the current and the next values for the parameters
-      _hsigma.swap();
-      
-      // Computes expectations and log expectations based on the new parameters
-      _hsigma.compute_expectations();
-    }
-    
-    //    cout << "Theta: " << endl;
-    //    _htheta.shape_curr().print();
-    //    _htheta.rate_curr().print();
-    //
-    //    cout << "Sigma: " << endl;
-    //    _hsigma.shape_curr().print();
-    //    _hsigma.rate_curr().print();
-    
-    //----------------------------------
-    // Updates for item parameters
-    //----------------------------------
-    
-    // If there are latent variables...
-    if (_k>0) {
-      Array thetarowsum(_k);
-      // Saves the sums of expected values over users for each factor (the second part of \lambda^{rte}_{ik})
-      _htheta.sum_rows(thetarowsum);
-      
-      // Sets the prior rate based on expectations with current parameters, i.e., \frac{\tau^{shp}}{\tau^{rte}}
-      _hbeta.set_prior_rate(_betarate.expected_v(),
-                            _betarate.expected_logv());
-      
-      // Adds the previous sum to \frac{\tau^{shp}}{\tau^{shp}} in the next rate
-      _hbeta.update_rate_next(thetarowsum);
-      // Swaps the current and the next values for the parameters
-      _hbeta.swap();
-      
-      // Computes expectations and log expectations based on the new parameters
-      _hbeta.compute_expectations();
-    }
-    
-    // If there are observed user characteristics...
-    if (_ic > 0) {
-      // Computes the sums of user characteristics (second term for \mu_{ul}^{rte}
-      Array userSum(_uc);
-      
-      //      _thetarate.shape_curr().print();
-      //      _thetarate.rate_curr().print();
-      //      _thetarate.expected_inv().print();
-      _ratings._userObs.weighted_colsum(_thetarate.expected_inv(),userSum);
-      //      _ratings._userObs.colsum(userSum);
-      
-      // Sets the prior rate based on expectations with current parameters, i.e.,\frac{\tau^{shp}}{\tau^{rte}}
-      _hrho.set_prior_rate_scaled(_betarate.expected_v(),_env.f/(_env.c*_env.a),_ratings._userObsScale);
-      
-      // Adds the previous sum to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
-      _hrho.update_rate_next(userSum);
-      // Swaps the current and the next values for the parameters
-      _hrho.swap();
-      
-      // Computes expectations and log expectations based on the new parameters
-      //      cout << "rho " << _iter << endl;
-      _hrho.compute_expectations();
-    }
-    
-    //    cout << "Beta: " << endl;
-    //    _hbeta.shape_curr().print();
-    //    _hbeta.rate_curr().print();
-    //
-    //    cout << "Rho: " << endl;
-    //    _hrho.shape_curr().print();
-    //    _hrho.rate_curr().print();
-    
-    //-------------------------------------
-    // Update the rate parameters for the popularity and activity parameters
-    //-------------------------------------
-    
-    // Adds Ka+Le to the shape parameter of xi
-    _thetarate.update_shape_next(_k*_env.a+_ic*_env.e);
-    
-    // If there are latent variables...
-    if (_k>0) {
-      Array thetacolsum(_n);
-      // Computes the second term of \kappa^{rte}_{uk})
-      _htheta.sum_cols(thetacolsum);
-      
-      // Adds the new term to the rate parameter of xi
-      _thetarate.update_rate_next(thetacolsum);
-      
-      //      thetacolsum.print();
-    }
-    
-    // With unobserved item characteristics...
-    if (_ic > 0) {
-      Array sigmacolsum(_n);
-      // Computes the third term of \kappa^{rte}_{uk})
-      _hsigma.sum_cols_weight(_ratings._itemObsScale,sigmacolsum);
-      //      _ratings._itemObsScale.print();
-      // Adds the new term to the rate parameter of xi
-      //      _thetarate.update_rate_next(sigmacolsum.scale(_env.e/(_env.c*_env.a)));
-      double scale = _env.e/(_env.c*_env.a);
-      _thetarate.update_rate_next(sigmacolsum,scale);
-      //      sigmacolsum.print();
-    }
-    
-    debug("thetacolsum = %s", thetacolsum.s().c_str());
-    
-    // Swaps the current and the next values for the parameters
-    _thetarate.swap();
-    // Computes the expectations with the (new) current values
-    _thetarate.compute_expectations();
-    
-    
-    // Adds Kc+Mf to the shape parameter of eta
-    _betarate.update_shape_next(_k*_env.c+_uc*_env.f);
-    
-    // If there are latent variables...
-    if (_k>0) {
-      
-      Array betacolsum(_m);
-      
-      // Computes the second term of \tau^{rte}_{uk})
-      _hbeta.sum_cols(betacolsum);
-      // Adds the new term to the rate parameter of eta
-      _betarate.update_rate_next(betacolsum);
-    }
-    
-    // With unobserved user characteristics...
-    if (_uc > 0) {
-      Array rhocolsum(_m);
-      // Computes the third term of \tau^{rte}_{uk})
-      _hrho.sum_cols_weight(_ratings._userObsScale,rhocolsum);
-      // Adds the new term to the rate parameter of eta
-      _betarate.update_rate_next(rhocolsum.scale(_env.f/(_env.c*_env.a)));
-    }
-    
-    debug("betacolsum = %s", betacolsum.s().c_str());
-    
-    // Swaps the current and the next values for the parameters
-    _betarate.swap();
-    // Computes the expectations with the (new) current values
-    _betarate.compute_expectations();
-    
-    //    if (_iter == 59 || _iter == 0) {
-    //      cout << "Beta shape: " << endl;
-    //      _hbeta.shape_curr().print();
-    //      cout << "Beta rate: " << endl;
-    //      _hbeta.rate_curr().print();
-    //      cout << "Theta shape: " << endl;
-    //      _htheta.shape_curr().print();
-    //      cout << "Theta rate: " << endl;
-    //      _htheta.rate_curr().print();
-    //
-    //      cout << "Eta shape: " << endl;
-    //      _betarate.shape_curr().print();
-    //      cout << "Eta rate: " << endl;
-    //      _betarate.rate_curr().print();
-    //      cout << "Xi shape: " << endl;
-    //      _thetarate.shape_curr().print();
-    //      cout << "Xi rate: " << endl;
-    //      _thetarate.rate_curr().print();
-    //    }
-    
-    printf("iteration %d\n", _iter);
-    
-    // Save the values of the new iteration to the matrices of expected values
-    Array betaMean(_k);
-    Array thetaMean(_k);
-    Array sigmaMean(_ic);
-    Array rhoMean(_uc);
-    
-    _hbeta.expected_means(betaMean);
-    _htheta.expected_means(thetaMean);
-    _hsigma.expected_means(sigmaMean);
-    _hrho.expected_means(rhoMean);
-    
-    double xiMean = _betarate.expected_mean();
-    double etaMean = _thetarate.expected_mean();
-    
-    betaMeans.set_col(_iter+1, betaMean);
-    thetaMeans.set_col(_iter+1, thetaMean);
-    sigmaMeans.set_col(_iter+1, sigmaMean);
-    rhoMeans.set_col(_iter+1, rhoMean);
-    
-    xiMeans.set(_iter+1,xiMean);
-    etaMeans.set(_iter+1,etaMean);
-    
-    //    _betarate.expected_v().print();
-    //    _thetarate.expected_v().print();
-    
-    fflush(stdout);
-    if (_iter % _env.reportfreq == 0) {
-      
-      compute_likelihood(false);
-      stop = compute_likelihood(true);
-      //compute_rmse();
-      save_model();
-      // Computes and saves number of relevant recommendations among best ranked items
-      compute_precision(false);
-      // Computes and saves average ranking of items in test set
-      compute_itemrank(false);
-      //gen_ranking_for_users(false);
-      if (_env.logl)
-        logl();
-      
-      string nameBeta = string("/betaMeans.tsv");
-      string nameTheta = string("/thetaMeans.tsv");
-      string nameSigma = string("/sigmaMeans.tsv");
-      string nameRho = string("/rhoMeans.tsv");
-      string nameXi = string("/xiMeans.tsv");
-      string nameEta = string("/etaMeans.tsv");
-      
-      betaMeans.save(_env.outfname+"/"+Env::outfile_str(nameBeta));
-      thetaMeans.save(_env.outfname+"/"+Env::outfile_str(nameTheta));
-      sigmaMeans.save(_env.outfname+"/"+Env::outfile_str(nameSigma));
-      rhoMeans.save(_env.outfname+"/"+Env::outfile_str(nameRho));
-      
-      xiMeans.save(_env.outfname+"/"+Env::outfile_str(nameXi));
-      etaMeans.save(_env.outfname+"/"+Env::outfile_str(nameEta));
-    }
-    
-    if (stop) {
-      do_on_stop();
-      //      _thetarate.expected_inv().print();
-    } else {
-      // Saves the matrices in files
-      if (_env.save_state_now) {
-        lerr("Saving state at iteration %d duration %d secs", _iter, duration());
-        do_on_stop();
-      }
-      _iter++;
-      
-    }
-    //    if ( _iter == 55) {
-    //      _betarate.shape_curr().print();
-    //      _betarate.rate_curr().print();
-    //    }
+	  setUserAvailability = false;
+	  setItemAvailability = false;
+	  // Stop if the max number of iterations is reached
+	  if (_iter > _env.max_iterations) {
+		  exit(0);
+	  }
+	  
+	  if (_k > 0){
+		  // Sets the prior rate based on expectations with current parameters, i.e., \frac{\tau^{shp}}{\tau^{rte}}
+		  _hbeta.set_prior_rate(_betarate.expected_v(),
+				  _betarate.expected_logv());
+//		  Array temp1(_betarate.expected_v());
+//		  Array temp2(_betarate.expected_logv());
+//		  cout << "Check Prior Beta: " << temp1.mean() << " " << temp2.mean() << endl; 
+		  // Sets the prior rate based on expectations with current parameters, i.e.,\frac{\kappa^{shp}}{\kappa^{rte}}
+		  _htheta.set_prior_rate(_thetarate.expected_v(),
+				  _thetarate.expected_logv()); 
+//		  Array temp3(_thetarate.expected_v());
+//		  Array temp4(_thetarate.expected_logv());
+//		  cout << "Check Prior Theta: " << temp3.mean() << " " << temp4.mean() << endl; 
+		  debug("adding %s to theta rate", _thetarate.expected_v().s().c_str());
+		  debug("betarowsum %s", betarowsum.s().c_str());
+	  }
+	  // Loop over users
+	  for (uint32_t n = 0; n < _n; ++n) {
+		  // Gets the matrix of items for each user and stores it in movies
+		  const vector<uint32_t> *movies = _ratings.get_movies(n);
+		  setUserAvailability = false;
+		  // For each user, all available items are stored in the availability_user array
+		  for (uint32_t item = 0; item < _m; ++item){
+			  if(!_env.session){
+				  availability_user[item] = 1;
+			  }else{
+				  availability_user[item] = _ratings.getAvailability(n,item);
+			  }
+		  }    
+		  // Loop over each user's items
+		  for (uint32_t j = 0; movies && j < movies->size(); ++j) {
+			  //        cout << "Loop over items " << j <<endl;
+			  // Gets the code of the movie
+			  uint32_t m = (*movies)[j];
+
+			  // Get the movie rating
+			  yval_t y = _ratings.r(n,m);
+
+			  // Finds phi from the current parameters of hbeta, htheta, hsigma, and hrho (the equation in step 1 of the algorithm in the paper)
+			  get_phi(_htheta, n, _hbeta, m, _hsigma, _hrho, _thetarate, _betarate, _ic, _uc, phi);
+
+			  //        cout << phi.sum(0) << endl;
+			  //        if (_iter < 2) {
+			  //          cout << "Phi: " << endl;
+			  //          phi.print();
+			  //        }
+
+			  //        _phi.set_row( r, phi);
+
+			  // Makes phi sum up to y to get y_{ui} phi_{uik}
+			  if (y > 1) {
+				  phi.scale(y);
+			  }
+
+
+			  //        if (_iter == 0 && n == 0 && j == 1)
+			  //        cout << n << " " << j << endl;
+			  //          phi.print();
+
+			  //        cout << phi.sum(0) << endl;
+			  //        phi.print();
+
+			  // Defines the subarrays of phi for latent variables, user observables, and item observables and updates the next shape parameter of theta and beta (gamma and kappa) by adding y_{ui} phi_{uik} to the nth row of gamma and the mth row of kappa (the first equation in steps 2 and 3 of the algorithm in the paper)
+			  Array phik(_k);
+			  Array phil(_ic);
+			  Array phim(_uc);
+			  // For each item, all users for which this item was available are stored in the availability_item array
+/*			  if(n == 100){
+				  for (uint32_t user = 0; user < _n; ++user){
+					  if(!_env.session){
+						  availability_item[user] = 1;
+					  }else{
+						  availability_item[user] = _ratings.getAvailability(user,m);
+					  }
+				  }
+			  }*/
+
+			  if (_k>0) {
+				  phik.copy_from(phi.subarray(0,_k-1));
+				  _htheta.update_shape_next1(n, phik);
+				  _hbeta.update_shape_next1(m, phik);  
+			  }
+
+			  if (_ic > 0) {
+				  phil.copy_from(phi.subarray(_k,_k+_ic-1));
+				  _hsigma.update_shape_next1(n, phil);
+			  }
+
+			  if ( _uc > 0) {
+				  phim.copy_from(phi.subarray(_k+_ic,_k+_ic+_uc-1));
+				  _hrho.update_shape_next1(m, phim);
+			  }
+
+			  if (_env.bias) {
+				  _thetabias.update_shape_next3(n, 0, phi[_k]);
+				  _betabias.update_shape_next3(m, 0, phi[_k+1]);
+			  }
+			  
+/*			  if(_k > 0){
+				  //----------------------------------
+				  // Updates for item parameters
+				  //----------------------------------
+
+				  // If there are latent variables...
+  				  Array thetarowsum(_k);
+				  if(setItemAvailability == false){
+					  // Saves the sums of expected values over users for each factor (the second part of \lambda^{rte}_{ik})
+					  _htheta.sum_available_rows(availability_item,thetarowsum);
+				  }
+				  // Adds the previous sum to \frac{\tau^{shp}}{\tau^{shp}} in the next rate
+			  	  cout << "ThetaRowMean " << thetarowsum.mean() << " item = " << m << endl;
+				  _hbeta.update_rate_next(m,thetarowsum);
+			  }*/
+		  }//End of Loop over movies
+
+		  //----------------------------------
+		  // Updates for user parameters
+		  //----------------------------------
+
+		  // If there are latent characteristics...
+
+		  if (_k > 0) {
+			  Array betarowsum(_k);
+			  if(setUserAvailability == false){ // Saves the sums over items of expected values for each factor ( the second part of \gamma^{rte}_{uk})
+				  _hbeta.sum_available_rows(availability_user,betarowsum);
+
+				  setUserAvailability = true;//So that the availability_user Array is only set once
+			  }
+			  // Adds the previous sum (betarowsum) to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
+			  if(n == 0){
+//			  	cout << "BetaRowMean " << betarowsum.mean() << endl;
+			  }
+			  _htheta.update_rate_next(n,betarowsum);
+		  }	
+	  } // End of loop over users/movies
+
+	  debug("htheta = %s", _htheta.expected_v().s().c_str());
+	  debug("hbeta = %s", _hbeta.expected_v().s().c_str());
+
+	  //----------------------------------
+	  // Swapping current and next user and item parameters
+	  //----------------------------------
+
+	  // If there are latent characteristics...
+
+	  if (_k > 0) {
+		  // Swaps the current and the next values for the parameters
+		  _htheta.swap();
+		  // Computes expectations and log expectations based on the new parameters
+		  _htheta.compute_expectations();
+	  }
+	  
+	  // If there are observed item characteristics...
+	  if (_ic > 0) {
+		  // Computes the sums of user characteristics (second term for \mu_{ul}^{rte}
+		  Array itemSum(_ic);
+		  _ratings._itemObs.weighted_colsum(_betarate.expected_inv(),itemSum);
+		  //      _ratings._itemObs.colsum(itemSum);
+
+		  // Sets the prior rate based on weighted expectations with current parameters, i.e.,x_l * e/(ca) * \frac{\kappa^{shp}}{\kappa^{rte}}
+		  _hsigma.set_prior_rate_scaled(_thetarate.expected_v(),_env.e/(_env.c*_env.a), _ratings._itemObsScale);
+
+		  // Adds the previous sum (itemSum) to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
+		  _hsigma.update_rate_next(itemSum);
+		  // Swaps the current and the next values for the parameters
+		  _hsigma.swap();
+
+		  // Computes expectations and log expectations based on the new parameters
+		  _hsigma.compute_expectations();
+	  }
+
+	  //    cout << "Theta: " << endl;
+	  //    _htheta.shape_curr().print();
+	  //    _htheta.rate_curr().print();
+	  //
+	  //    cout << "Sigma: " << endl;
+	  //    _hsigma.shape_curr().print();
+	  //    _hsigma.rate_curr().print();
+
+	  //----------------------------------
+	  // Updates for item parameters
+	  //----------------------------------
+
+	  // Second Loop over items/users for updating item parameters
+	  for(uint32_t m = 0; m < _m; ++m){
+	          // For each item, all users for which this item was available are set to 1 in the availability_item array
+		  for (uint32_t user = 0; user < _n; ++user){
+			  if(!_env.session){
+				  availability_item[user] = 1;
+			  }else{
+				  availability_item[user] = _ratings.getAvailability(user,m);
+			  }
+		  }
+		  // If there are latent variables...
+		  if(_k > 0){
+			  Array thetarowsum(_k);
+			  // Saves the sums of expected values over users for each factor (the second part of \lambda^{rte}_{ik})
+			  _htheta.sum_available_rows(availability_item,thetarowsum);
+			  // Adds the previous sum to \frac{\tau^{shp}}{\tau^{shp}} in the next rate
+			  if( m == 0){
+			  	cout << "ThetaRowMean " << thetarowsum.mean() << " item = " << m << endl;
+			  }
+			  _hbeta.update_rate_next(m,thetarowsum);
+		  } 
+	  }//End of second loop over items/users
+
+	  // If there are latent variables...
+	  if (_k>0) {
+		  // Swaps the current and the next values for the parameters
+		  _hbeta.swap(); 
+		  // Computes expectations and log expectations based on the new parameters
+		  _hbeta.compute_expectations();
+	  }
+
+	  // If there are observed user characteristics...
+	  if (_ic > 0) {
+		  // Computes the sums of user characteristics (second term for \mu_{ul}^{rte}
+		  Array userSum(_uc);
+
+		  //      _thetarate.shape_curr().print();
+		  //      _thetarate.rate_curr().print();
+		  //      _thetarate.expected_inv().print();
+		  _ratings._userObs.weighted_colsum(_thetarate.expected_inv(),userSum);
+		  //      _ratings._userObs.colsum(userSum);
+
+		  // Sets the prior rate based on expectations with current parameters, i.e.,\frac{\tau^{shp}}{\tau^{rte}}
+		  _hrho.set_prior_rate_scaled(_betarate.expected_v(),_env.f/(_env.c*_env.a),_ratings._userObsScale);
+
+		  // Adds the previous sum to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
+		  _hrho.update_rate_next(userSum);
+		  // Swaps the current and the next values for the parameters
+		  _hrho.swap();
+
+		  // Computes expectations and log expectations based on the new parameters
+		  //      cout << "rho " << _iter << endl;
+		  _hrho.compute_expectations();
+	  }
+
+	  //    cout << "Beta: " << endl;
+	  //    _hbeta.shape_curr().print();
+	  //    _hbeta.rate_curr().print();
+	  //
+	  //    cout << "Rho: " << endl;
+	  //    _hrho.shape_curr().print();
+	  //    _hrho.rate_curr().print();
+
+	  //-------------------------------------
+	  // Update the rate parameters for the popularity and activity parameters
+	  //-------------------------------------
+
+	  // Adds Ka+Le to the shape parameter of xi
+	  _thetarate.update_shape_next(_k*_env.a+_ic*_env.e);
+
+	  // If there are latent variables...
+	  if (_k>0) {
+		  Array thetacolsum(_n);
+		  // Computes the second term of \kappa^{rte}_{uk})
+		  _htheta.sum_cols(thetacolsum);
+
+		  // Adds the new term to the rate parameter of xi
+		  _thetarate.update_rate_next(thetacolsum);
+
+		  //      thetacolsum.print();
+	  }
+
+	  // With unobserved item characteristics...
+	  if (_ic > 0) {
+		  Array sigmacolsum(_n);
+		  // Computes the third term of \kappa^{rte}_{uk})
+		  _hsigma.sum_cols_weight(_ratings._itemObsScale,sigmacolsum);
+		  //      _ratings._itemObsScale.print();
+		  // Adds the new term to the rate parameter of xi
+		  //      _thetarate.update_rate_next(sigmacolsum.scale(_env.e/(_env.c*_env.a)));
+		  double scale = _env.e/(_env.c*_env.a);
+		  _thetarate.update_rate_next(sigmacolsum,scale);
+		  //      sigmacolsum.print();
+	  }
+
+	  debug("thetacolsum = %s", thetacolsum.s().c_str());
+
+	  // Swaps the current and the next values for the parameters
+	  _thetarate.swap();
+	  // Computes the expectations with the (new) current values
+	  _thetarate.compute_expectations();
+
+
+	  // Adds Kc+Mf to the shape parameter of eta
+	  _betarate.update_shape_next(_k*_env.c+_uc*_env.f);
+
+	  // If there are latent variables...
+	  if (_k>0) {
+
+		  Array betacolsum(_m);
+
+		  // Computes the second term of \tau^{rte}_{uk})
+		  _hbeta.sum_cols(betacolsum);
+		  // Adds the new term to the rate parameter of eta
+		  _betarate.update_rate_next(betacolsum);
+	  }
+
+	  // With unobserved user characteristics...
+	  if (_uc > 0) {
+		  Array rhocolsum(_m);
+		  // Computes the third term of \tau^{rte}_{uk})
+		  _hrho.sum_cols_weight(_ratings._userObsScale,rhocolsum);
+		  // Adds the new term to the rate parameter of eta
+		  _betarate.update_rate_next(rhocolsum.scale(_env.f/(_env.c*_env.a)));
+	  }
+
+	  debug("betacolsum = %s", betacolsum.s().c_str());
+
+	  // Swaps the current and the next values for the parameters
+	  _betarate.swap();
+	  // Computes the expectations with the (new) current values
+	  _betarate.compute_expectations();
+
+	  //    if (_iter == 59 || _iter == 0) {
+	  //      cout << "Beta shape: " << endl;
+	  //      _hbeta.shape_curr().print();
+	  //      cout << "Beta rate: " << endl;
+	  //      _hbeta.rate_curr().print();
+	  //      cout << "Theta shape: " << endl;
+	  //      _htheta.shape_curr().print();
+	  //      cout << "Theta rate: " << endl;
+	  //      _htheta.rate_curr().print();
+	  //
+	  //      cout << "Eta shape: " << endl;
+	  //      _betarate.shape_curr().print();
+	  //      cout << "Eta rate: " << endl;
+	  //      _betarate.rate_curr().print();
+	  //      cout << "Xi shape: " << endl;
+	  //      _thetarate.shape_curr().print();
+	  //      cout << "Xi rate: " << endl;
+	  //      _thetarate.rate_curr().print();
+	  //    }
+
+	  printf("iteration %d\n", _iter);
+
+	  // Save the values of the new iteration to the matrices of expected values
+	  Array betaMean(_k);
+	  Array thetaMean(_k);
+	  Array sigmaMean(_ic);
+	  Array rhoMean(_uc);
+
+	  _hbeta.expected_means(betaMean);
+	  _htheta.expected_means(thetaMean);
+	  _hsigma.expected_means(sigmaMean);
+	  _hrho.expected_means(rhoMean);
+
+	  double xiMean = _betarate.expected_mean();
+	  double etaMean = _thetarate.expected_mean();
+
+	  betaMeans.set_col(_iter+1, betaMean);
+	  thetaMeans.set_col(_iter+1, thetaMean);
+	  sigmaMeans.set_col(_iter+1, sigmaMean);
+	  rhoMeans.set_col(_iter+1, rhoMean);
+
+	  xiMeans.set(_iter+1,xiMean);
+	  etaMeans.set(_iter+1,etaMean);
+
+	  //    _betarate.expected_v().print();
+	  //    _thetarate.expected_v().print();
+
+	  fflush(stdout);
+	  if (_iter % _env.reportfreq == 0) {
+
+		  compute_likelihood(false);
+		  stop = compute_likelihood(true);
+		  //compute_rmse();
+		  save_model();
+		  // Computes and saves number of relevant recommendations among best ranked items
+		  compute_precision(false);
+		  // Computes and saves average ranking of items in test set
+		  compute_itemrank(false);
+		  //gen_ranking_for_users(false);
+		  if (_env.logl)
+			  logl();
+
+		  string nameBeta = string("/betaMeans.tsv");
+		  string nameTheta = string("/thetaMeans.tsv");
+		  string nameSigma = string("/sigmaMeans.tsv");
+		  string nameRho = string("/rhoMeans.tsv");
+		  string nameXi = string("/xiMeans.tsv");
+		  string nameEta = string("/etaMeans.tsv");
+
+		  betaMeans.save(_env.outfname+"/"+Env::outfile_str(nameBeta));
+		  thetaMeans.save(_env.outfname+"/"+Env::outfile_str(nameTheta));
+		  sigmaMeans.save(_env.outfname+"/"+Env::outfile_str(nameSigma));
+		  rhoMeans.save(_env.outfname+"/"+Env::outfile_str(nameRho));
+
+		  xiMeans.save(_env.outfname+"/"+Env::outfile_str(nameXi));
+		  etaMeans.save(_env.outfname+"/"+Env::outfile_str(nameEta));
+	  }
+
+	  if (stop) {
+		  do_on_stop();
+		  //      _thetarate.expected_inv().print();
+	  } else {
+		  // Saves the matrices in files
+		  if (_env.save_state_now) {
+			  lerr("Saving state at iteration %d duration %d secs", _iter, duration());
+			  do_on_stop();
+		  }
+		  _iter++;
+
+	  }
+	  //    if ( _iter == 55) {
+	  //      _betarate.shape_curr().print();
+	  //      _betarate.rate_curr().print();
+	  //    }
   }
 }
 
@@ -2139,6 +2250,7 @@ HGAPRec::compute_likelihood(bool validationLikelihood)
         stop = true;
       }
     }
+    cout << "Done\n";
     // Store average log likelihood in _prev_h (previous likelihood)
     _prev_h = a;
     string name = _env.outfname+"/"+_env.prefix +"/max.txt";

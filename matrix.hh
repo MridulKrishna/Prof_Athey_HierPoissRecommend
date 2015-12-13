@@ -674,7 +674,6 @@ D1Array<KV>::max(uint32_t &idx) const
 template<class T> inline T &
 D1Array<T>::operator[](uint32_t p)
 {
-//    cout << p << " " << _n << endl;
     assert (p < _n);
     return _data[p];
 }

@@ -322,6 +322,7 @@ fitpriors(nFitpriors)
   
   if ( out != 0 ) {
     cout << "+ Creating directory " << outfname << "/" << prefix << endl;
+    cout << "HI 1 2 3 ... " << (outfname+"/"+prefix).c_str() << " " << endl;
     assert(!mkdir((outfname+"/"+prefix).c_str(), S_IRUSR | S_IWUSR | S_IXUSR));
   }
   
@@ -335,7 +336,8 @@ fitpriors(nFitpriors)
     printf("cannot open param file:%s\n",  strerror(errno));
     exit(-1);
   }
-  
+  hier = true; //To compute log-likelihood for the HPF algorithm
+ 
   plog("n", n);
   plog("k", k);
   plog("t", t);

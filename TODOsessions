@@ -32,7 +32,7 @@ session.
         use the efficient data structure.
 
         -Create a new attribute to store the sessions data. A D1Array<vector<uint32_t> *> should
-        work fine (call it sessArrau). It is important to use this structure so that when updating
+        work fine (call it sessArray). It is important to use this structure so that when updating
         the rate parameters of beta, theta, sigma, and rho the code only needs to loop through
         those user/item combinations that were available in each session and add them to the
         prior. (A direct interpretation of the algorithm pdf would involve multiplying by zero in

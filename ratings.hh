@@ -17,9 +17,11 @@
 
 using namespace std;
 
+typedef std::map<Rating, D1Array<uint64_t>> AvailabilityMap;
+
 class Ratings {
 public:
-  Ratings(Env &env):
+  Ratings(Env &env, uint64_t* (*fptr) (uint64_t, uint64_t, uint32_t &)):
     _users2rating(env.n),
     _users(env.n),
     _movies(env.m),
@@ -32,7 +34,9 @@ public:
     _curr_movie_seq(0),
     _nratings(0),
     _likes(0),
-    _offset(env.offset){ }
+    _offset(env.offset){
+	getAvailableItems = fptr;
+    }
   ~Ratings() { }
 
   int read(string s);
@@ -76,6 +80,12 @@ public:
   int read_netflix_movie(string dir, uint32_t movie);
   int read_netflix_metadata(string dir);
   int read_movielens_metadata(string dir);
+  double getAvailability(uint32_t user, uint32_t item){ //Returns value stored in avblty[(user,item)]
+	uint64_t uid = _seq2user[user];
+	uint64_t itemid = _seq2movie[item];
+	Rating elem(uid, itemid);
+	return avblty[elem];
+  }
 
   FreqMap validation_users_of_movie();
   IDMap leave_one_out();
@@ -92,6 +102,7 @@ public:
   uint32_t totRating;
   
 private:
+  uint64_t* (*getAvailableItems) (uint64_t uid, uint64_t sid, uint32_t &numItems);
   void read_generic_train(string dir);
   int read_movielens(string dir);
   int read_mendeley(string dir);
@@ -126,6 +137,8 @@ private:
   
   FreqMap _validation_users_of_movie;
   IDMap _leave_one_out;
+  AvailabilityMap userSess2avblItems;
+  ValueMap avblty; // This measure maps Rating class (std::pair of user and item) to total availability over all sessions
 };
 
 inline uint32_t
@@ -146,6 +159,7 @@ Ratings::add_user(uint64_t id)
 {
   if (_curr_user_seq >= _env.n) {
     debug("max users %d reached", _env.n);
+    cout << "max users reached" << id << endl; 
     return false;
   }
     

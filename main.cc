@@ -8,6 +8,7 @@
 #include <sstream>
 #include <signal.h>
 #include <iostream>
+#include <fstream>
 #include <chrono>
 
 using namespace std::chrono;
@@ -81,6 +82,17 @@ high_resolution_clock::time_point now() {
 void timing(high_resolution_clock::time_point tIni, high_resolution_clock::time_point tFin) {
   duration<double> time_span = duration_cast<duration<double> >(tFin - tIni);
   cout << time_span.count() << endl;
+}
+
+//Sample function to be passed as input to Ratings class: This will actually be done externally by the user and is likely to be changed
+uint64_t* getAvailableItems(uint64_t uid, uint64_t sid, uint32_t &numItems){
+	numItems = 273;
+	uint64_t* items = new uint64_t [numItems];
+	ifstream infile("/afs/.ir/users/m/r/mridulk/GSB_RA/RecommendSysHPF/PoissFactObsv5/Yogurt/observables/session_sameData/train_itemIDs.tsv");
+	for (int i = 0; i < numItems; ++i){
+		infile >> items[i];
+	}
+ return items;
 }
 
 int main(int argc, char **argv) {
@@ -186,7 +198,7 @@ int main(int argc, char **argv) {
     }
     ++i;
   };
-  
+ 
   if ( outfname.compare("") == 0 ) {
     outfname = fname;
   }
@@ -194,16 +206,18 @@ int main(int argc, char **argv) {
   // Initializes the environment: variables to run the code
   Env env(n, m, k, uc, ic, fname, outfname, rfreq, rand_seed, max_iterations, a, ap, bp, c, cp, dp, e, f, offset, scale, scaleFactor, lfirst, ofirst, session, fitpriors);
   env_global = &env;
-  
+ 
   // Reads the input files
-  Ratings ratings(env);
+  Ratings ratings(env, &getAvailableItems);
   if (ratings.read(fname.c_str()) < 0) {
     fprintf(stderr, "error reading dataset from dir %s; quitting\n",
             fname.c_str());
     return -1;
   }
 
+  cout << "Validation and Test" << endl; 
   ratings.readValidationAndTest(fname.c_str());
+  cout << "Observed" << endl; 
   ratings.readObserved(fname.c_str());
 
   //
@@ -227,6 +241,7 @@ int main(int argc, char **argv) {
   
   cout << "Running vb_hier()" << endl;
   hgaprec.vb_hier();
+  cout << "Finally Done!\n";
   
   moment t2 = now();
   

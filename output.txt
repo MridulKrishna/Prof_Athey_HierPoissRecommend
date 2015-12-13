@@ -1,0 +1,1009 @@
++ dir = /afs/.ir/users/m/r/mridulk/GSB_RA/RecommendSysHPF/PoissFactObs/Yogurt/observables/
++ output dir = /afs/.ir/users/m/r/mridulk/GSB_RA/RecommendSysHPF/PoissFactObsv5/Yogurt/observables/outputb
++ n = 2599
++ m = 275
++ k = 25
++ uc = 36
++ ic = 50
++ Creating directory n2599-m275-k25-uc36-ic50-ofirst
++ writing log to n2599-m275-k25-uc36-ic50-ofirst/infer.log
++ reading ratings dataset from /afs/.ir/users/m/r/mridulk/GSB_RA/RecommendSysHPF/PoissFactObs/Yogurt/observables/
+Validation size: 4000
+Test size: 7998
++ loaded validation and test sets from /afs/.ir/users/m/r/mridulk/GSB_RA/RecommendSysHPF/PoissFactObs/Yogurt/observables/
++ reading observed characteristics from /afs/.ir/users/m/r/mridulk/GSB_RA/RecommendSysHPF/PoissFactObs/Yogurt/observables/
+Constructing hgaprec
+/afs/.ir/users/m/r/mridulk/GSB_RA/RecommendSysHPF/PoissFactObsv5/Yogurt/observables/outputb/n2599-m275-k25-uc36-ic50-ofirst/logl.txt
+Running vb_hier()
+Initialized
+Log-likelihood: (total,number,average)
+Test: -1864527.651      7998    -233.1242375
+iteration 0
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 1
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 2
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 3
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 4
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 5
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 6
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 7
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 8
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 9
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 10
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 11
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 12
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 13
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 14
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 15
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 16
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 17
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 18
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 19
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 20
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 21
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 22
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 23
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 24
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 25
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 26
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 27
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 28
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 29
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 30
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 31
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 32
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 33
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 34
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 35
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 36
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 37
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 38
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 39
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 40
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 41
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 42
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 43
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 44
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 45
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 46
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 47
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 48
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 49
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 50
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 51
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 52
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 53
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 54
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 55
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 56
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 57
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 58
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 59
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 60
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 61
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 62
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 63
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 64
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 65
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 66
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 67
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 68
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 69
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 70
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 71
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 72
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 73
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 74
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 75
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 76
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 77
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 78
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 79
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 80
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 81
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 82
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 83
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 84
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 85
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 86
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 87
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 88
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 89
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 90
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 91
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 92
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 93
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 94
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 95
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 96
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 97
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 98
+Log-likelihood: (total,number,average)
+Test: -1669699.887      7998    -208.764677
+iteration 99
+Check Prior Beta: 0.300152235 -1.572490527
+Check Prior Theta: 0.2999191938 -1.573265847
+ThetaRowMean 2.831838827 item = 0
+ThetaRowMean 2.831838827 item = 1
+ThetaRowMean 2.831838827 item = 2
+BetaRowMean 275.0336952
+iteration 0
+Log-likelihood: (total,number,average)
+Test: -47027.34351      7998    -5.879887911
+Validation: -21499.89656        4000    -5.374974141
+Done
+Check Prior Beta: 0.6216112964 -0.5045572855
+Check Prior Theta: 3.480020466 1.158941966
+ThetaRowMean 2.832473501 item = 0
+ThetaRowMean 2.832473501 item = 1
+ThetaRowMean 2.832473501 item = 2
+BetaRowMean 275
+iteration 1
+Check Prior Beta: 0.6546896735 -0.4491725668
+Check Prior Theta: 4.470697532 1.474445727
+ThetaRowMean 2.800563791 item = 0
+ThetaRowMean 2.800563791 item = 1
+ThetaRowMean 2.800563791 item = 2
+BetaRowMean 275
+iteration 2
+Check Prior Beta: 0.6540908088 -0.4502025617
+Check Prior Theta: 4.454538641 1.470470722
+ThetaRowMean 2.799032604 item = 0
+ThetaRowMean 2.799032604 item = 1
+ThetaRowMean 2.799032604 item = 2
+BetaRowMean 275
+iteration 3
+Check Prior Beta: 0.6540906207 -0.4502569117
+Check Prior Theta: 4.4552755 1.470631707
+ThetaRowMean 2.7983156 item = 0
+ThetaRowMean 2.7983156 item = 1
+ThetaRowMean 2.7983156 item = 2
+BetaRowMean 275
+iteration 4
+Check Prior Beta: 0.6540589912 -0.4503369306
+Check Prior Theta: 4.455690269 1.470722915
+ThetaRowMean 2.798092124 item = 0
+ThetaRowMean 2.798092124 item = 1
+ThetaRowMean 2.798092124 item = 2
+BetaRowMean 275
+iteration 5
+Check Prior Beta: 0.6540196642 -0.4504172248
+Check Prior Theta: 4.456059553 1.470806243
+ThetaRowMean 2.797929692 item = 0
+ThetaRowMean 2.797929692 item = 1
+ThetaRowMean 2.797929692 item = 2
+BetaRowMean 275
+iteration 6
+Check Prior Beta: 0.6539781199 -0.4504949104
+Check Prior Theta: 4.456390408 1.47088206
+ThetaRowMean 2.797815889 item = 0
+ThetaRowMean 2.797815889 item = 1
+ThetaRowMean 2.797815889 item = 2
+BetaRowMean 275
+iteration 7
+Check Prior Beta: 0.6539378369 -0.4505671689
+Check Prior Theta: 4.456685519 1.470950335
+ThetaRowMean 2.797734893 item = 0
+ThetaRowMean 2.797734893 item = 1
+ThetaRowMean 2.797734893 item = 2
+BetaRowMean 275
+iteration 8
+Check Prior Beta: 0.6539005848 -0.4506325302
+Check Prior Theta: 4.456946264 1.471011012
+ThetaRowMean 2.79767592 item = 0
+ThetaRowMean 2.79767592 item = 1
+ThetaRowMean 2.79767592 item = 2
+BetaRowMean 275
+iteration 9
+Check Prior Beta: 0.653867018 -0.4506906707
+Check Prior Theta: 4.457174973 1.471064427
+ThetaRowMean 2.797631922 item = 0
+ThetaRowMean 2.797631922 item = 1
+ThetaRowMean 2.797631922 item = 2
+BetaRowMean 275
+iteration 10
+Log-likelihood: (total,number,average)
+Test: -60942.41927      7998    -7.619707336
+Validation: -28309.83539        4000    -7.077458847
+Done
+Check Prior Beta: 0.6538371706 -0.4507419458
+Check Prior Theta: 4.457374854 1.471111216
+ThetaRowMean 2.797598111 item = 0
+ThetaRowMean 2.797598111 item = 1
+ThetaRowMean 2.797598111 item = 2
+BetaRowMean 275
+iteration 11
+Check Prior Beta: 0.6538107131 -0.4507871301
+Check Prior Theta: 4.457549829 1.471152234
+ThetaRowMean 2.797571283 item = 0
+ThetaRowMean 2.797571283 item = 1
+ThetaRowMean 2.797571283 item = 2
+BetaRowMean 275
+iteration 12
+Check Prior Beta: 0.6537871611 -0.4508271597
+Check Prior Theta: 4.457704032 1.471188414
+ThetaRowMean 2.797549405 item = 0
+ThetaRowMean 2.797549405 item = 1
+ThetaRowMean 2.797549405 item = 2
+BetaRowMean 275
+iteration 13
+Check Prior Beta: 0.6537660412 -0.4508629064
+Check Prior Theta: 4.457841174 1.471220605
+ThetaRowMean 2.797531151 item = 0
+ThetaRowMean 2.797531151 item = 1
+ThetaRowMean 2.797531151 item = 2
+BetaRowMean 275
+iteration 14
+Check Prior Beta: 0.6537469649 -0.4508950777
+Check Prior Theta: 4.45796422 1.471249491
+ThetaRowMean 2.797515652 item = 0
+ThetaRowMean 2.797515652 item = 1
+ThetaRowMean 2.797515652 item = 2
+BetaRowMean 275
+iteration 15
+Check Prior Beta: 0.6537296335 -0.4509242158
+Check Prior Theta: 4.458075406 1.471275589
+ThetaRowMean 2.797502339 item = 0
+ThetaRowMean 2.797502339 item = 1
+ThetaRowMean 2.797502339 item = 2
+BetaRowMean 275
+iteration 16
+Check Prior Beta: 0.6537138138 -0.4509507424
+Check Prior Theta: 4.458176437 1.471299299
+ThetaRowMean 2.797490829 item = 0
+ThetaRowMean 2.797490829 item = 1
+ThetaRowMean 2.797490829 item = 2
+BetaRowMean 275
+iteration 17
+Check Prior Beta: 0.6536993153 -0.4509749996
+Check Prior Theta: 4.458268666 1.471320938
+ThetaRowMean 2.797480851 item = 0
+ThetaRowMean 2.797480851 item = 1
+ThetaRowMean 2.797480851 item = 2
+BetaRowMean 275
+iteration 18
+Check Prior Beta: 0.6536859737 -0.4509972792
+Check Prior Theta: 4.458353225 1.471340775
+ThetaRowMean 2.797472189 item = 0
+ThetaRowMean 2.797472189 item = 1
+ThetaRowMean 2.797472189 item = 2
+BetaRowMean 275
+iteration 19
+Check Prior Beta: 0.6536736384 -0.4510178445
+Check Prior Theta: 4.458431117 1.471359049
+ThetaRowMean 2.797464641 item = 0
+ThetaRowMean 2.797464641 item = 1
+ThetaRowMean 2.797464641 item = 2
+BetaRowMean 275
+iteration 20
+Log-likelihood: (total,number,average)
+Test: -60866.59552      7998    -7.610226997
+Validation: -28345.24765        4000    -7.086311912
+Done
+Check Prior Beta: 0.6536621729 -0.4510369312
+Check Prior Theta: 4.458503243 1.471375973
+ThetaRowMean 2.797458019 item = 0
+ThetaRowMean 2.797458019 item = 1
+ThetaRowMean 2.797458019 item = 2
+BetaRowMean 275
+iteration 21
+Check Prior Beta: 0.6536514609 -0.4510547396
+Check Prior Theta: 4.458570374 1.47139173
+ThetaRowMean 2.797452158 item = 0
+ThetaRowMean 2.797452158 item = 1
+ThetaRowMean 2.797452158 item = 2
+BetaRowMean 275
+iteration 22
+Check Prior Beta: 0.6536414087 -0.4510714303
+Check Prior Theta: 4.458633138 1.471406468
+ThetaRowMean 2.797446924 item = 0
+ThetaRowMean 2.797446924 item = 1
+ThetaRowMean 2.797446924 item = 2
+BetaRowMean 275
+iteration 23
+Check Prior Beta: 0.6536319453 -0.4510871262
+Check Prior Theta: 4.458692024 1.471420299
+ThetaRowMean 2.797442207 item = 0
+ThetaRowMean 2.797442207 item = 1
+ThetaRowMean 2.797442207 item = 2
+BetaRowMean 275
+iteration 24
+Check Prior Beta: 0.6536230212 -0.4511019137
+Check Prior Theta: 4.458747384 1.471433308
+ThetaRowMean 2.79743792 item = 0
+ThetaRowMean 2.79743792 item = 1
+ThetaRowMean 2.79743792 item = 2
+BetaRowMean 275
+iteration 25
+Check Prior Beta: 0.6536146047 -0.4511158487
+Check Prior Theta: 4.458799452 1.471445548
+ThetaRowMean 2.797433999 item = 0
+ThetaRowMean 2.797433999 item = 1
+ThetaRowMean 2.797433999 item = 2
+BetaRowMean 275
+iteration 26
+Check Prior Beta: 0.6536066729 -0.4511289716
+Check Prior Theta: 4.458848396 1.471457059
+ThetaRowMean 2.797430406 item = 0
+ThetaRowMean 2.797430406 item = 1
+ThetaRowMean 2.797430406 item = 2
+BetaRowMean 275
+iteration 27
+Check Prior Beta: 0.6535992037 -0.4511413211
+Check Prior Theta: 4.458894369 1.471467879
+ThetaRowMean 2.797427117 item = 0
+ThetaRowMean 2.797427117 item = 1
+ThetaRowMean 2.797427117 item = 2
+BetaRowMean 275
+iteration 28
+Check Prior Beta: 0.653592174 -0.451152937
+Check Prior Theta: 4.458937523 1.471478043
+ThetaRowMean 2.79742411 item = 0
+ThetaRowMean 2.79742411 item = 1
+ThetaRowMean 2.79742411 item = 2
+BetaRowMean 275
+iteration 29
+Check Prior Beta: 0.6535855642 -0.4511638531
+Check Prior Theta: 4.458977996 1.471487583
+ThetaRowMean 2.797421366 item = 0
+ThetaRowMean 2.797421366 item = 1
+ThetaRowMean 2.797421366 item = 2
+BetaRowMean 275
+iteration 30
+Log-likelihood: (total,number,average)
+Test: -60857.68115      7998    -7.609112422
+Validation: -28356.52104        4000    -7.089130259
+Done
+Check Prior Beta: 0.6535793607 -0.4511740943
+Check Prior Theta: 4.459015895 1.471496524
+ThetaRowMean 2.797418862 item = 0
+ThetaRowMean 2.797418862 item = 1
+ThetaRowMean 2.797418862 item = 2
+BetaRowMean 275
+iteration 31
+Check Prior Beta: 0.6535735535 -0.4511836801
+Check Prior Theta: 4.459051313 1.471504887
+ThetaRowMean 2.797416575 item = 0
+ThetaRowMean 2.797416575 item = 1
+ThetaRowMean 2.797416575 item = 2
+BetaRowMean 275
+iteration 32
+Check Prior Beta: 0.6535681309 -0.4511926319
+Check Prior Theta: 4.459084348 1.471512692
+ThetaRowMean 2.797414476 item = 0
+ThetaRowMean 2.797414476 item = 1
+ThetaRowMean 2.797414476 item = 2
+BetaRowMean 275
+iteration 33
+Check Prior Beta: 0.6535630769 -0.4512009784
+Check Prior Theta: 4.459115123 1.471519968
+ThetaRowMean 2.797412544 item = 0
+ThetaRowMean 2.797412544 item = 1
+ThetaRowMean 2.797412544 item = 2
+BetaRowMean 275
+iteration 34
+Check Prior Beta: 0.653558369 -0.4512087575
+Check Prior Theta: 4.459143792 1.47152675
+ThetaRowMean 2.797410759 item = 0
+ThetaRowMean 2.797410759 item = 1
+ThetaRowMean 2.797410759 item = 2
+BetaRowMean 275
+iteration 35
+Check Prior Beta: 0.6535539784 -0.451216017
+Check Prior Theta: 4.459170538 1.471533078
+ThetaRowMean 2.797409108 item = 0
+ThetaRowMean 2.797409108 item = 1
+ThetaRowMean 2.797409108 item = 2
+BetaRowMean 275
+iteration 36
+Check Prior Beta: 0.6535498699 -0.4512228144
+Check Prior Theta: 4.459195578 1.471539004
+ThetaRowMean 2.797407576 item = 0
+ThetaRowMean 2.797407576 item = 1
+ThetaRowMean 2.797407576 item = 2
+BetaRowMean 275
+iteration 37
+Check Prior Beta: 0.653546004 -0.4512292133
+Check Prior Theta: 4.459219141 1.471544582
+ThetaRowMean 2.79740615 item = 0
+ThetaRowMean 2.79740615 item = 1
+ThetaRowMean 2.79740615 item = 2
+BetaRowMean 275
+iteration 38
+Check Prior Beta: 0.6535423414 -0.4512352776
+Check Prior Theta: 4.459241457 1.471549866
+ThetaRowMean 2.797404818 item = 0
+ThetaRowMean 2.797404818 item = 1
+ThetaRowMean 2.797404818 item = 2
+BetaRowMean 275
+iteration 39
+Check Prior Beta: 0.653538847 -0.4512410638
+Check Prior Theta: 4.459262731 1.471554904
+ThetaRowMean 2.797403566 item = 0
+ThetaRowMean 2.797403566 item = 1
+ThetaRowMean 2.797403566 item = 2
+BetaRowMean 275
+iteration 40
+Log-likelihood: (total,number,average)
+Test: -60858.52233      7998    -7.609217596
+Validation: -28364.17532        4000    -7.091043829
+ Likelihood change: 0.0002699302009
+-7.091043829 -0.001913570355
+Done
+Check Prior Beta: 0.6535354924 -0.4512466174
+Check Prior Theta: 4.459283126 1.471559735
+ThetaRowMean 2.797402383 item = 0
+ThetaRowMean 2.797402383 item = 1
+ThetaRowMean 2.797402383 item = 2
+BetaRowMean 275
+iteration 41
+Check Prior Beta: 0.6535322575 -0.4512519706
+Check Prior Theta: 4.459302766 1.471564387
+ThetaRowMean 2.79740126 item = 0
+ThetaRowMean 2.79740126 item = 1
+ThetaRowMean 2.79740126 item = 2
+BetaRowMean 275
+iteration 42
+Check Prior Beta: 0.6535291297 -0.4512571434
+Check Prior Theta: 4.459321727 1.471568878
+ThetaRowMean 2.797400193 item = 0
+ThetaRowMean 2.797400193 item = 1
+ThetaRowMean 2.797400193 item = 2
+BetaRowMean 275
+iteration 43
+Check Prior Beta: 0.6535261032 -0.4512621453
+Check Prior Theta: 4.459340047 1.471573218
+ThetaRowMean 2.797399175 item = 0
+ThetaRowMean 2.797399175 item = 1
+ThetaRowMean 2.797399175 item = 2
+BetaRowMean 275
+iteration 44
+Check Prior Beta: 0.6535231769 -0.451266978
+Check Prior Theta: 4.459357738 1.471577408
+ThetaRowMean 2.797398205 item = 0
+ThetaRowMean 2.797398205 item = 1
+ThetaRowMean 2.797398205 item = 2
+BetaRowMean 275
+iteration 45
+Check Prior Beta: 0.653520353 -0.4512716386
+Check Prior Theta: 4.459374789 1.471581446
+ThetaRowMean 2.797397278 item = 0
+ThetaRowMean 2.797397278 item = 1
+ThetaRowMean 2.797397278 item = 2
+BetaRowMean 275
+iteration 46
+Check Prior Beta: 0.6535176352 -0.4512761215
+Check Prior Theta: 4.459391181 1.471585328
+ThetaRowMean 2.79739639 item = 0
+ThetaRowMean 2.79739639 item = 1
+ThetaRowMean 2.79739639 item = 2
+BetaRowMean 275
+iteration 47
+Check Prior Beta: 0.6535150278 -0.4512804206
+Check Prior Theta: 4.45940689 1.471589048
+ThetaRowMean 2.797395538 item = 0
+ThetaRowMean 2.797395538 item = 1
+ThetaRowMean 2.797395538 item = 2
+BetaRowMean 275
+iteration 48
+Check Prior Beta: 0.6535125338 -0.4512845316
+Check Prior Theta: 4.459421898 1.471592603
+ThetaRowMean 2.797394722 item = 0
+ThetaRowMean 2.797394722 item = 1
+ThetaRowMean 2.797394722 item = 2
+BetaRowMean 275
+iteration 49
+Check Prior Beta: 0.6535101541 -0.451288454
+Check Prior Theta: 4.459436202 1.471595993
+ThetaRowMean 2.797393944 item = 0
+ThetaRowMean 2.797393944 item = 1
+ThetaRowMean 2.797393944 item = 2
+BetaRowMean 275
+iteration 50
+Log-likelihood: (total,number,average)
+Test: -60861.4646       7998    -7.609585471
+Validation: -28371.92411        4000    -7.092981029
+ Likelihood change: 0.0002731896157
+-7.092981029 -0.001937199538
+Done
+Check Prior Beta: 0.6535078869 -0.451292191
+Check Prior Theta: 4.459449812 1.471599219
+ThetaRowMean 2.797393207 item = 0
+ThetaRowMean 2.797393207 item = 1
+ThetaRowMean 2.797393207 item = 2
+BetaRowMean 275
+iteration 51
+Check Prior Beta: 0.6535057289 -0.4512957488
+Check Prior Theta: 4.459462751 1.471602289
+ThetaRowMean 2.797392512 item = 0
+ThetaRowMean 2.797392512 item = 1
+ThetaRowMean 2.797392512 item = 2
+BetaRowMean 275
+iteration 52
+Check Prior Beta: 0.6535036758 -0.4512991347
+Check Prior Theta: 4.459475047 1.471605207
+ThetaRowMean 2.797391864 item = 0
+ThetaRowMean 2.797391864 item = 1
+ThetaRowMean 2.797391864 item = 2
+BetaRowMean 275
+iteration 53
+Check Prior Beta: 0.6535017231 -0.4513023562
+Check Prior Theta: 4.459486729 1.471607981
+ThetaRowMean 2.797391263 item = 0
+ThetaRowMean 2.797391263 item = 1
+ThetaRowMean 2.797391263 item = 2
+BetaRowMean 275
+iteration 54
+Check Prior Beta: 0.6534998669 -0.4513054195
+Check Prior Theta: 4.459497823 1.471610618
+ThetaRowMean 2.797390708 item = 0
+ThetaRowMean 2.797390708 item = 1
+ThetaRowMean 2.797390708 item = 2
+BetaRowMean 275
+iteration 55
+Check Prior Beta: 0.653498104 -0.4513083294
+Check Prior Theta: 4.459508351 1.471613121
+ThetaRowMean 2.797390197 item = 0
+ThetaRowMean 2.797390197 item = 1
+ThetaRowMean 2.797390197 item = 2
+BetaRowMean 275
+iteration 56
+Check Prior Beta: 0.6534964306 -0.4513110917
+Check Prior Theta: 4.459518335 1.471615496
+ThetaRowMean 2.797389725 item = 0
+ThetaRowMean 2.797389725 item = 1
+ThetaRowMean 2.797389725 item = 2
+BetaRowMean 275
+iteration 57
+Check Prior Beta: 0.6534948419 -0.4513137142
+Check Prior Theta: 4.459527806 1.47161775
+ThetaRowMean 2.797389286 item = 0
+ThetaRowMean 2.797389286 item = 1
+ThetaRowMean 2.797389286 item = 2
+BetaRowMean 275
+iteration 58
+Check Prior Beta: 0.6534933327 -0.4513162048
+Check Prior Theta: 4.459536794 1.47161989
+ThetaRowMean 2.797388874 item = 0
+ThetaRowMean 2.797388874 item = 1
+ThetaRowMean 2.797388874 item = 2
+BetaRowMean 275
+iteration 59
+Check Prior Beta: 0.6534918982 -0.4513185715
+Check Prior Theta: 4.459545326 1.471621922
+ThetaRowMean 2.797388484 item = 0
+ThetaRowMean 2.797388484 item = 1
+ThetaRowMean 2.797388484 item = 2
+BetaRowMean 275
+iteration 60
+Log-likelihood: (total,number,average)
+Test: -60864.53295      7998    -7.609969111
+Validation: -28377.46586        4000    -7.094366464
+ Likelihood change: 0.0001953248858
+-7.094366464 -0.001385435709
+Done
+Check Prior Beta: 0.6534905334 -0.4513208223
+Check Prior Theta: 4.459553431 1.471623854
+ThetaRowMean 2.797388114 item = 0
+ThetaRowMean 2.797388114 item = 1
+ThetaRowMean 2.797388114 item = 2
+BetaRowMean 275
+iteration 61
+Check Prior Beta: 0.6534892325 -0.4513229667
+Check Prior Theta: 4.45956114 1.471625693
+ThetaRowMean 2.797387758 item = 0
+ThetaRowMean 2.797387758 item = 1
+ThetaRowMean 2.797387758 item = 2
+BetaRowMean 275
+iteration 62
+Check Prior Beta: 0.6534879893 -0.4513250153
+Check Prior Theta: 4.45956849 1.471627448
+ThetaRowMean 2.797387413 item = 0
+ThetaRowMean 2.797387413 item = 1
+ThetaRowMean 2.797387413 item = 2
+BetaRowMean 275
+iteration 63
+Check Prior Beta: 0.6534867976 -0.4513269783
+Check Prior Theta: 4.459575519 1.471629127
+ThetaRowMean 2.797387077 item = 0
+ThetaRowMean 2.797387077 item = 1
+ThetaRowMean 2.797387077 item = 2
+BetaRowMean 275
+iteration 64
+Check Prior Beta: 0.6534856527 -0.451328864
+Check Prior Theta: 4.459582259 1.471630739
+ThetaRowMean 2.797386749 item = 0
+ThetaRowMean 2.797386749 item = 1
+ThetaRowMean 2.797386749 item = 2
+BetaRowMean 275
+iteration 65
+Check Prior Beta: 0.6534845507 -0.4513306788
+Check Prior Theta: 4.459588734 1.471632288
+ThetaRowMean 2.797386428 item = 0
+ThetaRowMean 2.797386428 item = 1
+ThetaRowMean 2.797386428 item = 2
+BetaRowMean 275
+iteration 66
+Check Prior Beta: 0.6534834886 -0.4513324279
+Check Prior Theta: 4.459594965 1.47163378
+ThetaRowMean 2.797386116 item = 0
+ThetaRowMean 2.797386116 item = 1
+ThetaRowMean 2.797386116 item = 2
+BetaRowMean 275
+iteration 67
+Check Prior Beta: 0.6534824637 -0.4513341158
+Check Prior Theta: 4.459600971 1.471635218
+ThetaRowMean 2.79738581 item = 0
+ThetaRowMean 2.79738581 item = 1
+ThetaRowMean 2.79738581 item = 2
+BetaRowMean 275
+iteration 68
+Check Prior Beta: 0.6534814739 -0.451335746
+Check Prior Theta: 4.459606765 1.471636607
+ThetaRowMean 2.797385511 item = 0
+ThetaRowMean 2.797385511 item = 1
+ThetaRowMean 2.797385511 item = 2
+BetaRowMean 275
+iteration 69
+Check Prior Beta: 0.6534805185 -0.4513373199
+Check Prior Theta: 4.459612352 1.471637946
+ThetaRowMean 2.797385217 item = 0
+ThetaRowMean 2.797385217 item = 1
+ThetaRowMean 2.797385217 item = 2
+BetaRowMean 275
+iteration 70
+Log-likelihood: (total,number,average)
+Test: -60866.5855       7998    -7.610225744
+Validation: -28381.37581        4000    -7.095343953
+ Likelihood change: 0.0001377838098
+-7.095343953 -0.0009774888393
+Done
+Check Prior Beta: 0.6534795985 -0.4513388357
+Check Prior Theta: 4.459617729 1.471639236
+ThetaRowMean 2.797384928 item = 0
+ThetaRowMean 2.797384928 item = 1
+ThetaRowMean 2.797384928 item = 2
+BetaRowMean 275
+iteration 71
+Check Prior Beta: 0.6534787167 -0.451340289
+Check Prior Theta: 4.45962288 1.471640472
+ThetaRowMean 2.797384647 item = 0
+ThetaRowMean 2.797384647 item = 1
+ThetaRowMean 2.797384647 item = 2
+BetaRowMean 275
+iteration 72
+Check Prior Beta: 0.6534778762 -0.4513416745
+Check Prior Theta: 4.459627788 1.471641651
+ThetaRowMean 2.797384375 item = 0
+ThetaRowMean 2.797384375 item = 1
+ThetaRowMean 2.797384375 item = 2
+BetaRowMean 275
+iteration 73
+Check Prior Beta: 0.6534770796 -0.4513429878
+Check Prior Theta: 4.459632437 1.471642768
+ThetaRowMean 2.797384116 item = 0
+ThetaRowMean 2.797384116 item = 1
+ThetaRowMean 2.797384116 item = 2
+BetaRowMean 275
+iteration 74
+Check Prior Beta: 0.6534763275 -0.4513442278
+Check Prior Theta: 4.459636823 1.471643823
+ThetaRowMean 2.797383871 item = 0
+ThetaRowMean 2.797383871 item = 1
+ThetaRowMean 2.797383871 item = 2
+BetaRowMean 275
+iteration 75
+Check Prior Beta: 0.6534756181 -0.451345397
+Check Prior Theta: 4.459640953 1.471644817
+ThetaRowMean 2.797383637 item = 0
+ThetaRowMean 2.797383637 item = 1
+ThetaRowMean 2.797383637 item = 2
+BetaRowMean 275
+iteration 76
+Check Prior Beta: 0.6534749475 -0.4513465014
+Check Prior Theta: 4.459644848 1.471645756
+ThetaRowMean 2.797383415 item = 0
+ThetaRowMean 2.797383415 item = 1
+ThetaRowMean 2.797383415 item = 2
+BetaRowMean 275
+iteration 77
+Check Prior Beta: 0.6534743112 -0.4513475487
+Check Prior Theta: 4.459648537 1.471646646
+ThetaRowMean 2.797383202 item = 0
+ThetaRowMean 2.797383202 item = 1
+ThetaRowMean 2.797383202 item = 2
+BetaRowMean 275
+iteration 78
+Check Prior Beta: 0.6534737044 -0.4513485464
+Check Prior Theta: 4.459652047 1.471647493
+ThetaRowMean 2.797382999 item = 0
+ThetaRowMean 2.797382999 item = 1
+ThetaRowMean 2.797382999 item = 2
+BetaRowMean 275
+iteration 79
+Check Prior Beta: 0.6534731234 -0.4513495008
+Check Prior Theta: 4.459655401 1.471648303
+ThetaRowMean 2.797382804 item = 0
+ThetaRowMean 2.797382804 item = 1
+ThetaRowMean 2.797382804 item = 2
+BetaRowMean 275
+iteration 80
+Log-likelihood: (total,number,average)
+Test: -60869.64666      7998    -7.610608485
+Validation: -28384.61552        4000    -7.096153879
+ Likelihood change: 0.0001141489265
+-7.096153879 -0.0008099258956
+Done
+Check Prior Beta: 0.6534725651 -0.4513504172
+Check Prior Theta: 4.459658621 1.47164908
+ThetaRowMean 2.79738262 item = 0
+ThetaRowMean 2.79738262 item = 1
+ThetaRowMean 2.79738262 item = 2
+BetaRowMean 275
+iteration 81
+Check Prior Beta: 0.653472026 -0.4513513013
+Check Prior Theta: 4.459661727 1.47164983
+ThetaRowMean 2.797382447 item = 0
+ThetaRowMean 2.797382447 item = 1
+ThetaRowMean 2.797382447 item = 2
+BetaRowMean 275
+iteration 82
+Check Prior Beta: 0.6534715024 -0.4513521595
+Check Prior Theta: 4.459664742 1.471650557
+ThetaRowMean 2.797382283 item = 0
+ThetaRowMean 2.797382283 item = 1
+ThetaRowMean 2.797382283 item = 2
+BetaRowMean 275
+iteration 83
+Check Prior Beta: 0.6534709909 -0.4513529974
+Check Prior Theta: 4.459667685 1.471651266
+ThetaRowMean 2.797382128 item = 0
+ThetaRowMean 2.797382128 item = 1
+ThetaRowMean 2.797382128 item = 2
+BetaRowMean 275
+iteration 84
+Check Prior Beta: 0.6534704894 -0.4513538192
+Check Prior Theta: 4.459670572 1.471651962
+ThetaRowMean 2.797381982 item = 0
+ThetaRowMean 2.797381982 item = 1
+ThetaRowMean 2.797381982 item = 2
+BetaRowMean 275
+iteration 85
+Check Prior Beta: 0.653469997 -0.4513546263
+Check Prior Theta: 4.459673409 1.471652645
+ThetaRowMean 2.797381844 item = 0
+ThetaRowMean 2.797381844 item = 1
+ThetaRowMean 2.797381844 item = 2
+BetaRowMean 275
+iteration 86
+Check Prior Beta: 0.6534695138 -0.451355419
+Check Prior Theta: 4.459676195 1.471653315
+ThetaRowMean 2.797381713 item = 0
+ThetaRowMean 2.797381713 item = 1
+ThetaRowMean 2.797381713 item = 2
+BetaRowMean 275
+iteration 87
+Check Prior Beta: 0.6534690406 -0.4513561965
+Check Prior Theta: 4.45967893 1.471653973
+ThetaRowMean 2.797381588 item = 0
+ThetaRowMean 2.797381588 item = 1
+ThetaRowMean 2.797381588 item = 2
+BetaRowMean 275
+iteration 88
+Check Prior Beta: 0.6534685783 -0.4513569572
+Check Prior Theta: 4.459681607 1.471654617
+ThetaRowMean 2.797381469 item = 0
+ThetaRowMean 2.797381469 item = 1
+ThetaRowMean 2.797381469 item = 2
+BetaRowMean 275
+iteration 89
+Check Prior Beta: 0.6534681285 -0.4513576988
+Check Prior Theta: 4.459684218 1.471655246
+ThetaRowMean 2.797381355 item = 0
+ThetaRowMean 2.797381355 item = 1
+ThetaRowMean 2.797381355 item = 2
+BetaRowMean 275
+iteration 90
+Log-likelihood: (total,number,average)
+Test: -60874.28856      7998    -7.611188867
+Validation: -28387.37469        4000    -7.096843672
+ Likelihood change: 9.7206577e-05
+-7.096843672 -0.0006897928285
+Done
+Finally Done!
+190.2074221

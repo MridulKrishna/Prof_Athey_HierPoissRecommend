@@ -1,0 +1,1 @@
+hhid hhsize hhincome smom restype1 restype2 restype3 restype4 restype5 restype6 mrace0 mrace1 mrace2 mrace3 mrace4 mrace5 mheadwstat0 mheadwstat1 mheadwstat2 mheadwstat3 mheadwstat4 mheadwstat5 mheadwstat7 frace0 frace1 frace2 frace3 frace4 frace5 fheadwstat0 fheadwstat1 fheadwstat2 fheadwstat3 fheadwstat4 fheadwstat5 fheadwstat6 fheadwstat7
