@@ -1,0 +1,102 @@
++ dir = /afs/.ir/users/m/r/mridulk/GSB_RA/RecommendSysHPF/PoissFactObs/Yogurt/observables
++ output dir = /afs/.ir/users/m/r/mridulk/GSB_RA/RecommendSysHPF/PoissFactObs/Yogurt/observables/outputb
++ n = 2599
++ m = 275
++ k = 25
++ uc = 36
++ ic = 50
++ Creating directory n2599-m275-k25-uc36-ic50
++ writing log to n2599-m275-k25-uc36-ic50/infer.log
++ reading ratings dataset from /afs/.ir/users/m/r/mridulk/GSB_RA/RecommendSysHPF/PoissFactObs/Yogurt/observables
+Validation size: 4000
+Test size: 7998
++ loaded validation and test sets from /afs/.ir/users/m/r/mridulk/GSB_RA/RecommendSysHPF/PoissFactObs/Yogurt/observables
++ reading observed characteristics from /afs/.ir/users/m/r/mridulk/GSB_RA/RecommendSysHPF/PoissFactObs/Yogurt/observables
+Constructing hgaprec
+/afs/.ir/users/m/r/mridulk/GSB_RA/RecommendSysHPF/PoissFactObs/Yogurt/observables/outputb/n2599-m275-k25-uc36-ic50/logl.txt
+Running vb_hier()
+Initialized
+Check Prior Theta: 0.299919 -1.57327
+BetaRowMean275.034
+Check Prior Beta: 0.300152 -1.57249
+ThetaRowMean3.38984
+iteration 0
+xiMean = 2.13925 etaMean = 4.72436
+Log-likelihood: (total,number,average)
+Test: -137727.3543      7998    -17.22022434
+Validation: -65875.74967        4000    -16.46893742
+Check Prior Theta: 4.724355152 1.531695432
+BetaRowMean64.00227302
+Check Prior Beta: 2.139254161 0.6727361828
+ThetaRowMean15.73954602
+iteration 1
+xiMean = 3.077894526 etaMean = 3.987377267
+Check Prior Theta: 3.987377267 1.352423936
+BetaRowMean22.65321972
+Check Prior Beta: 3.077894526 1.049806241
+ThetaRowMean32.78441386
+iteration 2
+xiMean = 3.533505194 etaMean = 3.652020473
+Check Prior Theta: 3.652020473 1.257342249
+BetaRowMean4.960955501
+Check Prior Beta: 3.533505194 1.22673355
+ThetaRowMean93.472669
+iteration 3
+xiMean = 3.710517016 etaMean = 3.253075258
+Check Prior Theta: 3.253075258 1.137946929
+BetaRowMean1.048053017
+Check Prior Beta: 3.710517016 1.281429094
+ThetaRowMean186.2501043
+iteration 4
+xiMean = 3.75900697 etaMean = 2.887996257
+Check Prior Theta: 2.887996257 1.017700705
+BetaRowMean0.4453678291
+Check Prior Beta: 3.75900697 1.294709964
+ThetaRowMean242.4834798
+iteration 5
+xiMean = 3.782504351 etaMean = 2.71390978
+Check Prior Theta: 2.71390978 0.9545318556
+BetaRowMean0.3364619959
+Check Prior Beta: 3.782504351 1.301276625
+ThetaRowMean266.082781
+iteration 6
+xiMean = 3.794988547 etaMean = 2.645776954
+Check Prior Theta: 2.645776954 0.9285333309
+BetaRowMean0.306676075
+Check Prior Beta: 3.794988547 1.304810799
+ThetaRowMean275.3984812
+iteration 7
+xiMean = 3.801837733 etaMean = 2.618794397
+Check Prior Theta: 2.618794397 0.9179604352
+BetaRowMean0.2964175637
+Check Prior Beta: 3.801837733 1.306741086
+ThetaRowMean279.1533195
+iteration 8
+xiMean = 3.805936076 etaMean = 2.607422271
+Check Prior Theta: 2.607422271 0.9134222162
+BetaRowMean0.2924737939
+Check Prior Beta: 3.805936076 1.307882913
+ThetaRowMean280.7504144
+iteration 9
+xiMean = 3.808598435 etaMean = 2.602171482
+Check Prior Theta: 2.602171482 0.9112948032
+BetaRowMean0.2908246267
+Check Prior Beta: 3.808598435 1.308614486
+ThetaRowMean281.4880365
+iteration 10
+xiMean = 3.810448206 etaMean = 2.599453123
+Log-likelihood: (total,number,average)
+Test: -63734.17193      7998    -7.968763682
+Validation: -29553.88351        4000    -7.388470879
+Check Prior Theta: 2.599453123 0.9101801682
+BetaRowMean0.2900666692
+Check Prior Beta: 3.810448206 1.309115921
+ThetaRowMean281.8668093
+iteration 11
+xiMean = 3.811800462 etaMean = 2.597864401
+Check Prior Theta: 2.597864401 0.9095239135
+BetaRowMean0.2896772105
+Check Prior Beta: 3.811800462 1.309478047
+ThetaRowMean282.0849767
+iteration 12
+xiMean = 3.812825624 etaMean = 2.596831491

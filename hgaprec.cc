@@ -1188,7 +1188,7 @@ HGAPRec::vb_hier_ori()
       debug("adding %s to theta rate", _thetarate.expected_v().s().c_str());
       debug("betarowsum %s", betarowsum.s().c_str());
       
-      // Adds the previous sum (betarowsum) to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
+      // Adds the previous sum (betarowsum) to \frac{\kappa^{shp}}{\kappa^{rte}} in the next rate
       _htheta.update_rate_next(betarowsum);
       // Swaps the current and the next values for the parameters
       _htheta.swap();
@@ -1516,6 +1516,7 @@ HGAPRec::vb_hier()
     
     while (_iter < 100) {
 
+      compute_likelihood(false);
       // Loop over users
       for (uint32_t n = 0; n < _n; ++n) {
         //      cout << "Loop over users " << n << endl;
@@ -1588,6 +1589,7 @@ HGAPRec::vb_hier()
     
     while (_iter < 100) {
      
+      compute_likelihood(false);
       // Loop over users
       for (uint32_t n = 0; n < _n; ++n) {
         // Gets the matrix of items for each user and stores it in movies
@@ -1643,7 +1645,6 @@ HGAPRec::vb_hier()
         Array betarowsum(_k);
         // Saves the sums over items of expected values for each factor ( the second part of \gamma^{rte}_{uk})
         _hbeta.sum_rows(betarowsum);
-        
         // Sets the prior rate based on expectations with current parameters, i.e.,\frac{\kappa^{shp}}{\kappa^{rte}}
         _htheta.set_prior_rate(_thetarate.expected_v(),
                                _thetarate.expected_logv());
@@ -1652,6 +1653,7 @@ HGAPRec::vb_hier()
         
         // Adds the previous sum (betarowsum) to \frac{\kappa^{shp}}{\kappa^{shp}} in the next rate
         _htheta.update_rate_next(betarowsum);
+
         // Swaps the current and the next values for the parameters
         _htheta.swap();
         
@@ -1761,7 +1763,7 @@ HGAPRec::vb_hier()
       Array betarowsum(_k);
       // Saves the sums over items of expected values for each factor ( the second part of \gamma^{rte}_{uk})
       _hbeta.sum_rows(betarowsum);
-      
+     
       // Sets the prior rate based on expectations with current parameters, i.e.,\frac{\kappa^{shp}}{\kappa^{rte}}
       _htheta.set_prior_rate(_thetarate.expected_v(),
                              _thetarate.expected_logv());
@@ -1816,8 +1818,8 @@ HGAPRec::vb_hier()
       
       // Sets the prior rate based on expectations with current parameters, i.e., \frac{\tau^{shp}}{\tau^{rte}}
       _hbeta.set_prior_rate(_betarate.expected_v(),
-                            _betarate.expected_logv());
-      
+                            _betarate.expected_logv()); 
+      cout << "ThetaRowMean " << thetarowsum.mean() << endl;
       // Adds the previous sum to \frac{\tau^{shp}}{\tau^{shp}} in the next rate
       _hbeta.update_rate_next(thetarowsum);
       // Swaps the current and the next values for the parameters
@@ -1964,6 +1966,7 @@ HGAPRec::vb_hier()
     
     double xiMean = _betarate.expected_mean();
     double etaMean = _thetarate.expected_mean();
+    cout << "xiMean = " << xiMean << " etaMean = " << etaMean << endl;
     
     betaMeans.set_col(_iter+1, betaMean);
     thetaMeans.set_col(_iter+1, thetaMean);
