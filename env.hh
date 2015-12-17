@@ -336,8 +336,12 @@ fitpriors(nFitpriors)
     printf("cannot open param file:%s\n",  strerror(errno));
     exit(-1);
   }
+<<<<<<< HEAD
   hier = true; //To compute log-likelihood for the HPF algorithm
  
+=======
+  hier = true; //To compute log-likelihood using the HPF algorithm
+>>>>>>> 4a7889a1053980d119147ab4c98476a6958297a7
   plog("n", n);
   plog("k", k);
   plog("t", t);

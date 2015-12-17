@@ -2,11 +2,19 @@ clear
 clc
 
 % Loads the test files
+<<<<<<< HEAD
 train = dlmread('~/Dropbox/2015_Summer/Athey/Matlab_AtheyCastillo/HPF/testFiles/train.tsv','\t');
 test = dlmread('~/Dropbox/2015_Summer/Athey/Matlab_AtheyCastillo/HPF/testFiles/test.tsv','\t');
 validation = dlmread('~/Dropbox/2015_Summer/Athey/Matlab_AtheyCastillo/HPF/testFiles/validation.tsv','\t');
 obsItem = dlmread('~/Dropbox/2015_Summer/Athey/Matlab_AtheyCastillo/HPF/testFiles/obsItem.tsv','\t');
 obsUser = dlmread('~/Dropbox/2015_Summer/Athey/Matlab_AtheyCastillo/HPF/testFiles/obsUser.tsv','\t');
+=======
+train = dlmread('/afs/.ir/users/m/r/mridulk/GSB_RA/RecommendSysHPF/PoissFactObs/Yogurt/observables/train.tsv','\t');
+test = dlmread('/afs/.ir/users/m/r/mridulk/GSB_RA/RecommendSysHPF/PoissFactObs/Yogurt/observables/test.tsv','\t');
+validation = dlmread('/afs/.ir/users/m/r/mridulk/GSB_RA/RecommendSysHPF/PoissFactObs/Yogurt/observables/validation.tsv','\t');
+obsItem = dlmread('/afs/.ir/users/m/r/mridulk/GSB_RA/RecommendSysHPF/PoissFactObs/Yogurt/observables/obsItem.tsv','\t');
+obsUser = dlmread('/afs/.ir/users/m/r/mridulk/GSB_RA/RecommendSysHPF/PoissFactObs/Yogurt/observables/obsUser.tsv','\t');
+>>>>>>> 4a7889a1053980d119147ab4c98476a6958297a7
 
 % % Loads the files
 % train = dlmread('~/Dropbox/2015_Summer/Athey/Matlab_AtheyCastillo/Yogurt/observables/train.tsv','\t');
@@ -360,7 +368,11 @@ while (r <= 60)
         llTest = llTest + indLL;
     end
     
+<<<<<<< HEAD
 %     disp(llTest)
+=======
+     disp(llTest)
+>>>>>>> 4a7889a1053980d119147ab4c98476a6958297a7
     
     r = r+1;
 end
