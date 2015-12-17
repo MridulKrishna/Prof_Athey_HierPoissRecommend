@@ -7,11 +7,11 @@
 
 class HGAPRec {
 public:
-    HGAPRec(Env &env, Ratings &ratings);
-    ~HGAPRec();
+    HGAPRec(Env &env, Ratings &ratings); // This is the class constructor for class HGAPRec. It initializes the priors for and initializes file handles for all output files to be generated 
+    ~HGAPRec();		// This is the class destructor for class HGAPRec. Closes all file handles.
 
-    void vb_hier();
-    void vb_hier_ori();
+    void vb_hier(); 	// This function implements the hierarchical Poisson Factorization algorithm modified to include availability.
+    void vb_hier_ori(); // This function implements an old version of the above algorithm.
     
 #ifdef HAVE_NMFLIB
     void nmf();
@@ -25,10 +25,10 @@ public:
     void run_chi_wals(double l);
     void run_chi_climf();
     
-    void gen_ranking_for_users(bool load_model_state);
+    void gen_ranking_for_users(bool load_model_state); //Generates the ranking.tsv file.
     void gen_msr_csv();
     
-    double compute_rmse();
+    double compute_rmse();			       //Returns the root mean-squared error.
     double compute_itemrank(bool final);
     
     void write_lda_training_matrix();
@@ -46,7 +46,9 @@ public:
 private:
     void initialize();
     void approx_log_likelihood();
-    
+   
+ 
+// get_phi calculates the vector of probabilites for the multinomial distribution and saves it in argument phi
     void get_phi(GPBase<Matrix> &a, uint32_t ai,
                  GPBase<Matrix> &b, uint32_t bi,
                  Array &phi);
@@ -72,15 +74,15 @@ private:
                  Array &phi);
     
     void load_validation_and_test_sets();
-    bool compute_likelihood(bool validation);
+    bool compute_likelihood(bool validation); // Calculates log likelihood. Validation tells whether it should be calculated for the validation or test set. If validation, also check the stopping criterion. Returns true if the algorithm should stop.
     double pair_likelihood(uint32_t p, uint32_t q, yval_t y) const;
-    double log_factorial(uint32_t n)  const;
+    double log_factorial(uint32_t n)  const; // Computes log( n! )
     
-    void do_on_stop();
-    void compute_precision(bool save_ranking_file);
+    void do_on_stop(); // Saves model and generates ranking for users.
+    void compute_precision(bool save_ranking_file); // Computes the number of relevant recommendation among best ranked 10 and 100
     
     double prediction_score(uint32_t user, uint32_t movie) const;
-    double prediction_score_hier(uint32_t user, uint32_t movie) const;
+    double prediction_score_hier(uint32_t user, uint32_t movie) const; // Returns the predicted score.
     double prediction_score_nmf(uint32_t user, uint32_t movie) const;
     double prediction_score_lda(uint32_t user, uint32_t movie) const;
     double prediction_score_chi(uint32_t user, uint32_t movie) const;
@@ -95,17 +97,17 @@ private:
     double rating_likelihood_hier(uint32_t p, uint32_t q, yval_t y) const;
 //    double rating_likelihood_hier_return(uint32_t p, uint32_t q, yval_t y, double & rate, double & likelihood) const;
     uint32_t duration() const;
-    bool is_validation(const Rating &r) const;
+    bool is_validation(const Rating &r) const; //Checks if the given user-item pair (r) is in the validation set.
     
     Env &_env;
     Ratings &_ratings;
     
-    uint32_t _n;
-    uint32_t _m;
-    uint32_t _uc;
-    uint32_t _ic;
-    uint32_t _k;
-    uint32_t _iter;
+    uint32_t _n;   // Number of users.
+    uint32_t _m;   // Number of items.
+    uint32_t _uc;  // Number ofuser characteristics.
+    uint32_t _ic;  // Number of item characteristics.
+    uint32_t _k;   // Number of latent factors.
+    uint32_t _iter;// Indicator of current iteration.
     
     double _offset;
     
@@ -114,7 +116,7 @@ private:
     
     GPMatrix _thetabias;
     GPMatrix _betabias;
-    
+    // Parameters of the HPF algorithm
     GPMatrix _htheta;
     GPMatrix _hbeta;
     GPMatrix _hsigma;
